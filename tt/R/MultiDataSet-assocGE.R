@@ -39,9 +39,9 @@ setMethod(
             warning("Sets from 'MultiDataSet' will be reduced to common samples")
         }
 
-        l1 <- sapply(Biobase::sampleNames(object)[c(tomic, texp)], length)
-        object <- MultiDataSet::commonSamples(object)
-        l2 <- sapply(Biobase::sampleNames(object)[c(tomic, texp)], length)
+        l1 <- sapply(sampleNames(object)[c(tomic, texp)], length)
+        object <- MultiDataSet:::commonSamples(object)
+        l2 <- sapply(sampleNames(object)[c(tomic, texp)], length)
         l3 <- mapply('-', l1, l2, SIMPLIFY = FALSE)
 
         if(verbose) {
@@ -54,8 +54,9 @@ setMethod(
         ## CONVERT FORMULA
         ## ----------------------------------------------------------------- ##
         formula <- as.character(as.formula(formula))
+        #exp.dt <- as.data.frame(object[[texp]])
         es <- object[[texp]]
-        exp.dt <- data.frame(pData(es), expos(es))
+        exp.dt <<- cbind(pData(es), expos(es))
         rm(es)
 
         if(tann == "cluster") {
@@ -76,10 +77,10 @@ setMethod(
             if(missing(select)) {
                 if(set == "exposures") {
                     warning("No given 'select'. association will be computed for all exposures")
-                    select <- rexposome::exposureNames(object[[texp]])
+                    select <- exposureNames(object[[texp]])
                 } else { ## set == "phenotypes"
                     warning("No given 'select'. association will be computed for all phenotypes")
-                    select <- Biobase::phenotypeNames(object[[texp]])
+                    select <- phenotypeNames(object[[texp]])
                 }
             }
         }
@@ -96,15 +97,16 @@ setMethod(
             }
             pheno <- .create_p(
                 expo.dt = exp.dt,
-                omic.p = Biobase::pData(object[[tomic]]),
+                omic.p = pData(object[[tomic]]),
                 select = all.vars(design)
             )
+            phenoA <<- pheno
 
             if(class(pheno) == "character") {
                 stop("Invalid value '", pheno, "' in 'exposures' or 'covariates'")
             }
 
-            na.loc <- rowSums(apply(pheno, 2, is.na))
+            na.loc <<- rowSums(apply(pheno, 2, is.na))
             na.loc <- which(na.loc != 0)
             if(length(na.loc) != 0) {
                 if(warnings | verbose) {
@@ -112,6 +114,10 @@ setMethod(
                         " samples will be removed.")
                 }
                 pheno <- pheno[-na.loc, , drop=FALSE]
+            } else {
+                if(verbose) {
+                    message("Testing '", ex, "' (", design, ")")
+                }
             }
 
 
@@ -128,6 +134,7 @@ setMethod(
             } else {
                 tryCatch({
                     # Design model
+pheno <<- pheno
                     design.mm <- model.matrix(formula(design), data = pheno)
                     gexp <- object[[tomic]][ , rownames(pheno), drop=FALSE]
                     # If required, apply SVA
@@ -146,7 +153,7 @@ setMethod(
                                             design.mm, vfilter=vfilter)
                         if (n.sv > 0){
                             svobj <- sva::sva(Biobase::exprs(gexp), design.mm,
-                                    design.mm[ , -1, drop=FALSE],
+                                    #design.mm[ , -1, drop=FALSE],
                                     n.sv=n.sv, vfilter=vfilter)
                             design.mm <- cbind(design.mm, svobj$sv)
                         }

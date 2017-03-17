@@ -3,7 +3,47 @@
 \name{plotAssociation}
 \alias{plotAssociation}
 \alias{plotAssociation,ResultSet-methods}
-\title{Function to draw de result of an association study}
+\title{#' Method to perform a crossomics integration analysis.
+#'
+#' This functions performs a crossomics analysis using all the datasets stored
+#' into a \link{MultiDataSet} object. The process of integration performs a
+#' sparse multiple canonical correlation analysis with all the available
+#' tables. The genome (SNPs) data is transformed to a continuous variable.
+#'
+#' @section Warning:
+#' Current accepted datasets are: \link{ExposomeSer} for exposures data.
+#' \link{ExpressionSet} for micro/gene expression data, \link{MethylationSet}
+#' for methylome (CpGs) data, \link{SnpSet} for genome (SNPs) data. Proteome
+#' data is allowed as an \link{eSet} while tagged as \code{"proteome"} into the
+#' \link{MultiDataSet} object.
+#'
+#' @name crossomics
+#' @rdname crossomics-methods
+#' @aliases crossomics,MultiDataSet-rexposome
+#' @param object An object of class \link{MultiDataSet} containing the multiple
+#' sets to be integrated
+#' @param ncomponents (default \code{2})
+#' @param na.rm (default \code{FALSE})
+#' @param verbose (default \code{FALSE}) If set to \code{TRUE} information
+#' about the process is show.
+#' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
+#' not be displayed.
+#' @references
+#' Witten, DM and Tibshirani, R and Hastie, T. A penalized matrix
+#' decomposition, with applications to sparse principal components and canonical
+#' correlation analysis. Biostatistics. 2009. 10.1093/biostatistics/kxp008
+#'
+#' Abraham, G and Inouye M. Fast Principal Component Analysis of Large-Scale
+#' Genome-Wide Data. PLOS ONE. http://dx.doi.org/10.1371/journal.pone.0093766
+#' @export crossomics
+#' @seealso the used functions \link{MultiCCA} and \link{MultiCCA.permut} or
+#' the package \link{PMA} for details, \link{plotIntegration} to plot the
+#' results
+setGeneric("crossomics", function(object, ncomponents = 2, ..., na.rm = FALSE,
+                                  verbose = FALSE, warnings = TRUE)
+    standardGeneric("crossomics")
+)
+Function to draw de result of an association study}
 \usage{
 plotAssociation(object, rid = 1, type = c("manhattan", "qq"), ...)
 }

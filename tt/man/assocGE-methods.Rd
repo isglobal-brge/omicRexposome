@@ -20,7 +20,7 @@ assocGE(object, formula, select, set = "exposures", ..., sva = FALSE,
 \item{set}{(default \code{"exposures"}) Can take values \code{"exposures"}
 of \code{"phenotype"}.}
 
-\item{...}{Arguments passed to \code{\link{lmFit}}.}
+\item{...}{...}
 
 \item{sva}{(default \code{FALSE}) If \code{TRUE} SVAnalysis is done.}
 

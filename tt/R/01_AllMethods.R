@@ -40,7 +40,7 @@ setGeneric("add_prot", function(object, expoSet, ...)
 #' \link{ExposomeSet} (encapsulated into the \link{MultiDataSet}).
 #' @param set (default \code{"exposures"}) Can take values \code{"exposures"}
 #' of \code{"phenotype"}.
-#' @param ... Arguments passed to \code{\link{lmFit}}.
+#' @param ... ...
 #' @param sva (default \code{FALSE}) If \code{TRUE} SVAnalysis is done.
 #' @param vfilter (default \code{NULL}) Numeric number of probes used
 #' in \link{sva} if argument \code{sva} is set to \code{TRUE}.de
@@ -57,9 +57,9 @@ setGeneric("add_prot", function(object, expoSet, ...)
 #' exposome, \link{assocPRT} to test the association between proteome and
 #' exposome, package \link{limma} for more details, \link{plotAssociation} to
 #' plot the results
-setGeneric("assocGE", function(object, formula, select, set = "exposures",
-                               ..., sva = FALSE, vfilter = NULL, ncores = 1,
-                               verbose = FALSE, warnings = TRUE)
+setGeneric("assocGE", function(object, formula, select, set = "exposures", ..., sva = FALSE,
+                               vfilter = NULL, ncores = 1, verbose = FALSE,
+                               warnings = TRUE)
     standardGeneric("assocGE")
 )
 
@@ -202,46 +202,46 @@ setGeneric("assocSNP", function(object, design, family = "binomial",
     standardGeneric("assocSNP")
 )
 
-#' #' Method to perform a crossomics integration analysis.
-#' #'
-#' #' This functions performs a crossomics analysis using all the datasets stored
-#' #' into a \link{MultiDataSet} object. The process of integration performs a
-#' #' sparse multiple canonical correlation analysis with all the available
-#' #' tables. The genome (SNPs) data is transformed to a continuous variable.
-#' #'
-#' #' @section Warning:
-#' #' Current accepted datasets are: \link{ExposomeSer} for exposures data.
-#' #' \link{ExpressionSet} for micro/gene expression data, \link{MethylationSet}
-#' #' for methylome (CpGs) data, \link{SnpSet} for genome (SNPs) data. Proteome
-#' #' data is allowed as an \link{eSet} while tagged as \code{"proteome"} into the
-#' #' \link{MultiDataSet} object.
-#' #'
-#' #' @name crossomics
-#' #' @rdname crossomics-methods
-#' #' @aliases crossomics,MultiDataSet-rexposome
-#' #' @param object An object of class \link{MultiDataSet} containing the multiple
-#' #' sets to be integrated
-#' #' @param ncomponents (default \code{2})
-#' #' @param na.rm (default \code{FALSE})
-#' #' @param verbose (default \code{FALSE}) If set to \code{TRUE} information
-#' #' about the process is show.
-#' #' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
-#' #' not be displayed.
-#' #' @references
-#' #' Witten, DM and Tibshirani, R and Hastie, T. A penalized matrix
-#' #' decomposition, with applications to sparse principal components and canonical
-#' #' correlation analysis. Biostatistics. 2009. 10.1093/biostatistics/kxp008
-#' #'
-#' #' Abraham, G and Inouye M. Fast Principal Component Analysis of Large-Scale
-#' #' Genome-Wide Data. PLOS ONE. http://dx.doi.org/10.1371/journal.pone.0093766
-#' #' @export crossomics
-#' #' @seealso the used functions \link{MultiCCA} and \link{MultiCCA.permut} or
-#' #' the package \link{PMA} for details, \link{plotIntegration} to plot the
-#' #' results
-#' setGeneric("crossomics", function(object, ncomponents = 2, ..., na.rm = FALSE,
-#'                                   verbose = FALSE, warnings = TRUE)
-#'     standardGeneric("crossomics")
-#' )
+#' Method to perform a crossomics integration analysis.
+#'
+#' This functions performs a crossomics analysis using all the datasets stored
+#' into a \link{MultiDataSet} object. The process of integration performs a
+#' sparse multiple canonical correlation analysis with all the available
+#' tables. The genome (SNPs) data is transformed to a continuous variable.
+#'
+#' @section Warning:
+#' Current accepted datasets are: \link{ExposomeSer} for exposures data.
+#' \link{ExpressionSet} for micro/gene expression data, \link{MethylationSet}
+#' for methylome (CpGs) data, \link{SnpSet} for genome (SNPs) data. Proteome
+#' data is allowed as an \link{eSet} while tagged as \code{"proteome"} into the
+#' \link{MultiDataSet} object.
+#'
+#' @name crossomics
+#' @rdname crossomics-methods
+#' @aliases crossomics,MultiDataSet-rexposome
+#' @param object An object of class \link{MultiDataSet} containing the multiple
+#' sets to be integrated
+#' @param ncomponents (default \code{2})
+#' @param na.rm (default \code{FALSE})
+#' @param verbose (default \code{FALSE}) If set to \code{TRUE} information
+#' about the process is show.
+#' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
+#' not be displayed.
+#' @references
+#' Witten, DM and Tibshirani, R and Hastie, T. A penalized matrix
+#' decomposition, with applications to sparse principal components and canonical
+#' correlation analysis. Biostatistics. 2009. 10.1093/biostatistics/kxp008
+#'
+#' Abraham, G and Inouye M. Fast Principal Component Analysis of Large-Scale
+#' Genome-Wide Data. PLOS ONE. http://dx.doi.org/10.1371/journal.pone.0093766
+#' @export crossomics
+#' @seealso the used functions \link{MultiCCA} and \link{MultiCCA.permut} or
+#' the package \link{PMA} for details, \link{plotIntegration} to plot the
+#' results
+setGeneric("crossomics", function(object, ncomponents = 2, ..., na.rm = FALSE,
+                                  verbose = FALSE, warnings = TRUE)
+    standardGeneric("crossomics")
+)
 
 # -----------------------------------------------------------------------------
 
@@ -266,35 +266,35 @@ setGeneric("plotAssociation", function(object,  rid = 1,
     standardGeneric("plotAssociation")
 )
 
-#' #' Function to draw de result of an integration study
-#' #'
-#' #' This function draws a plots for the ResultSet from integration function
-#' #'
-#' #' @name plotIntegration
-#' #' @rdname plotIntegration-methods
-#' #' @aliases plotIntegration,ResultSet-methods
-#' #' @param object An object of class \link{ResultSet} obtained from
-#' #' \link{crossomics}.
-#' #' @param cmpX (default \code{1}) Value of the X-axis when ploting rsults
-#' #' from \link{mcia}.
-#' #' @param cmpY (default \code{2}) Value of the Y-axis when ploting rsults
-#' #' from \link{mcia}.
-#' #' @param tcolors (optional) Names vector with the colors sued to draw
-#' #' each dataset. Used when ploting results from \link{MultiCCA}. If missing,
-#' #' random colores are chosen.
-#' #' @param lb.th (default \code{0.20}) Threshold to place labels on radar chart
-#' #' drawn when ploting results from \link{MultiCCA}.
-#' #' @param legend.show (default \code{TRUE}) If set to FALSE, right legend
-#' #' of radar plot is hidden when ploting results from \link{MultiCCA}.
-#' #' @param ... Optional arguments are given to \code{plot} from \link{omicade4}
-#' #' pacage (argument \code{axes} is filled with values from \code{cmpX} and
-#' #' \code{cmpY}).
-#' #' @export plotIntegration
-#' #' @seealso \link{plotAssociation} for plotting association results
-#' setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, tcolors,
-#'         lb.th=0.20, legend.show=TRUE, ...)
-#'     standardGeneric("plotIntegration")
-#' )
+#' Function to draw de result of an integration study
+#'
+#' This function draws a plots for the ResultSet from integration function
+#'
+#' @name plotIntegration
+#' @rdname plotIntegration-methods
+#' @aliases plotIntegration,ResultSet-methods
+#' @param object An object of class \link{ResultSet} obtained from
+#' \link{crossomics}.
+#' @param cmpX (default \code{1}) Value of the X-axis when ploting rsults
+#' from \link{mcia}.
+#' @param cmpY (default \code{2}) Value of the Y-axis when ploting rsults
+#' from \link{mcia}.
+#' @param tcolors (optional) Names vector with the colors sued to draw
+#' each dataset. Used when ploting results from \link{MultiCCA}. If missing,
+#' random colores are chosen.
+#' @param lb.th (default \code{0.20}) Threshold to place labels on radar chart
+#' drawn when ploting results from \link{MultiCCA}.
+#' @param legend.show (default \code{TRUE}) If set to FALSE, right legend
+#' of radar plot is hidden when ploting results from \link{MultiCCA}.
+#' @param ... Optional arguments are given to \code{plot} from \link{omicade4}
+#' pacage (argument \code{axes} is filled with values from \code{cmpX} and
+#' \code{cmpY}).
+#' @export plotIntegration
+#' @seealso \link{plotAssociation} for plotting association results
+setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, tcolors,
+        lb.th=0.20, legend.show=TRUE, ...)
+    standardGeneric("plotIntegration")
+)
 
 # -----------------------------------------------------------------------------
 

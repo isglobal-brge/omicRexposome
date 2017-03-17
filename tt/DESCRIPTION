@@ -11,11 +11,25 @@ LazyData: true
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.3)
-Imports:
+    R (>= 3.3),
+    MultiDataSet
+Imports: 
+    Biobase,
+    rexposome,
+    Biobase,
+    MultiDataSet,
+    gridExtra,
+    stringr,
+    ggplot2,
+    reshape2,
+    snpStats,
+    MEAL,
     limma,
-    MEAL
-Suggests: 
-    BiocStyle,
+    omicade4,
+    sva,
+    ggrepel,
+    PMA,
+    qqman
+Suggests: BiocStyle,
     knitr,
     rmarkdown
