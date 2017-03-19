@@ -396,6 +396,7 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' @param coef (default \code{2}) Index of the coefficient to be extracted.
 #' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
 #' by P-Value.
+#' @export
 setGeneric("topTable", function(object, rid, coef=2, sort = TRUE)
     standardGeneric("topTable")
 )
