@@ -133,9 +133,9 @@ setMethod(
 
                     # Extract betas or Ms
                     if(betas) {
-                        methy <- MEAL::betas(object[[tomic]][ , rownames(pheno)])
+                        methy <- MultiDataSet::betas(object[[tomic]][ , rownames(pheno)])
                     } else {
-                        methy <- MEAL::getMs(object[[tomic]][ , rownames(pheno)])
+                        methy <- MultiDataSet::getMs(object[[tomic]][ , rownames(pheno)])
                     }
 
                     # If required, apply SVA
