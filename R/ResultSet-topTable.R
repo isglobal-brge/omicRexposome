@@ -1,10 +1,9 @@
 #' @describeIn ResultSet Getter to obtain the raw \code{data.frame} from
 #' association and integration analysis.
-#' @importMethodsFrom rexposome extract
 setMethod(
-    f = "extract",
+    f = "topTable",
     signature = "ResultSet",
-    definition = function(object, rid, coef=2, sort = TRUE) {
+    definition = function(object, rid, coef=2, sort=TRUE) {
         # ## checking -----------------------------------------------------------
         # if(missing(rid)) {
         #     rid <- 1:length(object@results)
@@ -74,5 +73,6 @@ setMethod(
             stop("Invalid 'object'. Value for attribue 'fun_origin' (",
                  object@fun_origin, ") not recognized.")
         }
+
         return(res)
 })

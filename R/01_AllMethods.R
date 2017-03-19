@@ -303,6 +303,9 @@ setGeneric("plotAssociation", function(object,  rid = 1,
 #' This method resunts as character with the \code{rid}
 #' in a given \link{ResultSet}.
 #'
+#' @name rid
+#' @rdname rid-methods
+#' @aliases rid
 #' @param object An object of class \link{ResultSet}
 #' @return A character vector of \code{rid}s.
 #' @export rid
@@ -315,6 +318,9 @@ setGeneric("rid", function(object)
 #' Compute lambda score on each result in the given \link{ResultSet} by using
 #' \code{lambdaClayton}.
 #'
+#' @name tableLambda
+#' @rdname tableLambda-methods
+#' @aliases tableLambda
 #' @param object An object of class \link{ResultSet}
 #' @return Returns a \code{data.frame} having the exposures and the computed
 #' lambda score.
@@ -331,6 +337,9 @@ setGeneric("tableLambda", function(object, trim=0.5)
 #' Given a threshold it counts the number of hits in each result in the
 #' given \link{ResultSet}.
 #'
+#' @name tableHist
+#' @rdname tableHist-methods
+#' @aliases tableHits
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
@@ -345,6 +354,9 @@ setGeneric("tableHits", function(object, th=0.05)
 #' This method draws a baplor with the lambda score of each result in the
 #' given \link{ResultSet}.
 #'
+#' @name plotLambda
+#' @rdname plotLambda-methods
+#' @aliases plotLambda
 #' @param object An object of class \link{ResultSet}
 #' @param trim (default \code{0.5}) percentage of right omited values for
 #' \link{lambdaClayton}.
@@ -358,6 +370,9 @@ setGeneric("plotLambda", function(object, trim=0.5, width=0.75)
 #' This method draws a barplot with the number of hits in each result
 #' stored in the given \link{ResultSet}.
 #'
+#' @name plotHits
+#' @rdname plotHits-methods
+#' @aliases plotHits
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
@@ -365,4 +380,22 @@ setGeneric("plotLambda", function(object, trim=0.5, width=0.75)
 #' @export plotHits
 setGeneric("plotHits", function(object, th=0.05, width=0.75)
     standardGeneric("plotHits")
+)
+
+#' Method to extrat feature result from a ResultSet
+#'
+#' Homologous methods from \code{limma}, \code{topTable} resturns a
+#' \code{data.frame} with the \code{logFC} and  \code{PValue} per
+#' featrue for the selcted \code{coef} and for given result (\code{rid}).
+#'
+#' @name topTable
+#' @rdname topTable-methods
+#' @aliases topTable
+#' @param object A \code{\link{ResultSet}} object.
+#' @param rid The name or index of the result to be extracted.
+#' @param coef (default \code{2}) Index of the coefficient to be extracted.
+#' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
+#' by P-Value.
+setGeneric("topTable", function(object, rid, coef=2, sort = TRUE)
+    standardGeneric("topTable")
 )
