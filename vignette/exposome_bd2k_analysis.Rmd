@@ -1,0 +1,45 @@
+---
+title: "Analaysing Exposome and Phenome Data from BD2K Patient Centered Information Commons Platform"
+author: "Carles Hernandez-Ferer and Juan R. Gonzalez"
+date: "`r doc_date()`"
+package: "`r pkg_ver('rexposome')`"
+abstract: >
+    An introductory guide to a
+vignette: >
+  %\VignetteIndexEntry{Bioconductor style for HTML documents}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output: 
+  BiocStyle::html_document
+---
+
+
+```{r setup, include=FALSE}
+BiocStyle::markdown()
+knitr::opts_chunk$set(echo = TRUE, warnings=FALSE)
+```
+
+BD2K Patient Centered Information Commons
+
+BD2K Patient Centered Information Commons (http://pic-sure.org
+
+demografic: race, sex, age
+examination:
+    blood preasure: mean diastolic, mean sistolic
+    body measures: waist circunferences
+questionare
+    housing: use watter treatment, private watter source
+    alcohol use
+laboratory
+    pcbs:
+        
+```{r, evla=FALSE}
+library(data.table)
+path <- "/home/kuragari/Downloads/publicuser-DataExport-1687/subset1_NHANES/Clinical/"
+tt <- fread(paste0(path, "clinical.i2b2trans"), header=TRUE, nrow=2000000)
+colnames(tt) <- c("id", "subset", "ccode", "cpath", "value", "cpathfull")
+
+sum(tt$cpath == "\\")
+
+tbl <- dcast(tt, formula="id+subset~cpath", value.var="value")
+```
