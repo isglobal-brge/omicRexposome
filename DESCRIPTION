@@ -13,8 +13,13 @@ VignetteBuilder: knitr
 Depends:
     R (>= 3.3)
 Imports:
+    Biobase,
+    rexposome,
     limma,
-    MEAL
+    MultiDataSet,
+    sva,
+    ggplot2,
+    ggrepel
 Suggests: 
     BiocStyle,
     knitr,
