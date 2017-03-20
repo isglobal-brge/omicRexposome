@@ -194,7 +194,7 @@ setMethod(
 
         class_origin = c(
             ifelse(tann == "cluster", "ExposomeClust", "ExposomeSet"),
-            "ExpressionSet")
+            "MethylationSet")
 
         new("ResultSet",
             fun_origin = "assocME",
