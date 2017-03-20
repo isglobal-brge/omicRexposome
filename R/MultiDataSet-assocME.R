@@ -191,6 +191,7 @@ setMethod(
                 })
             }
         })
+        names(results) <- select
 
         class_origin = c(
             ifelse(tann == "cluster", "ExposomeClust", "ExposomeSet"),
