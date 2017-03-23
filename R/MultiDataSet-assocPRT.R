@@ -1,21 +1,21 @@
 setMethod(
-    f = "assocGE",
+    f = "assocPRT",
     signature = "MultiDataSet",
     definition = function(object, formula, select, set="exposures", ...,
-                          sva=FALSE, vfilter=NULL, ncores=1, verbose=FALSE,
+                          ebayes=FALSE, sva=FALSE, vfilter=NULL, ncores=1, verbose=FALSE,
                           warnings=TRUE) {
         ## ----------------------------------------------------------------- ##
         ## CHEKS
         ## ----------------------------------------------------------------- ##
         set <- match.arg(set, choices=c("exposures", "phenotypes"))
 
-        tomic <- c(grep("expression", names(object)), grep("rnaseq", names(object)))
+        tomic <- grep("protein", names(object))
         texp <- grep("exposures", names(object))
         tcls <- grep("cluster", names(object))
         tomic <- names(object)[tomic]
 
         if(length(texp) != 0 & length(tcls) != 0) {
-            stop("Given 'MultiDataSet' contains both 'ExposomeSet' and 'ExposomeClust'.")
+            stop("Given 'MultiDataSet' contains both 'ExposomeSet' (protein data) and 'ExposomeClust'.")
         }
 
         tann <- ifelse(length(texp) == 0, "cluster", "exposure")
@@ -24,17 +24,16 @@ setMethod(
 
         if(length(tomic) != 1) {
             stop("One of the tables must exists in 'MultiDataSet' as ",
-                 "'expression' or 'rnaseq'")
+                 "'protein'")
         }
         if(length(texp) != 1) {
             stop("One of the tables must exists in 'MultiData'Set' as ",
-                 "'exposures'")
+                 "'exposures' or 'cluster'.")
         }
         if(verbose) {
             message("The following tables will be used in the association ",
                     "process: ",paste0("'", paste(c(tomic, texp), collapse="', '"), "'"))
         }
-
         if(warnings | verbose) {
             warning("Sets from 'MultiDataSet' will be reduced to common samples")
         }
@@ -54,9 +53,8 @@ setMethod(
         ## CONVERT FORMULA
         ## ----------------------------------------------------------------- ##
         formula <- as.character(as.formula(formula))
-        #exp.dt <- as.data.frame(object[[texp]])
         es <- object[[texp]]
-        exp.dt <<- cbind(pData(es), expos(es))
+        exp.dt <- data.frame(pData(es), expos(es))
         rm(es)
 
         if(tann == "cluster") {
@@ -77,19 +75,15 @@ setMethod(
             if(missing(select)) {
                 if(set == "exposures") {
                     warning("No given 'select'. association will be computed for all exposures")
-                    select <- exposureNames(object[[texp]])
+                    select <- rexposome::exposureNames(object[[texp]])
                 } else { ## set == "phenotypes"
                     warning("No given 'select'. association will be computed for all phenotypes")
-                    select <- phenotypeNames(object[[texp]])
+                    select <- Biobase::phenotypeNames(object[[texp]])
                 }
             }
         }
         ## ----------------------------------------------------------------- ##
 
-
-        ## ----------------------------------------------------------------- ##
-        ## EXTRACT SETS AND PERFORM ANALYSIS
-        ## ----------------------------------------------------------------- ##
         results <- lapply(select, function(ex) {
             design <- as.formula(paste0("~", ex, "+", formula[2]))
             if(verbose) {
@@ -97,16 +91,15 @@ setMethod(
             }
             pheno <- .create_p(
                 expo.dt = exp.dt,
-                omic.p = pData(object[[tomic]]),
+                omic.p = Biobase::pData(object[[tomic]]),
                 select = all.vars(design)
             )
-            phenoA <<- pheno
 
             if(class(pheno) == "character") {
                 stop("Invalid value '", pheno, "' in 'exposures' or 'covariates'")
             }
 
-            na.loc <<- rowSums(apply(pheno, 2, is.na))
+            na.loc <- rowSums(apply(pheno, 2, is.na))
             na.loc <- which(na.loc != 0)
             if(length(na.loc) != 0) {
                 if(warnings | verbose) {
@@ -114,10 +107,6 @@ setMethod(
                         " samples will be removed.")
                 }
                 pheno <- pheno[-na.loc, , drop=FALSE]
-            } else {
-                if(verbose) {
-                    message("Testing '", ex, "' (", design, ")")
-                }
             }
 
 
@@ -134,7 +123,6 @@ setMethod(
             } else {
                 tryCatch({
                     # Design model
-pheno <<- pheno
                     design.mm <- model.matrix(formula(design), data = pheno)
                     gexp <- object[[tomic]][ , rownames(pheno), drop=FALSE]
                     # If required, apply SVA
@@ -153,7 +141,7 @@ pheno <<- pheno
                                             design.mm, vfilter=vfilter)
                         if (n.sv > 0){
                             svobj <- sva::sva(Biobase::exprs(gexp), design.mm,
-                                    #design.mm[ , -1, drop=FALSE],
+                                    design.mm[ , -1, drop=FALSE],
                                     n.sv=n.sv, vfilter=vfilter)
                             design.mm <- cbind(design.mm, svobj$sv)
                         }
@@ -167,7 +155,10 @@ pheno <<- pheno
                     }
 
                     fit <- limma::lmFit(gexp, design.mm, ...)
-                    fit <- limma::eBayes(fit)
+                    if(ebayes) {
+                        fit <- limma::eBayes(fit)
+                    }
+
 
                     list(
                         N=nrow(pheno),
@@ -194,7 +185,7 @@ pheno <<- pheno
             ifelse(tann == "cluster", "ExposomeClust", "ExposomeSet"),
             "ExpressionSet")
         new("ResultSet",
-            fun_origin = "assocGE",
+            fun_origin = "assocPRT",
             class_origin=class_origin,
             names = c(texp, tomic),
             results = results,
