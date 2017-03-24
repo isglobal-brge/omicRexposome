@@ -1,3 +1,57 @@
+# -----------------------------------------------------------------------------
+
+#' Method to add an ExposomeSet to a MultiDataSet
+#'
+#' This method allows to insert an object of class \link{ExposomeSet} as an
+#' independent dataset into an object of class \link{MultiDataSet}.
+#'
+#' @name add_exp
+#' @rdname add_exp-methods
+#' @aliases add_exp
+#' @param object An object of class \link{MultiDataSet}.
+#' @param expoSet An object of class \link{ExposomeSet}.
+#' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
+#' not be displayed.
+#' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
+#' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
+#' independent dataset.
+#' @examples
+#' data("exposome")
+#' library(MultiDataSet)
+#' md <- new("MultiDataSet")
+#' names(md)
+#' md <- add_exp(md, expo)
+#' names(md)
+#' @export add_exp
+setGeneric("add_exp", function(object, expoSet, warnings = TRUE, ...)
+    standardGeneric("add_exp")
+)
+
+#' Method to add an ExposomeClust to a MultiDataSet
+#'
+#' This method allows to insert an object of class \link{ExposomeClust} as an
+#' independent dataset into an object of class \link{MultiDataSet}.
+#'
+#' @name add_cls
+#' @rdname add_cls-methods
+#' @aliases add_cls
+#' @param object An object of class \link{MultiDataSet}.
+#' @param clsSet An object of class \link{ExposomeClust}.
+#' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
+#' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
+#' independent dataset.
+#' @examples
+#' data("eclust")
+#' library(MultiDataSet)
+#' md <- new("MultiDataSet")
+#' names(md)
+#' md <- add_cls(md, expo_c)
+#' names(md)
+#' @export add_cls
+setGeneric("add_cls", function(object, clsSet, ...)
+    standardGeneric("add_cls")
+)
+
 #' Method to add an ExpressionSet to a MultiDataSet tagged as
 #' protein data container.
 #'
@@ -18,7 +72,7 @@ setGeneric("add_prot", function(object, expoSet, ...)
     standardGeneric("add_prot")
 )
 
-# -----------------------------------------------------------------------------
+#' # -----------------------------------------------------------------------------
 
 #' Method to perform an association study between transcriptome and exposom
 #'
@@ -257,11 +311,14 @@ setGeneric("assocSNP", function(object, design, family = "binomial",
 #' functions.
 #' @param rid (default \code{1}) Index or name of the test to be plotted. Not
 #' used it the \code{ResultSet} comes from \link{assocSNP}.
+#' @param coef (default \code{2}) Index of the coefficient to be extracted.
+#' @param contrast (default \code{1}) When \code{code} corresponds to a
+#' multicategorical variable, contasr selects the comparison.
 #' @param type Can take \code{"manhattan"} or \code{"qq"}.
 #' @param ... Other arguments used in the different plots.
 #' @export plotAssociation
 #' @seealso \link{plotIntegration} for plotting integration results
-setGeneric("plotAssociation", function(object,  rid = 1,
+setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
                                        type = c("manhattan", "qq"), ...)
     standardGeneric("plotAssociation")
 )
@@ -394,9 +451,11 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' @param object A \code{\link{ResultSet}} object.
 #' @param rid The name or index of the result to be extracted.
 #' @param coef (default \code{2}) Index of the coefficient to be extracted.
+#' @param contrast (default \code{1}) When \code{code} corresponds to a
+#' multicategorical variable, contasr selects the comparison.
 #' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
 #' by P-Value.
 #' @export
-setGeneric("topTable", function(object, rid, coef=2, sort = TRUE)
+setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
     standardGeneric("topTable")
 )
