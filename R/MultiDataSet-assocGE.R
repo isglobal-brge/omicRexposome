@@ -1,9 +1,9 @@
 setMethod(
     f = "assocGE",
     signature = "MultiDataSet",
-    definition = function(object, formula, select, set="exposures", ...,
-                          sva=FALSE, vfilter=NULL, ncores=1, verbose=FALSE,
-                          warnings=TRUE) {
+    definition = function(object, formula, select, set="exposures",
+                          method="ls", ..., sva=FALSE, vfilter=NULL,
+                          verbose=FALSE, warnings=TRUE) {
         ## ----------------------------------------------------------------- ##
         ## CHEKS
         ## ----------------------------------------------------------------- ##
@@ -159,7 +159,7 @@ setMethod(
                         message("Fitting the model.")
                     }
 
-                    fit <- limma::lmFit(gexp, design.mm, ...)
+                    fit <- limma::lmFit(gexp, design.mm, method=method, ...)
                     fit <- limma::eBayes(fit)
 
                     list(

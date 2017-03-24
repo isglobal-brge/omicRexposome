@@ -15,12 +15,13 @@ Depends:
 Imports:
     Biobase,
     rexposome,
-    limma,
     MultiDataSet,
+    limma,
     sva,
     ggplot2,
     ggrepel
 Suggests: 
     BiocStyle,
     knitr,
-    rmarkdown
+    rmarkdown,
+    BRGEdata

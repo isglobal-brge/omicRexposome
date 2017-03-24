@@ -3,24 +3,8 @@
 setMethod(
     f = "topTable",
     signature = "ResultSet",
-    definition = function(object, rid, coef=2, sort=TRUE) {
-        # ## checking -----------------------------------------------------------
-        # if(missing(rid)) {
-        #     rid <- 1:length(object@results)
-        # }
-        # if(class(rid) == "numeric") {
-        #     if(rid < 1 | rid > length(object@results)) {
-        #         stop("Invalid 'rid'. IT must be greather than 1 an lower than ",
-        #              length(object@results))
-        #     }
-        # } else {
-        #     if(!rid %in% names(object@results)) {
-        #         stop("Given 'rid' (", rid, ") not in results.")
-        #     }
-        # }
-        # ## --------------------------------------------------------------------
-
-        if(object@fun_origin == "assocGE") {
+    definition = function(object, rid, coef=2, contrast=1, sort=TRUE) {
+        if(object@fun_origin %in% c("assocGE", "assocME")) {
             if(missing(rid)) {
                 res <- lapply(names(object@results), function(nme) {
                     tt <- limma::topTable(object@results[[nme]]$result, coef=coef, n=Inf)
@@ -30,19 +14,11 @@ setMethod(
                 res <- do.call(rbind, res)
             } else {
                 res <- limma::topTable(object@results[[rid]]$result, coef=coef, n=Inf)
+                if(class(res) == "list") {
+                    res <- res[contrast]
+                }
             }
-        } else if(object@fun_origin == "assocME") {
-            if(missing(rid)) {
-                res <- lapply(names(object@results), function(nme) {
-                    tt <- object@results[[nme]]$result
-                    tt$exposure <- nme
-                    colnames(tt)[2] <- "effect"
-                    return(tt)
-                })
-                res <- do.call(rbind, res)
-            } else {
-                res <- object@results[[rid]]$result
-            }
+            res <- cbind(res, object@fData[[2]][rownames(res), ])
         } else if(object@fun_origin == "assocSNP") {
             if(!missing(rid)) {
                 warning("Given 'rid'. Invalid argument for assocSNP result.")

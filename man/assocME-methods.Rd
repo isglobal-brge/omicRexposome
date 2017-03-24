@@ -5,9 +5,9 @@
 \alias{assocME,MultiDataSet-rexposome}
 \title{Method to perform an association study between epigenome and exposome}
 \usage{
-assocME(object, formula, select, set = "exposures", area.test = FALSE,
-  method = "ls", betas = FALSE, ..., sva = FALSE, vfilter = NULL,
-  ncores = 1, verbose = FALSE, warnings = TRUE)
+assocME(object, formula, select, set = "exposures", method = "ls",
+  betas = FALSE, ..., sva = FALSE, vfilter = NULL, ncores = 1,
+  verbose = FALSE, warnings = TRUE)
 }
 \arguments{
 \item{object}{An object of class \link{MultiDataSet} containing an
@@ -19,9 +19,6 @@ assocME(object, formula, select, set = "exposures", area.test = FALSE,
 
 \item{set}{(default \code{"exposures"}) Can take values \code{"exposures"}
 of \code{"phenotype"}.}
-
-\item{area.test}{(default \code{FALSE}) If set to \code{TRUE} it tests
-area instead of CpG.}
 
 \item{method}{(default \code{"ls"}) Can takes \code{"ls"} or \code{"robust"}
 and it will be the method used by \link{MEAL}/\code{limma} to test

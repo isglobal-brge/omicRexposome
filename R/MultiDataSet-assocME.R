@@ -2,9 +2,8 @@ setMethod(
     f = "assocME",
     signature = "MultiDataSet",
     definition = function(object, formula, select, set="exposures",
-                          area.test=FALSE, method="ls", betas=TRUE, ...,
-                          sva=FALSE, vfilter=NULL, ncores=1, verbose=FALSE,
-                          warnings=TRUE) {
+                          method="ls", betas=TRUE, ..., sva=FALSE,
+                          vfilter=NULL, verbose=FALSE, warnings=TRUE) {
         ## ----------------------------------------------------------------- ##
         ## CHEKS
         ## ----------------------------------------------------------------- ##
@@ -139,6 +138,7 @@ setMethod(
                     }
 
                     # If required, apply SVA
+                    n.sv <- NA
                     if(sva) {
                         if (verbose | warnings){
                             if(is.null(vfilter)) {
@@ -159,28 +159,30 @@ setMethod(
                         suppressMessages(gc())
                     }
 
-                    # Fit the model
-                    if(area.test) {
-                        result <- MEAL::DARegion(set= methy, model=design.mm,
-                            methods=c("blockFinder", "bumphunter", "DMRcate"),
-                            ...)
-                    } else {
-                        result <- MEAL::DAProbe(set=methy, model=design.mm,
-                            method=method, ...)
-                    }
-                    # -----------------------------------------------------
-                    suppressMessages(gc())
+                    # # Fit the model
+                    # if(area.test) {
+                    #     result <- MEAL::DARegion(set= methy, model=design.mm,
+                    #         methods=c("blockFinder", "bumphunter", "DMRcate"),
+                    #         ...)
+                    # } else {
+                        # result2 <- MEAL::DAProbe(set=methy, model=design.mm,
+                        #     method="ls")
+                    #}
+                    # # -----------------------------------------------------
+                    # suppressMessages(gc())
 
+                    fit <- limma::lmFit(methy, design.mm, method=method, ...)
+                    fit <- limma::eBayes(fit)
 
-                    result <- cbind(result, fd[rownames(result), ])
                     list(
                         N=nrow(pheno),
                         sva.num=n.sv,
+                        error=NA,
                         design=design,
-                        result=result,
-                        error=NA
+                        result=fit
                     )
                 }, error=function(e){
+                    message("bo")
                     return(list(
                         N=NA,
                         sva.num=NA,

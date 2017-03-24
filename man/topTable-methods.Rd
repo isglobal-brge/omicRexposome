@@ -4,7 +4,7 @@
 \alias{topTable}
 \title{Method to extrat feature result from a ResultSet}
 \usage{
-topTable(object, rid, coef = 2, sort = TRUE)
+topTable(object, rid, coef = 2, contrast = 1, sort = TRUE)
 }
 \arguments{
 \item{object}{A \code{\link{ResultSet}} object.}
@@ -12,6 +12,9 @@ topTable(object, rid, coef = 2, sort = TRUE)
 \item{rid}{The name or index of the result to be extracted.}
 
 \item{coef}{(default \code{2}) Index of the coefficient to be extracted.}
+
+\item{contrast}{(default \code{1}) When \code{code} corresponds to a
+multicategorical variable, contasr selects the comparison.}
 
 \item{sort}{(default \code{TRUE}) If \code{TRUE}, results are ordered
 by P-Value.}

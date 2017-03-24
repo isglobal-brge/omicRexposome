@@ -8,6 +8,7 @@
 #' @import utils
 #'
 #' @importClassesFrom MultiDataSet MultiDataSet
+#' @importClassFrom rexposome ExposomeSet ExposomeClust
 #'
 #' @importFrom MultiDataSet commonSamples betas getMs
 #' @importFrom Biobase sampleNames phenotypeNames pData fData

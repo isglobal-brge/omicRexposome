@@ -4,25 +4,29 @@
 setMethod(
     f = "plotAssociation",
     signature = "ResultSet",
-    definition = function(object, rid = 1, coef = 2, type, ...) {
+    definition = function(object, rid = 1, coef = 2, contrast = 1, type, tPV, tFC) {
         ## plot.new()
         ## type = c("manhattan", "qq", "feature")
-        if(object@fun_origin == "assocGE") {
-            if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
-                stop("Invalid object 'ResultSet'. Expected an object ",
-                     "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
-                     "Given one from '", paste(object@class_origin,
-                                               collapse="', '"), "'")
-            }
-            return(.plot_assoc_genexp(object, rid, coef, type, ...))
-        } else if(object@fun_origin == "assocME") {
-            if(sum(object@class_origin %in%  c("ExposomeSet", "MethylationSet", "ExposomeClust")) != 2) {
-                stop("Invalid object 'ResultSet'. Expected an object ",
-                     "obtained from 'ExposomeSet' and 'MethylationSet'. ",
-                     "Given one from '", paste(object@class_origin,
-                                               collapse="', '"), "'")
-            }
-            .plot_assoc_methy(object, rid, type, ...)
+
+        if(missing(tPV)) tPV <- NULL
+        if(missing(tFC)) tFC <- NULL
+
+        if(object@fun_origin %in% c("assocGE", "assocME")) {
+            # if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
+            #     stop("Invalid object 'ResultSet'. Expected an object ",
+            #          "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
+            #          "Given one from '", paste(object@class_origin,
+            #                                    collapse="', '"), "'")
+            # }
+            return(.plot_assoc(object, rid, coef, contrast, type, tPV, tFC))
+        # } else if(object@fun_origin == "assocME") {
+        #     if(sum(object@class_origin %in%  c("ExposomeSet", "MethylationSet", "ExposomeClust")) != 2) {
+        #         stop("Invalid object 'ResultSet'. Expected an object ",
+        #              "obtained from 'ExposomeSet' and 'MethylationSet'. ",
+        #              "Given one from '", paste(object@class_origin,
+        #                                        collapse="', '"), "'")
+        #     }
+        #     .plot_assoc(object, rid, type, tPV, tFC)
         } else if(object@fun_origin == "assocSNP") {
             if(sum(object@class_origin %in%  c("ExposomeSet", "SnpSet", "ExposomeClust")) != 2) {
                 stop("Invalid object 'ResultSet'. Expected an object ",

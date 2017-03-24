@@ -6,7 +6,7 @@ setMethod(
         cat(" . created with:", object@fun_origin, "\n")
         cat(" . original input:", paste(object@class_origin, collapse = ", "), "\n")
         cat("    . names:", paste(object@names, collapse = ", "), "\n")
-        cat(" . #results:", length(object@results), "\n")
+        cat(" . #results:", length(object@results), "( error:", sum(!is.na(sapply(object@results, "[[", "error"))), ")\n")
 
         cat(" . featureData: ", length(object@fData), "\n")
         for(nm in names(object@fData)) {

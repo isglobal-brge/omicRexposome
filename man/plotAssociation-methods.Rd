@@ -45,7 +45,8 @@ setGeneric("crossomics", function(object, ncomponents = 2, ..., na.rm = FALSE,
 )
 Function to draw de result of an association study}
 \usage{
-plotAssociation(object, rid = 1, type = c("manhattan", "qq"), ...)
+plotAssociation(object, rid = 1, coef = 2, contrast = 1,
+  type = c("manhattan", "qq"), tPV, tFC)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet} obtained from assoc_*
@@ -53,6 +54,11 @@ functions.}
 
 \item{rid}{(default \code{1}) Index or name of the test to be plotted. Not
 used it the \code{ResultSet} comes from \link{assocSNP}.}
+
+\item{coef}{(default \code{2}) Index of the coefficient to be extracted.}
+
+\item{contrast}{(default \code{1}) When \code{code} corresponds to a
+multicategorical variable, contasr selects the comparison.}
 
 \item{type}{Can take \code{"manhattan"} or \code{"qq"}.}
 

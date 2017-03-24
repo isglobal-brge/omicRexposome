@@ -1,4 +1,4 @@
-.plot_assoc_genexp <- function(object, rid, coef, type, tFC=1.5, tPV=-log10(0.001),
+.plot_assoc_genexp <- function(object, rid, coef, contrast, type, tFC=1.5, tPV=-log10(0.001),
                                id.col="probeset_id", pv.col="P.Value",
                                chr.col="seqname", pos.col="start", ...) {
     ## checking ---------------------------------------------------------------
@@ -19,7 +19,7 @@
     }
     ## ------------------------------------------------------------------------
 
-    dta <- limma::topTable(object@results[[rid]]$result, coef=coef, n=Inf)
+    dta <- topTable(object, coef=coef, contrast=contrast)
     if(type == "qq") {
         ##qqman::qq(object@results[[rid]]$result$P.Value, ...)
         qq_plot(dta$P.Value)

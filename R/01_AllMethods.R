@@ -94,11 +94,13 @@ setGeneric("add_prot", function(object, expoSet, ...)
 #' \link{ExposomeSet} (encapsulated into the \link{MultiDataSet}).
 #' @param set (default \code{"exposures"}) Can take values \code{"exposures"}
 #' of \code{"phenotype"}.
+#' @param method (default \code{"ls"}) Can takes \code{"ls"} or \code{"robust"}
+#' and it will be the method used by \link{MEAL}/\code{limma} to test
+#' the association.
 #' @param ... Arguments passed to \code{\link{lmFit}}.
 #' @param sva (default \code{FALSE}) If \code{TRUE} SVAnalysis is done.
 #' @param vfilter (default \code{NULL}) Numeric number of probes used
 #' in \link{sva} if argument \code{sva} is set to \code{TRUE}.de
-#' @param ncores (default \code{1}) Number of test performed at a time.
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE} information
 #' about the process is show.
 #' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
@@ -112,10 +114,11 @@ setGeneric("add_prot", function(object, expoSet, ...)
 #' exposome, package \link{limma} for more details, \link{plotAssociation} to
 #' plot the results
 setGeneric("assocGE", function(object, formula, select, set = "exposures",
-                               ..., sva = FALSE, vfilter = NULL, ncores = 1,
+                               method="ls", ..., sva = FALSE, vfilter = NULL,
                                verbose = FALSE, warnings = TRUE)
     standardGeneric("assocGE")
 )
+    ## -------------------------------------------------
 
 #' Method to perform an association study between proteome and exposom
 #'
@@ -182,8 +185,6 @@ setGeneric("assocPRT", function(object, formula, exposures, ..., sva = TRUE,
 #' \link{ExposomeSet} (encapsulated into the \link{MultiDataSet}).
 #' @param set (default \code{"exposures"}) Can take values \code{"exposures"}
 #' of \code{"phenotype"}.
-#' @param area.test (default \code{FALSE}) If set to \code{TRUE} it tests
-#' area instead of CpG.
 #' @param method (default \code{"ls"}) Can takes \code{"ls"} or \code{"robust"}
 #' and it will be the method used by \link{MEAL}/\code{limma} to test
 #' the association.
@@ -195,8 +196,6 @@ setGeneric("assocPRT", function(object, formula, exposures, ..., sva = TRUE,
 #' and obtained surrogate variables are added.
 #' @param vfilter (default \code{NULL}) Numeric number of probes used
 #' in \link{sva} if argument \code{sva} is set to \code{TRUE}.
-#' @param ncores (default \code{1}) nomber of analysis that will be done
-#' at the same time (see \link{mclapply}).
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE} information
 #' about the process is show.
 #' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
@@ -210,10 +209,9 @@ setGeneric("assocPRT", function(object, formula, exposures, ..., sva = TRUE,
 #' exposome, package \link{MEAL} for more details, \link{plotAssociation} to
 #' plot the results
 setGeneric("assocME", function(object, formula, select, set="exposures",
-                               area.test=FALSE, method="ls", betas=FALSE,
+                               method="ls", betas=FALSE,
                                ..., sva=FALSE, vfilter = NULL,
-                               ncores=1, verbose=FALSE,
-                               warnings=TRUE)
+                               verbose=FALSE, warnings=TRUE)
     standardGeneric("assocME")
 )
 
@@ -319,7 +317,7 @@ setGeneric("assocSNP", function(object, design, family = "binomial",
 #' @export plotAssociation
 #' @seealso \link{plotIntegration} for plotting integration results
 setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
-                                       type = c("manhattan", "qq"), ...)
+                                       type = c("manhattan", "qq"), tPV, tFC)
     standardGeneric("plotAssociation")
 )
 

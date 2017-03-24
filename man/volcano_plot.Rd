@@ -4,18 +4,23 @@
 \alias{volcano_plot}
 \title{Function to draw a Volcano Plot}
 \usage{
-volcano_plot(pval, fc, names, tFC = 2, tPV = -log10(0.001))
+volcano_plot(pval, fc, names, size = 2, tFC = 2, tPV = -log10(0.001))
 }
 \arguments{
 \item{pval}{numeric vector of P.Values}
 
 \item{fc}{numeric vector of fold change}
 
-\item{names}{character vector with the feature's names}
+\item{names}{character vector with the feature's names.}
 
-\item{tFC}{(default \code{2}) fold change threshold}
+\item{size}{(default \code{2}) Sice of the labels in case they are
+placed.}
 
-\item{tPC}{(default \code{-log10(0.001)}) P-Value threshold}
+\item{tFC}{(default \code{2}) fold change threshold. It can be set to
+\code{NULL} to do not filter.}
+
+\item{tPC}{(default \code{-log10(0.001)}) P-Value threshold. It can be set
+to \code{NULL} to not filter.}
 }
 \value{
 A \code{ggplot} object

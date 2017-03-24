@@ -3,7 +3,8 @@
 \name{assocGE}
 \alias{assocGE}
 \alias{assocGE,MultiDataSet-rexposome}
-\title{Method to perform an association study between transcriptome and exposom}
+\title{# -----------------------------------------------------------------------------
+Method to perform an association study between transcriptome and exposom}
 \usage{
 assocGE(object, formula, select, set = "exposures", ..., sva = FALSE,
   vfilter = NULL, ncores = 1, verbose = FALSE, warnings = TRUE)
