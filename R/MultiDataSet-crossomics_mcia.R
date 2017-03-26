@@ -20,14 +20,14 @@
     }
 
     mres <- omicade4::mcia(as_list(object), cia.nf = ncomponents, ...)
-    ans <- new("ResultSet",
-               fun_origin = "crossomics",
-               class_origin = "<m:mcia>",
-               names = names(object),
-               results = list(list("result" = mres)),
-               fData = fData(object)
+    new("ResultSet",
+        fun_origin = "crossomics",
+        class_origin = "<m:mcia>",
+        names = names(object),
+        results = list(list("result" = mres)),
+        fData = fData(object),
+        sva=0
     )
-
 }
 
 as_list <- function(x) {

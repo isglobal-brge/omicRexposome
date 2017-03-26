@@ -185,7 +185,7 @@ plotAssociation(methy, rid="cluster", type="volcano")
 ```
 
 ```{r methy_rm2, echo=FALSE}
-rm("mset_r", "mds", "methy")
+rm("mds", "methy")
 ```
 
 ### Exposome - Transcriptome Data Associaction
@@ -269,7 +269,7 @@ plotAssociation(gexp, rid="cluster", type="manhattan")
 ```
 
 ```{r gexp_rm2, echo=FALSE}
-rm("gexp_r", "mds", "gexp")
+rm("mds", "gexp")
 ```
 
 
@@ -279,27 +279,11 @@ The aim on the integration analysis is to analyze multiple data-sets in a single
 
 To perform an integration analysis using exposome, transcriptome and proteome data a `MultiDataSet` object is required with the thee data-sets.
 
-```{r}
-data("exposome", package = "rexposome")
-ldBRGE("gexp")
-## ldBRGE("prot")
-```
-
-```{r gexp_samples2, message=FALSE, warning=FALSE}
-sampleNames(gexp4) <- gsub("id", "SIMSAB", sampleNames(gexp4))
-```
-
-All the data-sets needs to be complete. So the exposures should be imputed:
-
-```{r impute_exposures, cache=TRUE}
-expo <- impute(expo)
-```
-
 ```{r crs_mds, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
-mds <- add_prot(mds, prot4)
-mds <- add_genexp(mds, gexp4)
-mds <- add_exp(mds, expo)
+mds <- add_methy(mds, mset_r)
+mds <- add_genexp(mds, gexp_r)
+mds <- add_exp(mds, exp)
 ```
 
 Once the data-sets is created, we look for the common samples.
@@ -316,7 +300,7 @@ crs1 <- crossomics(mds, method="mcia")
 ```
 
 ```{r crs_analysis2, warning=FALSE, message=FALSE}
-crs2 <- crossomics(mds, method="mcca")
+#crs2 <- crossomics(mds, method="mcca")
 ```
 
 The method `crossomics` returns a `ResultSet` that can be used in the method `plotIntegration` to plot the results.
@@ -327,5 +311,5 @@ plotIntegration(crs1)
 ```
 
 ```{r crs_plot2, fig.width=12, fig.height=10}
-plotIntegration(crs2, lb.th=0.3)
+#plotIntegration(crs2, lb.th=0.3)
 ```

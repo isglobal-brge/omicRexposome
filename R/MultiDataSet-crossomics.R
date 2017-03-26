@@ -1,9 +1,9 @@
 setMethod(
     f = "crossomics",
     signature = "MultiDataSet",
-    definition = function(object, method = c("mcca", "mcia"), ncomponents = 2, ..., na.rm = FALSE,
-                          verbose = FALSE, warnings = TRUE) {
-        method <- match.arg(method)
+    definition = function(object, method="mcca", ncomponents=2, ..., na.rm=FALSE,
+                          verbose=FALSE, warnings=TRUE) {
+        method <- match.arg(method, choices = c("mcca", "mcia"))
         if(method == "mcca") {
             .crossomics_mcca(object, ncomponents=ncomponents, na.rm=na.rm,
                              verbose=verbose, warnings=warnings, ...)

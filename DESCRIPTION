@@ -19,7 +19,9 @@ Imports:
     limma,
     sva,
     ggplot2,
-    ggrepel
+    ggrepel,
+    PMA,
+    omicade4
 Suggests: 
     BiocStyle,
     knitr,
