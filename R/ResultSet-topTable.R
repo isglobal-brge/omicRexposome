@@ -4,16 +4,17 @@ setMethod(
     f = "topTable",
     signature = "ResultSet",
     definition = function(object, rid, coef=2, contrast=1, sort=TRUE) {
-        if(object@fun_origin %in% c("assocGE", "assocME")) {
+        if(object@fun_origin == "assocES") {
+            ff <- ifelse(object@options$eBayes, limma::topTable, limma::toptable)
             if(missing(rid)) {
                 res <- lapply(names(object@results), function(nme) {
-                    tt <- limma::topTable(object@results[[nme]]$result, coef=coef, n=Inf)
+                    tt <- ff(object@results[[nme]]$result, coef=coef, n=Inf)
                     tt$exposure <- nme
                     return(tt)
                 })
                 res <- do.call(rbind, res)
             } else {
-                res <- limma::topTable(object@results[[rid]]$result, coef=coef, n=Inf)
+                res <- ff(object@results[[rid]]$result, coef=coef, n=Inf)
                 if(class(res) == "list") {
                     res <- res[contrast]
                 }

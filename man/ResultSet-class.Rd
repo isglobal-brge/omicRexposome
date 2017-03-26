@@ -78,17 +78,10 @@ association and integration analysis.
 \describe{
 \item{\code{fun_origin}}{Character containing the function that creates the object.}
 
-\item{\code{class_origin}}{Character containing the class of the objects used to
-create the object.}
-
-\item{\code{names}}{Character with the names of the datasets in the
-\link{MultiDataSet} used to create the object}
-
 \item{\code{results}}{List containing the results of the association/integration.}
 
 \item{\code{fData}}{List containing the feature-data of the original objects.}
 
-\item{\code{sva}}{0 if no correction process was applied. 1 if SVA was applied.
-process(es).}
+\item{\code{options}}{list of options used to create the \code{ResultSet}.}
 }}
 

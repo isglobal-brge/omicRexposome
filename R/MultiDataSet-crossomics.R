@@ -1,16 +1,16 @@
-setMethod(
-    f = "crossomics",
-    signature = "MultiDataSet",
-    definition = function(object, method="mcca", ncomponents=2, ..., na.rm=FALSE,
-                          verbose=FALSE, warnings=TRUE) {
-        method <- match.arg(method, choices = c("mcca", "mcia"))
-        if(method == "mcca") {
-            .crossomics_mcca(object, ncomponents=ncomponents, na.rm=na.rm,
-                             verbose=verbose, warnings=warnings, ...)
-        } else if(method == "mcia") {
-            .crossomics_mcia(object, verbose=verbose, warnings=warnings, ...)
-        } else {
-            stop("Invalid method (", method, ") was given.")
-        }
-    }
-)
+# setMethod(
+#     f = "crossomics",
+#     signature = "MultiDataSet",
+#     definition = function(object, method="mcca", ncomponents=2, ..., na.rm=FALSE,
+#                           verbose=FALSE, warnings=TRUE) {
+#         method <- match.arg(method, choices = c("mcca", "mcia"))
+#         if(method == "mcca") {
+#             .crossomics_mcca(object, ncomponents=ncomponents, na.rm=na.rm,
+#                              verbose=verbose, warnings=warnings, ...)
+#         } else if(method == "mcia") {
+#             .crossomics_mcia(object, verbose=verbose, warnings=warnings, ...)
+#         } else {
+#             stop("Invalid method (", method, ") was given.")
+#         }
+#     }
+# )

@@ -14,8 +14,8 @@ Depends:
     R (>= 3.3)
 Imports:
     Biobase,
+    snpStats,
     rexposome,
-    MultiDataSet,
     limma,
     sva,
     ggplot2,

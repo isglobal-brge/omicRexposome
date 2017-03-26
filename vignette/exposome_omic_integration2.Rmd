@@ -1,0 +1,101 @@
+---
+title: "Exposome Data Integration with Omic Data"
+author: "Carles Hernandez-Ferer and Juan R. Gonzalez"
+date: "`r doc_date()`"
+package: "`r pkg_ver('rexposome')`"
+abstract: >
+  This is an introductory guide to integration analysis between exposome and omics data with R package rexposome. The document ilustrates two types of analysis: 1) Association analysis, that are performed between exposome and a single omic data-set; and 2) Integration analysis where multiple data-sets, including exposome data, are analysed at the same time.
+vignette: >
+  %\VignetteIndexEntry{Bioconductor style for HTML documents}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output: 
+  BiocStyle::html_document
+---
+
+```{r setup, include=FALSE}
+BiocStyle::markdown()
+knitr::opts_chunk$set(echo = TRUE, warnings=FALSE)
+```
+
+```{r load_omicRexposome, message=FALSE}
+library(omicRexposome)
+```
+
+```{r load_exposome, message=FALSE}
+library(rexposome)
+
+path <- paste0(path.package("rexposome"), .Platform$file.sep, "extdata")
+description <- paste0(path, .Platform$file.sep, "description.csv")
+phenotype <- paste0(path, .Platform$file.sep, "phenotypes.csv")
+exposures <- paste0(path, .Platform$file.sep, "exposures.csv")
+
+exp <- read_exposome(
+    exposures = exposures, 
+    description = description, 
+    phenotype = phenotype,
+    exposures.samCol = 1, 
+    description.expCol = 2, 
+    description.famCol = 1, 
+    phenotype.samCol = 1
+)
+```
+
+## Association Studies
+
+### Methylation - Transcriptome Data Associaction
+
+```{r methy_data, cache=FALSE}
+data("methy_r", package="omicRexposome")
+```
+
+```{r methy_analysis, message=FALSE, warning=FALSE}
+gexp <- assocES(exp, methy_r, ~sex+age, 
+    select=c("Pb", "Co", "THM", "G_pesticides"))
+```
+
+```{r methy_tables}
+cbind(
+    Hits=tableHits(gexp, th=0.001),
+    Lambda=tableLambda(gexp)[ , -1]
+)
+```
+
+```{r methy_plot_tables}
+gridExtra::grid.arrange(
+    plotHits(gexp, th=0.001) + ggplot2::ggtitle("Methilation Hits"),
+    plotLambda(gexp) + ggplot2::ggtitle("Methylation Lambdas"),
+    nrow=2
+)
+```
+
+### Exposome - Transcriptome Data Associaction
+
+The aim of this analysis is to perform an association test between the gene expression levels and the exposures. To this end, a `MultiDataSet` with an `ExposomeSet` and an `ExpressionSet` is required.
+
+```{r gexp_data, cache=FALSE}
+data("gexp_rd", package="BRGEdata")
+```
+
+The association analysis between exposures and gene expression is done using the method `assocGE`. This method has the same behavior than `assocME`.
+
+```{r gexp_analysis, message=FALSE, warning=FALSE}
+gexp <- assocES(exp, gexp_r, ~sex+age, 
+    select=c("Pb", "Co", "THM", "G_pesticides"))
+```
+
+```{r gexp_tables}
+cbind(
+    Hits=tableHits(gexp, th=0.001),
+    Lambda=tableLambda(gexp)[ , -1]
+)
+```
+
+```{r gexp_plot_tables}
+gridExtra::grid.arrange(
+    plotHits(gexp, th=0.001) + ggplot2::ggtitle("Transcriptome Hist"),
+    plotLambda(gexp) + ggplot2::ggtitle("Transcriptome Lambdas"),
+    nrow=2
+)
+```
+

@@ -6,7 +6,7 @@ setMethod(
         data.frame(
             exposure=rid(object),
             hits=sapply(rid(object), function(expo) {
-                tt <- extract(object, rid=expo)
+                tt <- topTable(object, rid=expo)
                 sum(tt$P.Value < th)
             })
         )
