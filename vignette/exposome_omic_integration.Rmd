@@ -271,3 +271,61 @@ plotAssociation(gexp, rid="cluster", type="manhattan")
 ```{r gexp_rm2, echo=FALSE}
 rm("gexp_r", "mds", "gexp")
 ```
+
+
+## Integration Analysis
+
+The aim on the integration analysis is to analyze multiple data-sets in a single shot, looking for similar behaviors in terms of features and through the data-sets. `rexposome` allows to perform this analysis using two strategies: _multiple co-inertia analysis_ (`mcia`) and _sparse multiple canonical correlation analysis_ (`mcca`).
+
+To perform an integration analysis using exposome, transcriptome and proteome data a `MultiDataSet` object is required with the thee data-sets.
+
+```{r}
+data("exposome", package = "rexposome")
+ldBRGE("gexp")
+## ldBRGE("prot")
+```
+
+```{r gexp_samples2, message=FALSE, warning=FALSE}
+sampleNames(gexp4) <- gsub("id", "SIMSAB", sampleNames(gexp4))
+```
+
+All the data-sets needs to be complete. So the exposures should be imputed:
+
+```{r impute_exposures, cache=TRUE}
+expo <- impute(expo)
+```
+
+```{r crs_mds, message=FALSE, warning=FALSE}
+mds <- createMultiDataSet()
+mds <- add_prot(mds, prot4)
+mds <- add_genexp(mds, gexp4)
+mds <- add_exp(mds, expo)
+```
+
+Once the data-sets is created, we look for the common samples.
+
+```{r crs_mds_common, error=TRUE}
+mds <- commonSamples(mds)
+mds
+```
+
+Both integration analysis are done using the method `crossomics`. The argument `method` can takes the values `"mcia"` and `"mcca"`.
+
+```{r crs_analysis1, warning=FALSE, message=FALSE}
+crs1 <- crossomics(mds, method="mcia")
+```
+
+```{r crs_analysis2, warning=FALSE, message=FALSE}
+crs2 <- crossomics(mds, method="mcca")
+```
+
+The method `crossomics` returns a `ResultSet` that can be used in the method `plotIntegration` to plot the results.
+
+
+```{r crs_plot1, fig.width=12, fig.height=6}
+plotIntegration(crs1)
+```
+
+```{r crs_plot2, fig.width=12, fig.height=10}
+plotIntegration(crs2, lb.th=0.3)
+```

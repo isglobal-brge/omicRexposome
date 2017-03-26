@@ -6,8 +6,8 @@
 \title{# -----------------------------------------------------------------------------
 Method to perform an association study between transcriptome and exposom}
 \usage{
-assocGE(object, formula, select, set = "exposures", ..., sva = FALSE,
-  vfilter = NULL, ncores = 1, verbose = FALSE, warnings = TRUE)
+assocGE(object, formula, select, set = "exposures", method = "ls", ...,
+  sva = FALSE, vfilter = NULL, verbose = FALSE, warnings = TRUE)
 }
 \arguments{
 \item{object}{An object of class \link{MultiDataSet} containing an
@@ -21,14 +21,16 @@ assocGE(object, formula, select, set = "exposures", ..., sva = FALSE,
 \item{set}{(default \code{"exposures"}) Can take values \code{"exposures"}
 of \code{"phenotype"}.}
 
+\item{method}{(default \code{"ls"}) Can takes \code{"ls"} or \code{"robust"}
+and it will be the method used by \link{MEAL}/\code{limma} to test
+the association.}
+
 \item{...}{Arguments passed to \code{\link{lmFit}}.}
 
 \item{sva}{(default \code{FALSE}) If \code{TRUE} SVAnalysis is done.}
 
 \item{vfilter}{(default \code{NULL}) Numeric number of probes used
 in \link{sva} if argument \code{sva} is set to \code{TRUE}.de}
-
-\item{ncores}{(default \code{1}) Number of test performed at a time.}
 
 \item{verbose}{(default \code{FALSE}) If set to \code{TRUE} information
 about the process is show.}
