@@ -204,8 +204,11 @@ assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
         fun_origin = "assocES",
         results = results,
         fData = list(fData(x), fData(y)),
-        options=list(sva=sva,
-                     eBayes=eBayes)
+        options = list(
+            method="assocES",
+            sva=sva,
+            eBayes=eBayes
+        )
     )
     ## ------------------------------------------------------------- ##
 }

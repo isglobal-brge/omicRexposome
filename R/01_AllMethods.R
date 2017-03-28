@@ -457,3 +457,17 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
     standardGeneric("topTable")
 )
+
+#' Method to get the options sued to create the ResultSet
+#'
+#' Method that returns a list with the options used to create the
+#' \code{ResultSet}.
+#'
+#' @name options
+#' @rdname options-methods
+#' @aliases options
+#' @param object A \code{\link{ResultSet}} object.
+#' @export options
+setGeneric("options", function(object)
+    standardGeneric("options")
+)

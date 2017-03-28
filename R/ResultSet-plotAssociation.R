@@ -11,7 +11,8 @@ setMethod(
         if(missing(tPV)) tPV <- NULL
         if(missing(tFC)) tFC <- NULL
 
-        if(object@fun_origin %in% c("assocGE", "assocME")) {
+        #if(object@fun_origin %in% c("assocGE", "assocME")) {
+        if(object@fun_origin == "assocES") {
             # if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
             #     stop("Invalid object 'ResultSet'. Expected an object ",
             #          "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
