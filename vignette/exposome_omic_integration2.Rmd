@@ -2,9 +2,9 @@
 title: "Exposome Data Integration with Omic Data"
 author: "Carles Hernandez-Ferer and Juan R. Gonzalez"
 date: "`r doc_date()`"
-package: "`r pkg_ver('rexposome')`"
+package: "`r pkg_ver('omicRexposome')`"
 abstract: >
-  This is an introductory guide to integration analysis between exposome and omics data with R package rexposome. The document ilustrates two types of analysis: 1) Association analysis, that are performed between exposome and a single omic data-set; and 2) Integration analysis where multiple data-sets, including exposome data, are analysed at the same time.
+  This is an introductory guide to integration analysis between exposome and omics data with R package omicRexposome. The document ilustrates two types of analysis: 1) Association analysis, that are performed between exposome and a single omic data-set; and 2) Integration analysis where multiple data-sets, including exposome data, are analysed at the same time.
 vignette: >
   %\VignetteIndexEntry{Bioconductor style for HTML documents}
   %\VignetteEngine{knitr::rmarkdown}
@@ -41,35 +41,45 @@ exp <- read_exposome(
 )
 ```
 
-## Association Studies
+# Association Studies
 
-### Methylation - Transcriptome Data Associaction
+## Methylation - Transcriptome Data Associaction
 
 ```{r methy_data, cache=FALSE}
 data("methy_r", package="omicRexposome")
 ```
 
 ```{r methy_analysis, message=FALSE, warning=FALSE}
-gexp <- assocES(exp, methy_r, ~sex+age, 
+methy <- assocES(exp, methy_r, ~sex+age, 
     select=c("Pb", "Co", "THM", "G_pesticides"))
 ```
 
 ```{r methy_tables}
 cbind(
-    Hits=tableHits(gexp, th=0.001),
-    Lambda=tableLambda(gexp)[ , -1]
+    Hits=tableHits(methy, th=0.001),
+    Lambda=tableLambda(methy)[ , -1]
 )
 ```
 
 ```{r methy_plot_tables}
 gridExtra::grid.arrange(
-    plotHits(gexp, th=0.001) + ggplot2::ggtitle("Methilation Hits"),
-    plotLambda(gexp) + ggplot2::ggtitle("Methylation Lambdas"),
+    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation Hits"),
+    plotLambda(methy) + ggplot2::ggtitle("Methylation Lambdas"),
     nrow=2
 )
 ```
 
-### Exposome - Transcriptome Data Associaction
+```{r methy_plot_volcano}
+gridExtra::grid.arrange(
+    plotAssociation(methy, rid="Pb", type="volcano", tPV=-log10(5e-05)) + 
+        ggplot2::ggtitle("Transcriptome - Pb Association"),
+    plotAssociation(methy, rid="THM", type="volcano", tPV=-log10(5e-05)) + 
+        ggplot2::ggtitle("Transcriptome - THM Association"),
+    ncol=2
+)
+```
+
+## Exposome - Transcriptome Data Associaction
 
 The aim of this analysis is to perform an association test between the gene expression levels and the exposures. To this end, a `MultiDataSet` with an `ExposomeSet` and an `ExpressionSet` is required.
 
@@ -99,3 +109,42 @@ gridExtra::grid.arrange(
 )
 ```
 
+```{r gexp_plot_volcano}
+gridExtra::grid.arrange(
+    plotAssociation(gexp, rid="Pb", type="volcano", tFC=2, tPV=-log10(5e-05)) + 
+        ggplot2::ggtitle("Transcriptome - Pb Association"),
+    plotAssociation(gexp, rid="THM", type="volcano", tFC=2, tPV=-log10(5e-05)) + 
+        ggplot2::ggtitle("Transcriptome - THM Association"),
+    ncol=2
+)
+```
+
+# Integration Analysis
+
+```{r impute_Exp, echo=FALSE}
+exp <- impute(exp)
+```
+
+```{r crossomics_mcca, message=FALSE, warning=FALSE, results='hide'}
+cr_mcca <- crossomics(
+    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
+    method = "mcca"
+)
+cr_mcca
+```
+
+```{r crossomics_mcia, message=FALSE, warning=FALSE}
+cr_mcia <- crossomics(
+    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
+    method = "mcia"
+)
+cr_mcia
+```
+
+```{r plot_mcca, messages=FALSE, warnings=FALSE}
+plotIntegration(cr_mcca)
+```
+
+```{r plot_mcia, messages=FALSE, warnings=FALSE}
+plotIntegration(cr_mcia)
+```

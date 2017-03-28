@@ -30,6 +30,9 @@ crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
     if(length(list) < 2) {
         stop("At last two different datasets are required for integration processes.")
     }
+    if(is.null(names(list))) {
+        names(list) <- paste("set", 1:length(list))
+    }
     ## --------------------------------------------------------------------- ##
 
     ## --------------------------------------------------------------------- ##

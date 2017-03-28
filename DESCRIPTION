@@ -11,9 +11,9 @@ LazyData: true
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.3)
+    R (>= 3.3),
+    Biobase
 Imports:
-    Biobase,
     snpStats,
     rexposome,
     limma,
@@ -21,7 +21,8 @@ Imports:
     ggplot2,
     ggrepel,
     PMA,
-    omicade4
+    omicade4,
+    ggplot2
 Suggests: 
     BiocStyle,
     knitr,

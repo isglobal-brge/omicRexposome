@@ -3,17 +3,17 @@
 setMethod(
     f = "plotIntegration",
     signature = "ResultSet",
-    definition = function(object, cmpX=1, cmpY=2, colors, lb.th=0.20, legend.show=TRUE,
-                          ...) {
+    definition = function(object, cmpX=1, cmpY=2, lb.th=0.20, legend.show=TRUE,
+                          colors, ...) {
         if(missing(colors)) {
-            tcolors <- rainbow(length(featureData(object)))
+            colors <- rainbow(length(Biobase::fData(object)))
             names(colors) <- names(object)
         }
 
-        if(object@class_origin == "<m:mcca>") {
+        if(object@options$method == "MultiCCA") {
             .plot_integration_mcca(object, tcolors=colors, lb.th=lb.th,
                                    legend.show=legend.show, ...)
-        } else if(object@class_origin == "<m:mcia>") {
+        } else if(object@options$method == "mcia") {
             .plot_integration_mcia(object, cmpX=cmpX, cmpY=cmpY, ...)
         }
 })

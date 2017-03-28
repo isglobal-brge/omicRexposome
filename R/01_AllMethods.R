@@ -333,20 +333,20 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #' from \link{mcia}.
 #' @param cmpY (default \code{2}) Value of the Y-axis when ploting rsults
 #' from \link{mcia}.
-#' @param colors (optional) Names vector with the colors sued to draw
-#' each dataset. Used when ploting results from \link{MultiCCA}. If missing,
-#' random colores are chosen.
 #' @param lb.th (default \code{0.20}) Threshold to place labels on radar chart
 #' drawn when ploting results from \link{MultiCCA}.
 #' @param legend.show (default \code{TRUE}) If set to FALSE, right legend
 #' of radar plot is hidden when ploting results from \link{MultiCCA}.
+#' @param colors (optional) Names vector with the colors sued to draw
+#' each dataset. Used when ploting results from \link{MultiCCA}. If missing,
+#' random colores are chosen.
 #' @param ... Optional arguments are given to \code{plot} from \link{omicade4}
 #' pacage (argument \code{axes} is filled with values from \code{cmpX} and
 #' \code{cmpY}).
 #' @export plotIntegration
 #' @seealso \link{plotAssociation} for plotting association results
-setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, colors,
-        lb.th=0.20, legend.show=TRUE, ...)
+setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
+                                       legend.show=TRUE, colors, ...)
     standardGeneric("plotIntegration")
 )
 

@@ -1,8 +1,8 @@
 .plot_integration_mcca <- function(object, main, tcolors, legend.show, lb.th) {
 
     ## Create single table will all the correlations
-    all <- data.frame(do.call(rbind, lapply(1:length(names(object)), function(ii) {
-        tbl <- cbind(object@results[[1]][[1]]$ws[[ii]], names(object)[ii])
+    all <- data.frame(do.call(rbind, lapply(1:object@options$S, function(ii) {
+        tbl <- cbind(object@results$crossomics$result$ws[[ii]], object@options$names[ii])
         rownames(tbl) <- rownames(object@fData[[ii]])
         colnames(tbl) <- c("x", "y", "feature")
         tbl[ tbl[ , 1] != 0 | tbl[ , 2] != 0, ]
@@ -63,27 +63,29 @@
 
     ## Extra bar charts
     uplot <- ggplot2::ggplot(all, ggplot2::aes(x=x, y=x, color=feature)) +
-        ggplot2::geom_bar(stat="identity") + scale_x_continuous(limits = c(-1, 1)) +
+        ggplot2::geom_bar(stat="identity") +
+        ggplot2::scale_x_continuous(limits = c(-1, 1)) +
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +
         ggplot2::scale_color_manual(values=tcolors) + ggplot2::theme_bw() +
         ggplot2::theme(
             legend.position="none",
-            axis.title.x=element_blank(),
-            axis.text.x=element_blank(),
-            axis.ticks.x=element_blank()
+            axis.title.x=ggplot2::element_blank(),
+            axis.text.x=ggplot2::element_blank(),
+            axis.ticks.x=ggplot2::element_blank()
         ) + ggplot2::ylab("First Component") +
         ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color="darkcyan")
     rplot <- ggplot2::ggplot(all, ggplot2::aes(x=y, y=y, color=feature, fill=feature)) +
-        ggplot2::geom_bar(stat="identity") + scale_x_continuous(limits = c(-1, 1)) +
+        ggplot2::geom_bar(stat="identity") +
+        ggplot2::scale_x_continuous(limits = c(-1, 1)) +
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +
         ggplot2::scale_color_manual(values=tcolors) +
         ggplot2::scale_fill_manual(values=tcolors) +
         ggplot2::theme_bw() +
         ggplot2::theme(
-            legend.title=element_blank(),
-            axis.title.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.ticks.y=element_blank()
+            legend.title=ggplot2::element_blank(),
+            axis.title.y=ggplot2::element_blank(),
+            axis.text.y=ggplot2::element_blank(),
+            axis.ticks.y=ggplot2::element_blank()
         ) + ggplot2::ylab("Second Component") +
         ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color="darkcyan") +
         ggplot2::coord_flip()
@@ -106,11 +108,16 @@
     ##
 
     ## Empty
-    empty <- ggplot()+geom_point(aes(1,1), colour="white")+
-        theme(axis.ticks=element_blank(),
-              panel.background=element_blank(),
-              axis.text.x=element_blank(), axis.text.y=element_blank(),
-              axis.title.x=element_blank(), axis.title.y=element_blank())
+    empty <- ggplot2::ggplot() +
+        ggplot2::geom_point(ggplot2::aes(1,1), colour="white")+
+        ggplot2::theme(
+            axis.ticks=ggplot2::element_blank(),
+            panel.background=ggplot2::element_blank(),
+            axis.text.x=ggplot2::element_blank(),
+            axis.text.y=ggplot2::element_blank(),
+            axis.title.x=ggplot2::element_blank(),
+            axis.title.y=ggplot2::element_blank()
+        )
     ##
     return(gridExtra::grid.arrange(uplot, empty, cplot, rplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4)))
 }

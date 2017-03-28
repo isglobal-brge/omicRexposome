@@ -4,6 +4,9 @@ setMethod(
     definition = function(object) {
         cat("Object of class 'ResultSet'\n", sep="")
         cat(" . created with:", object@fun_origin, "\n")
+        if(object@fun_origin == "crossomics") {
+            cat("    . method:", object@options$method, " (", object@options$package, ")\n")
+        }
         cat(" . #results:", length(object@results), "( error:", sum(!is.na(sapply(object@results, "[[", "error"))), ")\n")
         cat(" . featureData: ", length(object@fData), "\n")
         for(nm in names(object@fData)) {

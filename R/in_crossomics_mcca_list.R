@@ -117,9 +117,12 @@
         results = list("crossomics"=list("result" = int)),
         fData = fdt_list,
         options=list(
+            N = nrow(dta_list[[1]]),
+            S = length(list),
+            names = names(list),
             ncomponents = ncomponents,
             na.rm = na.rm,
-            method="mcca",
+            method="MultiCCA",
             package="PMA"
         )
     )

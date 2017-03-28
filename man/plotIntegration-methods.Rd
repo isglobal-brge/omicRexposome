@@ -5,8 +5,8 @@
 \alias{plotIntegration,ResultSet-methods}
 \title{Function to draw de result of an integration study}
 \usage{
-plotIntegration(object, cmpX = 1, cmpY = 2, colors, lb.th = 0.2,
-  legend.show = TRUE, ...)
+plotIntegration(object, cmpX = 1, cmpY = 2, lb.th = 0.2,
+  legend.show = TRUE, colors, ...)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet} obtained from
@@ -18,15 +18,15 @@ from \link{mcia}.}
 \item{cmpY}{(default \code{2}) Value of the Y-axis when ploting rsults
 from \link{mcia}.}
 
-\item{colors}{(optional) Names vector with the colors sued to draw
-each dataset. Used when ploting results from \link{MultiCCA}. If missing,
-random colores are chosen.}
-
 \item{lb.th}{(default \code{0.20}) Threshold to place labels on radar chart
 drawn when ploting results from \link{MultiCCA}.}
 
 \item{legend.show}{(default \code{TRUE}) If set to FALSE, right legend
 of radar plot is hidden when ploting results from \link{MultiCCA}.}
+
+\item{colors}{(optional) Names vector with the colors sued to draw
+each dataset. Used when ploting results from \link{MultiCCA}. If missing,
+random colores are chosen.}
 
 \item{...}{Optional arguments are given to \code{plot} from \link{omicade4}
 pacage (argument \code{axes} is filled with values from \code{cmpX} and
