@@ -19,7 +19,7 @@ setMethod(
                     res <- res[contrast]
                 }
             }
-            res <- cbind(res, object@fData[[2]][rownames(res), ])
+            #res <- cbind(res, object@fData[[2]][rownames(res), ])
         } else if(object@fun_origin == "assocSNP") {
             if(!missing(rid)) {
                 warning("Given 'rid'. Invalid argument for assocSNP result.")

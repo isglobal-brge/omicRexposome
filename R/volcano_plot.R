@@ -14,13 +14,18 @@
 #' to \code{NULL} to not filter.
 #' @return A \code{ggplot} object
 #' @export
-volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001)) {
+volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),
+                         show.effect=FALSE) {
     if(missing(names)) {
         names <- names(pval)
     }
     dta <- data.frame(P.Value=pval, FC=fc, names, clr="gray87", alp=0.2, stringsAsFactors=FALSE)
     dta$PV <- -log10(dta$P.Value)
     dta$feature <- rownames(dta)
+
+    if(show.effect) {
+        dta$FC <- 2^dta$FC
+    }
 
     if(!is.null(tPV)) {
         dta$clr[dta$PV >= tPV] <- "tan3"
@@ -43,9 +48,14 @@ volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001)) {
         ggplot2::theme_bw() +
         ggplot2::geom_point() +
         ggplot2::scale_colour_manual(values=clrvalues) +
-        ggplot2::xlab(expression(-log[2](italic(Fold~~Change)))) +
-        ggplot2::ylab(expression(-log[10](p))) +
+        ggplot2::ylab(expression(-log[10](P-Value))) +
         ggplot2::theme(legend.position="none")
+
+    if(show.effect) {
+        plt <- plt + ggplot2::xlab("effect")
+    } else {
+        plt <- plt + ggplot2::xlab(expression(log[2](Fold~~Change)))
+    }
 
     if(!is.null(tPV) & !is.null(tFC)) {
         plt <- plt + ggrepel::geom_text_repel(
