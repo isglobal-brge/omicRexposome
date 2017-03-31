@@ -5,6 +5,7 @@
 #' @param lb.th Threshold to considere to place labels or not
 #' @param legend.show Indicates if legend should be placed or not
 #' @param colors Labeled vector for colors of the features
+#' @param ... Other arguments passed to internal methods
 setMethod(
     f = "plotIntegration",
     signature = "ResultSet",
@@ -19,6 +20,7 @@ setMethod(
             .plot_integration_mcca(object, tcolors=colors, lb.th=lb.th,
                                    legend.show=legend.show, ...)
         } else if(object@options$method == "mcia") {
-            .plot_integration_mcia(object, cmpX=cmpX, cmpY=cmpY, ...)
+            .plot_integration_mcia(object,
+                                   cmpX=cmpX, cmpY=cmpY, tcolors=colors)
         }
 })

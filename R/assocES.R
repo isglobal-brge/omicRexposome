@@ -8,6 +8,8 @@
 #' @param x An \code{\link{ExposomeSet}} object or an
 #' \code{\link{ExposomeClust}} object.
 #' @param y An \code{\link{ExpressionSet}} object.
+#' @param formula Formula indicating the covariates to be used in the
+#' analysis.
 #' @param select (optional) Character vector of exposures or fenotypes (see
 #' argument \code{set}). If given, only this exposusures or phenotypes will be
 #' tested, otherwise all the exposures or phenotypes in \code{x}  will be
@@ -27,6 +29,7 @@
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
+#' @param ... Arguments passed to \code{\link{lmFit}}.
 #' @examples
 #' data(prot_r)
 #' data(exp_r)

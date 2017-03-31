@@ -4,7 +4,7 @@ author: "Carles Hernandez-Ferer and Juan R. Gonzalez"
 date: "`r doc_date()`"
 package: "`r pkg_ver('omicRexposome')`"
 abstract: >
-  This is an introductory guide to integration analysis between exposome and omics data with R package omicRexposome. The document ilustrates two types of analysis: 1) Association analysis, that are performed between exposome and a single omic data-set; and 2) Integration analysis where multiple data-sets, including exposome data, are analysed at the same time.
+  This is an introductory guide to integration analysis between exposome and omics data with R package omicRexposome. The document illustrates two types of analysis: 1) Association analysis, that are performed between exposome and a single omic data-set; and 2) Integration analysis where multiple data-sets, including exposome data, are analysed at the same time.
 vignette: >
   %\VignetteIndexEntry{Exposome Data Integration with Omic Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,11 +20,11 @@ knitr::opts_chunk$set(echo = TRUE, warnings=FALSE)
 
 # Introduction
 
-`omicRexposome` is an R package designed to work join with `rexposome`. The aim of `omicRexposome` is to perform analysis joining exposome data with omic data woth the goal to find the relationship between a single or set of exposures (external exposome) and the behaviouf of a gene, a group of CpGs, the level of a proteine, etcetera. Also to provide a series of tools to analyse exposome and omic data using standard methods from Biocondcutor.
+`omicRexposome` is an R package designed to work join with `rexposome`. The aim of `omicRexposome` is to perform analysis joining exposome and omic data with the goal to find the relationship between a single or set of exposures (external exposome) and the behaviour of a gene, a group of CpGs, the level of a protein, etcetera. Also to provide a series of tools to analyse exposome and omic data using standard methods from Biocondcutor.
 
 ## Installation
 
-`omicRexposome` is currently in development and not available from CRAN nor Bioconductor. Anyway, the package can be installed by using devtools R package and taking the source from Bioinformatic Research Group in Epidemiology’s GitHub repository.
+`omicRexposome` is currently in development and not available from CRAN nor Bioconductor. Anyway, the package can be installed by using devtools R package and taking the source from **Bioinformatic Research Group in Epidemiology**'s GitHub repository.
 
 This can be done by opening an R session and typing the following code:
 
@@ -34,10 +34,28 @@ devtools::install_github("isglobal-brge/omicRexposome")
 
 User must take into account that this sentence do not install the packages' dependencies.
 
+## Pipeline
+
+Two different types of analyses can be done with `omicRexposome`:
+
+| Analysis          | `omicRexposome` function |
+|:------------------|:-------------------------|
+| Association Study | `assocES`                |
+| Integration Study | `crossomics`             |
+
+The function `assocES` requires two objects: an object of class `ExposomeSet` and an object of class `ExpressionSet`. `ExposomeSet` objects are created with functions `read_exposome` and `load_exposome` from `rexposome` R package (see next section *Loading Exposome Data*) and encapsulates exposome data. `assocES` uses `ExpressionSet`s as input data for *transcriptome*, *methylome*, *proteome* and *metabolome* data.
+
+# Analysis
+
+`omicRexposome` R package is loaded using the standard library command:
 
 ```{r load_omicRexposome, message=FALSE}
 library(omicRexposome)
 ```
+
+## Loading Exposome Data
+
+In order to illustrate how to load exposome data, we will use the code from the vignette *Exposome Data Analysis* (from `rexposome` R package).
 
 ```{r load_exposome, message=FALSE}
 library(rexposome)
@@ -58,58 +76,86 @@ exp <- read_exposome(
 )
 ```
 
-# Association Studies
+The previous code located three files: *exposure* file, *description* file and *phenotype* file. The first correspond to the matrix of exposures (columns are exposures and rows are measures). The second corresponds to the description of the exposures, having the definition of families (columns are descriptive elements of the exposures including the family and rows are exposures). The last is the file with the outcomes and covariates (columns are covariates and rows are samples).
 
-## Methylation - Transcriptome Data Associaction
+## Association Studies
+
+The association studies are performed using the function `assocES`. This function requires, at last three, augments:
+
+ 1. Argument `x` should be filled with an `ExposomeSet`.
+ 2. Argument `y` should be filled with an `ExpressionSet`.
+ 3. Argument `formula` should be filled with an expression containing the covariates used to adjust the model.
+
+The argument `formula` should follow the pattern: `~sex+age`. The function `assocES` will fill the exposures in the `ExposomeSet` between `~` and the covariates `sex+age`.
+
+`assocES` implements the `limma` pipeline (`lmFit` and `eBayes`) by taking care of the missing data in exposures, outcomes and omics data and locating and filtering common samples.
+
+The following subsections illustrates the usage of `assocES` with different types of omics data: *methylome*, *transcriptome* and *proteome*.
+
+### Exposome - Methylation Data Association
+
+First we retrieve the methylation (beta values) data from the package.
 
 ```{r methy_data, cache=FALSE}
-data("methy_r", package="omicRexposome")
+data("methy_r", package = "omicRexposome")
 ```
+
+Then we perform the association between the methylation and four exposures (we use the argument `select` to specify four exposures).
 
 ```{r methy_analysis, message=FALSE, warning=FALSE}
 methy <- assocES(exp, methy_r, ~sex+age, 
-    select=c("Pb", "Co", "THM", "G_pesticides"))
+    select = c("Pb", "Co", "THM", "G_pesticides"))
 ```
+
+Function `assocME` returns an object of class `ResultSet`:
+
+```{r methy_show}
+methy
+```
+
+The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
 
 ```{r methy_tables}
 cbind(
-    Hits=tableHits(methy, th=0.001),
+    Hits=tableHits(methy, th = 0.001),
     Lambda=tableLambda(methy)[ , -1]
 )
 ```
 
+These results can be plotted with the methods `plotHist` and `plotLambda`:
+
 ```{r methy_plot_tables}
 gridExtra::grid.arrange(
-    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation Hits"),
-    plotLambda(methy) + ggplot2::ggtitle("Methylation Lambdas"),
+    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation - Hits per Exposure"),
+    plotLambda(methy) + ggplot2::ggtitle("Methylation - Lambda per Exposure"),
     nrow=2
 )
 ```
 
-```{r methy_plot_volcano}
-gridExtra::grid.arrange(
-    plotAssociation(methy, rid="Pb", type="volcano", tPV=-log10(5e-05)) + 
-        ggplot2::ggtitle("Transcriptome - Pb Association"),
-    plotAssociation(methy, rid="THM", type="volcano", tPV=-log10(5e-05)) + 
-        ggplot2::ggtitle("Transcriptome - THM Association"),
-    ncol=2
-)
-```
+The conclusion here are:
+ 
+ * The model for cooper (`Co`, lambda: `1.14`) is a bit inflated.
+ * The model for garden pesticides (`G_pesticides`, lambda `0.91`) is a bit deflated.
+ * The other two exposures are ok.
 
-## Exposome - Transcriptome Data Associaction
+To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `assocES` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
 
-The aim of this analysis is to perform an association test between the gene expression levels and the exposures. To this end, a `MultiDataSet` with an `ExposomeSet` and an `ExpressionSet` is required.
+### Exposome - Transcriptome Data Association
+
+The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the package.
 
 ```{r gexp_data, cache=FALSE}
-data("gexp_r", package="omicRexposome")
+data("gexp_r", package = "omicRexposome")
 ```
 
-The association analysis between exposures and gene expression is done using the method `assocGE`. This method has the same behavior than `assocME`.
+The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The function used is `assocES`.
 
 ```{r gexp_analysis, message=FALSE, warning=FALSE}
 gexp <- assocES(exp, gexp_r, ~sex+age, 
-    select=c("Pb", "Co", "THM", "G_pesticides"))
+    select = c("Pb", "Co", "THM", "G_pesticides"))
 ```
+
+We can have a look to the number of hits and the lambda score of each analysis with the methods `tableHits` and `tableLambda`.
 
 ```{r gexp_tables}
 cbind(
@@ -118,69 +164,95 @@ cbind(
 )
 ```
 
-```{r gexp_plot_tables}
-gridExtra::grid.arrange(
-    plotHits(gexp, th=0.001) + ggplot2::ggtitle("Transcriptome Hist"),
-    plotLambda(gexp) + ggplot2::ggtitle("Transcriptome Lambdas"),
-    nrow=2
+Since all the models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `assocES` function by setting the argument `sva` to `TRUE`.
+
+```{r gexp_analysis_sva, message=FALSE, warning=FALSE}
+gexp <- assocES(exp, gexp_r, ~sex+age, sva = TRUE,
+    select = c("Pb", "Co", "THM", "G_pesticides"))
+```
+
+We can re-check the results creating the same table than before:
+
+```{r gexp_tables_sva}
+cbind(
+    Hits=tableHits(gexp, th=0.001),
+    Lambda=tableLambda(gexp)[ , -1]
 )
 ```
 
-```{r gexp_plot_volcano}
+The objects of class `ResultSet` have a method called `plotAssociation` that allows to create QQ Plots (that are another useful way to see if there are some inflation/deflation in the P-Values).
+
+```{r gexp_plot_qq}
 gridExtra::grid.arrange(
-    plotAssociation(gexp, rid="Pb", type="volcano", tFC=2, tPV=-log10(5e-05)) + 
+    plotAssociation(gexp, rid="Pb", type="qq") + 
         ggplot2::ggtitle("Transcriptome - Pb Association"),
-    plotAssociation(gexp, rid="THM", type="volcano", tFC=2, tPV=-log10(5e-05)) + 
+    plotAssociation(gexp, rid="THM", type="qq") + 
         ggplot2::ggtitle("Transcriptome - THM Association"),
     ncol=2
 )
 ```
 
-## Exposome - Transcriptome Data Associaction
+Following this line, the same method `plotAssociation` can be used to create volcano plots.
 
-The aim of this analysis is to perform an association test between proteome levels and the exposures. To this end, a `MultiDataSet` with an `ExposomeSet` and an `ExpressionSet` is required.
-
-```{r prot_data, cache=FALSE}
-data("prot_r", package="omicRexposome")
-```
-
-The association analysis between exposures and gene expression is done using the method `assocGE`. This method has the same behavior than `assocME`.
-
-```{r prot_analysis, message=FALSE, warning=FALSE}
-prot <- assocES(exp, prot_r, ~sex+age, select = exposureNames(exp)[1:25],
-                eBayes=FALSE)
-```
-
-```{r prot_tables}
-cbind(
-    Hits=tableHits(prot, th=0.001),
-    Lambda=tableLambda(prot)[ , 2]
-)
-```
-
-```{r prot_plot_volcano}
+```{r gexp_plot_volcano}
 gridExtra::grid.arrange(
-    plotAssociation(prot, rid="Cd", type="protein") + 
-        ggplot2::ggtitle("Proteome - Cd Association"),
-    plotAssociation(prot, rid="Cotinine", type="protein") + 
-        ggplot2::ggtitle("Proteome - Cotinine Association"),
+    plotAssociation(gexp, rid="Pb", type="volcano", tPV=-log10(1e-03)) + 
+        ggplot2::ggtitle("Transcriptome - Pb Association"),
+    plotAssociation(gexp, rid="THM", type="volcano", tPV=-log10(1e-03)) + 
+        ggplot2::ggtitle("Transcriptome - THM Association"),
     ncol=2
 )
 ```
 
-# Integration Analysis
+### Exposome - Proteome Data Association
 
-```{r impute_Exp, echo=FALSE}
+The data included in `omicRexposome` has 5 proteins for 32 samples.
+
+```{r prot_data, cache=FALSE}
+data("prot_r", package="omicRexposome")
+prot_r
+```
+
+The association analysis between exposures and proteome is also done using `assocES` but avoiding the call to `eBayes` since we only have 5 features. The `eBayes` call can be avoided setting the argument `eBayes` to `FALSE`:
+
+```{r prot_analysis, message=FALSE, warning=FALSE}
+prot <- assocES(exp, prot_r, ~sex+age, 
+    select = c("Cd", "Cotinine"), eBayes=FALSE)
+```
+
+The `tableHits` indicates that no association was found between the 5 proteins and the 2 exposures.
+
+```{r prot_hits}
+tableHits(prot, th=0.001)
+```
+
+This is also seen in the Manhattan plot for proteins that can be obtained from `plotAssociation`.
+
+```{r prot_plot_volcano}
+gridExtra::grid.arrange(
+    plotAssociation(prot, rid="Cd", type="protein") + 
+        ggplot2::ggtitle("Proteome - Cd Association") +
+        ggplot2::geom_hline(yintercept = 1, color = "LightPink"),
+    plotAssociation(prot, rid="Cotinine", type="protein") + 
+        ggplot2::ggtitle("Proteome - Cotinine Association") +
+        ggplot2::geom_hline(yintercept = 1, color = "LightPink"),
+    ncol=2
+)
+```
+
+**NOTE**: A real Manhattan plot can be draw with `plotAssociation` by setting the argument `type` to `"manhattan"`.
+
+## Integration Analysis
+
+`omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor).
+
+The two methods are encapsulated in the `crossomics` function. The first step in the integration analysis is to avoid missing values. Hence, we perform a fast imputation on the exposures side:
+
+```{r impute_Exp}
 exp <- impute(exp)
 ```
 
-```{r crossomics_mcca, message=FALSE, warning=FALSE, results='hide'}
-cr_mcca <- crossomics(
-    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
-    method = "mcca", permute=c(5, 3)
-)
-cr_mcca
-```
+`crossomics` function expects to obtain the different data-sets in a single labelled-list, in the argument called `list`. The argument `method` from `crossomics` function can be set to `mcia` (for *multiple co-inertia analysis*) or to `mcca` (for *multi canonical correlation analysis*).
 
 ```{r crossomics_mcia, message=FALSE, warning=FALSE}
 cr_mcia <- crossomics(
@@ -190,10 +262,44 @@ cr_mcia <- crossomics(
 cr_mcia
 ```
 
-```{r plot_mcca, messages=FALSE, warnings=FALSE, fig.height=10, fig.width=14}
-plotIntegration(cr_mcca)
+As can be seen, `crossomics` returns an object of class `ResultSet`. This also happens when method is set to `mcca`.
+
+```{r crossomics_mcca, message=FALSE, warning=FALSE, results='hide'}
+cr_mcca <- crossomics(
+    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
+    method = "mcca", permute=c(5, 3)
+)
+cr_mcca
 ```
 
-```{r plot_mcia, messages=FALSE, warnings=FALSE}
-plotIntegration(cr_mcia)
+We used an extra argument (`permute`) into the previous call to `crossomics` using *multi canonical correlation analysis*. This argument allows to set the internal argument corresponding to `permutations` and `iterations`, that are used to tune-up internal parameters.
+
+When a `ResultSet` is generated using `crossomics` the methods `plotHits`, `plotLambda` and `plotAssociation` can **NOT** be used. But the `plotIntegration` will help us to understand what was done. This method allows to provide the colours to be used on the plots:
+
+```{r integration_colors}
+colors <- c("red", "green", "blue")
+names(colors) <- c("exposome", "transcriptome", "methylome")
 ```
+
+### Plotting Multiple Co-Inertia Analysis Results
+
+The graphical representation of the results from a *multiple co-inertia analysis* is a composition of four different plots.
+
+```{r plot_mcia, messages=FALSE, warnings=FALSE}
+plotIntegration(cr_mcia, colors=colors)
+```
+
+The first plot (first row, first column) is the samples space. It illustrates how the different data-sets are related in terms of intra-sample variability (each dataset has a different colour). The second plot (first row, second column) shows the feature space. The features of each set are drawn on the same components so the relation between each data-set can be seen (the features are coloured depending of the set were they belong).
+
+The third plot (second row, first column) shows the inertia of each component. The two first plots are drawn on the first and second component. Finally, the fourth plot shows the behaviour of the data-sets.
+
+
+### Plotting Multi Canonical Correlation Analysis Results
+
+A radar plots is obtained when `plotIntegration` is used on a `ResultSet` created though *multi canonical correlation analysis*.
+
+```{r plot_mcca, messages=FALSE, warnings=FALSE, fig.height=8, fig.width=9}
+plotIntegration(cr_mcca, colors=colors)
+```
+
+This plot shows the features of the three data-sets in the same 2D space.The relation between the features can be understood by proximity. This means that the features that clusters, or that are in the same quadrant are related and goes in a different direction than the features in the other quadrants.

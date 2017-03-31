@@ -13,6 +13,9 @@ assocES(x, y, formula, select, set = "exposures", sva = FALSE,
 
 \item{y}{An \code{\link{ExpressionSet}} object.}
 
+\item{formula}{Formula indicating the covariates to be used in the
+analysis.}
+
 \item{select}{(optional) Character vector of exposures or fenotypes (see
 argument \code{set}). If given, only this exposusures or phenotypes will be
 tested, otherwise all the exposures or phenotypes in \code{x}  will be
@@ -37,6 +40,8 @@ messages descriving the process are shown.}
 
 \item{warnings}{(default \code{TRUE}) If set to \code{TRUE}, a series of
 warnings are shown when required user atention.}
+
+\item{...}{Arguments passed to \code{\link{lmFit}}.}
 }
 \value{
 An object of class \code{\link{ResultSet}}.

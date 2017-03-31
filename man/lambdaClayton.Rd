@@ -6,6 +6,11 @@
 \usage{
 lambdaClayton(x, trim = 0.5)
 }
+\arguments{
+\item{x}{Vector of P-Value}
+
+\item{x}{(default \code{0.5})}
+}
 \description{
 Implementation of Clayton's lambda score for a vector of P-Values
 }

@@ -20,8 +20,11 @@ placed.}
 \item{tFC}{(default \code{2}) fold change threshold. It can be set to
 \code{NULL} to do not filter.}
 
-\item{tPC}{(default \code{-log10(0.001)}) P-Value threshold. It can be set
+\item{tPV}{(default \code{-log10(0.001)}) P-Value threshold. It can be set
 to \code{NULL} to not filter.}
+
+\item{show.effect}{(default \code{FALSE}) If set to \code{TRUE}, the X-axis
+will should \code{2^logFC} instead to teh default \code{logFC}.}
 }
 \value{
 A \code{ggplot} object

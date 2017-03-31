@@ -8,8 +8,8 @@
 #' @aliases plotAssociation,ResultSet-methods
 #' @param object An object of class \link{ResultSet} obtained from assoc_*
 #' functions.
-#' @param rid (default \code{1}) Index or name of the test to be plotted. Not
-#' used it the \code{ResultSet} comes from \link{assocSNP}.
+#' @param rid (default \code{1}) Index or name of the test to be plotted.
+#  Not used it the \code{ResultSet} comes from \link{assocSNP}.
 #' @param coef (default \code{2}) Index of the coefficient to be extracted.
 #' @param contrast (default \code{1}) When \code{code} corresponds to a
 #' multicategorical variable, contasr selects the comparison.

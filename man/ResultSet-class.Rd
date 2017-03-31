@@ -81,6 +81,10 @@ of the contrast to be returned.}
 
 \item{colors}{Labeled vector for colors of the features}
 
+\item{...}{Other arguments passed to internal methods}
+
+\item{trim}{0.5}
+
 \item{sort}{Indicates of the result should be ordered by P-Value}
 }
 \value{
@@ -88,7 +92,7 @@ An object of class \code{ResultSet}
 }
 \description{
 Class \code{ResultSet} encapsulates the results from the association and
-integration processes developed in \link{\code{omicRexposome}}. This include
+integration processes developed in \code{omicRexposome}. This include
 the functions \code{\link{assocES}} and \code{\link{crossomics}}.
 }
 \section{Methods (by generic)}{

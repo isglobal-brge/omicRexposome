@@ -1,5 +1,6 @@
 #' @describeIn ResultSet Returns a table with the lambda value of each
 #' analyses stored in the \code{ResultSet}.
+#' @param trim 0.5
 setMethod(
     f = "tableLambda",
     signature = "ResultSet",

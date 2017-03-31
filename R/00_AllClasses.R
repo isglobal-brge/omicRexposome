@@ -1,7 +1,7 @@
 #' Class ResultSet
 #'
 #' Class \code{ResultSet} encapsulates the results from the association and
-#' integration processes developed in \link{\code{omicRexposome}}. This include
+#' integration processes developed in \code{omicRexposome}. This include
 #' the functions \code{\link{assocES}} and \code{\link{crossomics}}.
 #'
 #' @name ResultSet

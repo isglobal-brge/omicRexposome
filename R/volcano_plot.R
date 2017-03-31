@@ -10,8 +10,10 @@
 #' placed.
 #' @param tFC (default \code{2}) fold change threshold. It can be set to
 #' \code{NULL} to do not filter.
-#' @param tPC (default \code{-log10(0.001)}) P-Value threshold. It can be set
+#' @param tPV (default \code{-log10(0.001)}) P-Value threshold. It can be set
 #' to \code{NULL} to not filter.
+#' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, the X-axis
+#' will should \code{2^logFC} instead to teh default \code{logFC}.
 #' @return A \code{ggplot} object
 #' @export
 volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),

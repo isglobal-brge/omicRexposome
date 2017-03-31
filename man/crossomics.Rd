@@ -42,9 +42,9 @@ An object of class \code{\link{ResultSet}}.
 }
 \description{
 This function allows to perform a Transcriptome-Wide Association Study
-by using an \code{\link{ExposmeSet}} and an \code{\link{ExpressionSet}}. It
+by using an \code{ExposmeSet} and an \code{ExpressionSet}. It
 allows to perform an adjustment using Surrogate Variable Analysis (from
-R package \code{\link{sva}}).
+R package \code{sva}).
 }
 \examples{
 dta(methy_r)

@@ -3,7 +3,7 @@
 \name{snpToContinuous}
 \alias{snpToContinuous}
 \alias{snpToContinuous,SnpSet-method}
-\title{Transforms the discrete genotype from a \code{snpSet} to a \code{matrix} of 
+\title{Transforms the discrete genotype from a \code{snpSet} to a \code{matrix} of
 a continuous variable.}
 \usage{
 snpToContinuous(snpSet, verbose = FALSE)
@@ -18,11 +18,10 @@ An \code{matrix} of the calls of the SNPs converted to a continuous
 variable.
 }
 \description{
-The function converts the categorical variable of SNPs to a continuous 
-variable by normalizing each SNP as described in Abraham G. and Inouye M. 
+The function converts the categorical variable of SNPs to a continuous
+variable by normalizing each SNP as described in Abraham G. and Inouye M.
 2014 (DOI: 10.1371/journal.pone.0093766).
 }
 \seealso{
-\link{crossomics} use this function when a 
-\link{MultiDataSet} si given with a dataset of SNPs
+\link{crossomics} use this function
 }
