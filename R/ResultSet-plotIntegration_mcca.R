@@ -33,14 +33,14 @@
         #     arrow = grid::arrow(length = grid::unit(0.2, "cm")),
         #     color = tcolors[all$feature[f1]], linetype = "solid")
         cplot <- cplot + ggplot2::geom_point(data = all[f1, ],
-            ggplot2::aes(x, y, color = feature), shape = 19, size = 1)
+            ggplot2::aes_string("x", "y", color = "feature"), shape = 19, size = 1)
     }
     ## /
 
     ## Draw points
     if(sum(f2) != 0) {
         cplot <- cplot + ggplot2::geom_point(data = all[f2, ],
-            ggplot2::aes(x, y, color = feature), shape = 19, size = 1) +
+            ggplot2::aes_string("x", "y", color = "feature"), shape = 19, size = 1) +
             ggplot2::scale_color_manual(values=tcolors) +
             ggplot2::theme(legend.title = ggplot2::element_blank()) +
             ggplot2::scale_y_continuous("Second Component") +
@@ -52,7 +52,7 @@
     all$label <- rownames(all)
     cplot <- cplot + ggrepel::geom_text_repel(
         data = subset(all, abs(all$x) >= lb.th | abs(all$y) >= lb.th),
-        ggplot2::aes(x, y, label=label),
+        ggplot2::aes_string("x", "y", label="label"),
         size = 2,
         box.padding = ggplot2::unit(0.35, "lines"),
         point.padding = ggplot2::unit(0.3, "lines"),
@@ -62,7 +62,7 @@
     ## /
 
     ## Extra bar charts
-    uplot <- ggplot2::ggplot(all, ggplot2::aes(x=x, y=x, color=feature)) +
+    uplot <- ggplot2::ggplot(all, ggplot2::aes_string(x="x", y="x", color="feature")) +
         ggplot2::geom_bar(stat="identity") +
         ggplot2::scale_x_continuous(limits = c(-1, 1)) +
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +
@@ -74,7 +74,7 @@
             axis.ticks.x=ggplot2::element_blank()
         ) + ggplot2::ylab("First Component") +
         ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color="darkcyan")
-    rplot <- ggplot2::ggplot(all, ggplot2::aes(x=y, y=y, color=feature, fill=feature)) +
+    rplot <- ggplot2::ggplot(all, ggplot2::aes_string(x="y", y="y", color="feature", fill="feature")) +
         ggplot2::geom_bar(stat="identity") +
         ggplot2::scale_x_continuous(limits = c(-1, 1)) +
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +

@@ -4,17 +4,23 @@
 \alias{plotLambda}
 \title{Plot lambda score for all results in a ResultSet}
 \usage{
-plotLambda(object, trim = 0.5, width = 0.75)
+plotLambda(object, width = 0.75)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet}}
 
-\item{trim}{(default \code{0.5}) percentage of right omited values for
-\link{lambdaClayton}.}
-
 \item{width}{(default \code{0.70}) width of the bar}
+}
+\value{
+An lambda plot
 }
 \description{
 This method draws a baplor with the lambda score of each result in the
 given \link{ResultSet}.
+}
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+plotLambda(rst)
 }

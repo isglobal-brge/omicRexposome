@@ -3,7 +3,7 @@
 export(assocES)
 export(crossomics)
 export(lambdaClayton)
-export(options)
+export(opt)
 export(plotAssociation)
 export(plotHits)
 export(plotIntegration)

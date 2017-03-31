@@ -14,6 +14,12 @@
 #' @param na.rm (default \code{FALSE}) If \code{method} was set to
 #' \code{"mcca"} and \code{na.rm} was set to \code{TRUE}, features containing
 #' missing values are removed.
+#' @param permute (default \code{c(100, 3)}). If \code{method="mcca"} and this
+#' agument is set to \code{NULL} no permutation test to tune-up the parameters
+#' for \code{MultiCCA}. When filles, \code{permute[1]} corresponds to
+#' the number permutations (default in \code{MultiCCa.permute} is \code{25})
+#' and \code{permute[2]} the number of iterations
+#' (default in \code{MultiCCA.permute} is 3).
 #' @param ... Other arguments given to \code{mcia} (from \code{omicade4}) or
 #' to \code{MultiCCA} (from \code{PMA}).
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
@@ -21,9 +27,14 @@
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
+#' @examples
+#' dta(methy_r)
+#' data(gexp_r)
+#' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
+#' rst
 #' @export
 crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
-    verbose=FALSE, warnings=TRUE) {
+        permute = c(100, 3), verbose=FALSE, warnings=TRUE) {
     ## --------------------------------------------------------------------- ##
     ## GENERAL CHECKS
     method <- match.arg(method, choices = c("mcca", "mcia"))
@@ -47,7 +58,7 @@ crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
 
     if(method == "mcca") {
         .crossomics_mcca_list(list, ncomponents=ncomponents, na.rm=na.rm,
-        verbose=verbose, warnings=warnings, ...)
+            permute=permute, verbose=verbose, warnings=warnings, ...)
     } else if(method == "mcia") {
         .crossomics_mcia_list(list, verbose=verbose, warnings=warnings, ...)
     } else {

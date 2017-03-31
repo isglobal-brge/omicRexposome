@@ -3,7 +3,7 @@
 setMethod(
     f = "plotLambda",
     signature = "ResultSet",
-    definition = function(object, trim=0.5, width=0.75) {
+    definition = function(object, width=0.75) {
         tt <- tableLambda(object)
 
         ggplot2::ggplot(tt, ggplot2::aes(x=exposure, y=lambda, width=width)) +

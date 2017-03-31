@@ -44,7 +44,7 @@ volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),
     clrvalues <- c("gray87", "tan3", "olivedrab", "lightskyblue")
     names(clrvalues) <- c("gray87", "tan3", "olivedrab", "lightskyblue")
 
-    plt <- ggplot2::ggplot(dta, ggplot2::aes(x=FC, y=PV, color=clr, fill=clr, alpha=alp)) +
+    plt <- ggplot2::ggplot(dta, ggplot2::aes_string(x="FC", y="PV", color="clr", fill="clr", alpha="alp")) +
         ggplot2::theme_bw() +
         ggplot2::geom_point() +
         ggplot2::scale_colour_manual(values=clrvalues) +
@@ -60,7 +60,7 @@ volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),
     if(!is.null(tPV) & !is.null(tFC)) {
         plt <- plt + ggrepel::geom_text_repel(
             data = subset(dta, dta$PV >= tPV & abs(dta$FC) >= tFC),
-            ggplot2::aes(FC, PV, label=names),
+            ggplot2::aes_string("FC", "PV", label="names"),
             size = size,
             box.padding = ggplot2::unit(0.35, "lines"),
             point.padding = ggplot2::unit(0.3, "lines"),
@@ -69,7 +69,7 @@ volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),
     } else if(!is.null(tPV) & is.null(tFC)) {
         plt <- plt + ggrepel::geom_text_repel(
             data = subset(dta, dta$PV >= tPV),
-            ggplot2::aes(FC, PV, label=names),
+            ggplot2::aes_string("FC", "PV", label="names"),
             size = 2,
             box.padding = ggplot2::unit(0.35, "lines"),
             point.padding = ggplot2::unit(0.3, "lines"),

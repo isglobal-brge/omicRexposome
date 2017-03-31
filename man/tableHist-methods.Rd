@@ -15,8 +15,18 @@ as a hit.}
 }
 \value{
 A labeled numeric vector with the exposures and the number of hits.
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+tableHits(rst, th=0.05)
 }
 \description{
 Given a threshold it counts the number of hits in each result in the
 given \link{ResultSet}.
+}
+\seealso{
+\code{\link{tableLambda}} for the lambda score per analysys,
+\code{\link{plotLambda}} for a graphical representation of
+the lambda score per analysys, \code{\link{plotHits}} for a graphical
+representation of the hists per analysys
 }

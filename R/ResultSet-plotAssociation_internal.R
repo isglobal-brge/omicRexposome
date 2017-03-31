@@ -2,7 +2,7 @@
     dta <- topTable(object, rid=rid, coef=coef, contrast=contrast)
 
     if(type == "qq") {
-        qq_plot(object@results[[rid]]$result$P.Value)
+        qq_plot(topTable(object, rid=rid, coef=coef)$P.Value)
     } else if(type == "manhattan") {
         if("MethylationSet" %in% object@class_origin) {
             dta <- dta[ , c("P.Value", "chromosome", "position")]
@@ -26,6 +26,26 @@
             tFC=tFC,
             tPV=tPV
         )
+    } else if(type == "protein") {
+        dta$PV <- -log10(dta$P.Value)
+        dta$protein <- rownames(dta)
+        if(nrow(dta) == 1) {
+            stop("Invalid data obtained from 'topTable.'")
+        }
+        ggplot2::ggplot(dta,
+            ggplot2::aes_string(x="protein", y="PV", size="PV", fill="PV", color="PV")) +
+
+            ggplot2::theme_bw() +
+            ggplot2::geom_point(alpha=0.7) +
+            ggplot2::theme(
+                axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+                legend.position = "none"
+            ) +
+            ggplot2::xlab("") +
+            ggplot2::ylab(expression(-log[10](P-Value))) +
+            ggplot2::scale_colour_gradientn(
+                colours = c("darkgray", "darkblue"))
+
     } else {
         stop("Invalid type of plot ('", type, "').")
     }

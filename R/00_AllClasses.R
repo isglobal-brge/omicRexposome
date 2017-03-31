@@ -1,9 +1,8 @@
 #' Class ResultSet
 #'
 #' Class \code{ResultSet} encapsulates the results from the association and
-#' integration processes developed in \link{\code{rexposome}}. This include the
-#' functions \code{\link{assocSNP}}, \code{\link{assocGE}},
-#' \code{\link{assocME}}, \code{\link{assocPRT}} and \code{\link{crossomics}}.
+#' integration processes developed in \link{\code{omicRexposome}}. This include
+#' the functions \code{\link{assocES}} and \code{\link{crossomics}}.
 #'
 #' @name ResultSet
 #' @aliases ResultSet-class

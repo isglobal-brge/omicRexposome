@@ -1,6 +1,13 @@
 #' @describeIn ResultSet Allows to plot a series of plots (QQ plot, Manhattan
 #' plot and Volcano plot) depending on the results stored in the
 #' \code{ResultSet}.
+#' @param rid Name or index of the internal result to be used
+#' @param coef Coefficient to be returne, usually 2
+#' @param contrast If coefficient to be used was multicategorical, number
+#' of the contrast to be returned.
+#' @param type Type of plot to be drawn
+#' @param tPV Threshold for P-Value
+#' @param tFC Threshold for log FC of effect
 setMethod(
     f = "plotAssociation",
     signature = "ResultSet",

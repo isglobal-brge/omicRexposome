@@ -7,7 +7,7 @@
         stop("Given component X or component Y (cmpX, cmpY) higher than number of axis in ResultSet.")
     }
 
-    require(omicade4)
+    #require(omicade4)
     plot(object@results[[1]]$result, axes = c(cmpX, cmpY), ...)
 }
 

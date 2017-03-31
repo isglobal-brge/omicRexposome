@@ -5,7 +5,7 @@
 \title{Function to perform a Transcriptome-Wide Association Study}
 \usage{
 assocES(x, y, formula, select, set = "exposures", sva = FALSE,
-  vfilter = NULL, eBayes = FALSE, verbose = FALSE, warnings = TRUE, ...)
+  vfilter = NULL, eBayes = TRUE, verbose = FALSE, warnings = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{ExposomeSet}} object or an
@@ -29,6 +29,9 @@ will be corrected by those surrogate variables.}
 to perform the Surrogate Variable Analysis. If \code{NULL}, all the probes
 are used.}
 
+\item{eBayes}{(default \code{TRUE}) If \code{TRUE} applies \code{eBayes}
+after \code{lmFit}.}
+
 \item{verbose}{(default \code{FALSE}) If set to \code{TRUE}, a series of
 messages descriving the process are shown.}
 
@@ -40,7 +43,12 @@ An object of class \code{\link{ResultSet}}.
 }
 \description{
 This function allows to perform a Transcriptome-Wide Association Study
-by using an \code{\link{ExposmeSet}} and an \code{\link{ExpressionSet}}. It
+by using an \code{ExposomeSet} and an \code{ExpressionSet}. It
 allows to perform an adjustment using Surrogate Variable Analysis (from
-R package \code{\link{sva}}).
+R package \code{sva}).
+}
+\examples{
+data(prot_r)
+data(exp_r)
+assocES(exp_r, prot_r, eBayes=FALSE)
 }

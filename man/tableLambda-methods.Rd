@@ -22,3 +22,15 @@ A labeled numeric vector with the lambda score for each exposure.
 Compute lambda score on each result in the given \link{ResultSet} by using
 \code{lambdaClayton}.
 }
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+tableLambda(rst)
+}
+\seealso{
+\code{\link{tableHist}} for the number of hits per analysys,
+\code{\link{plotHits}} for a graphical representation of the hists
+per analysys, \code{\link{plotLambda}} for a graphical representation of
+the lambda score per analysys
+}

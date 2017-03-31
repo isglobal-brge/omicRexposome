@@ -105,7 +105,6 @@
     ## --------------------------------------------------------------------- ##
 
     dta_list <- lapply(dta_list, t)
-    dta_list <<- dta_list
 
     mres <- omicade4::mcia(dta_list, cia.nf = ncomponents, ...)
     new("ResultSet",

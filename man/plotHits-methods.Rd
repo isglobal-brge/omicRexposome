@@ -14,7 +14,16 @@ as a hit.}
 
 \item{width}{(default \code{0.70}) width of the bar}
 }
+\value{
+An hits plot
+}
 \description{
 This method draws a barplot with the number of hits in each result
 stored in the given \link{ResultSet}.
+}
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r)
+plotHits(rst)
 }

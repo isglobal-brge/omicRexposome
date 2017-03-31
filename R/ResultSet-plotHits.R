@@ -1,5 +1,7 @@
 #' @describeIn ResultSet Draws a bar plot with the number of hits in each
 #' result of the \code{ResultSet}.
+#' @param th Threshold to considere a P-Value a hit
+#' @param width Width of the bars
 setMethod(
     f = "plotHits",
     signature = "ResultSet",

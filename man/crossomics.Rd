@@ -5,7 +5,7 @@
 \title{Function to perform a Transcriptome-Wide Association Study}
 \usage{
 crossomics(list, method = "mcca", ncomponents = 2, ..., na.rm = FALSE,
-  verbose = FALSE, warnings = TRUE)
+  permute = c(100, 3), verbose = FALSE, warnings = TRUE)
 }
 \arguments{
 \item{list}{A list containing at last two \code{eSet} based objects
@@ -24,6 +24,13 @@ to \code{MultiCCA} (from \code{PMA}).}
 \code{"mcca"} and \code{na.rm} was set to \code{TRUE}, features containing
 missing values are removed.}
 
+\item{permute}{(default \code{c(100, 3)}). If \code{method="mcca"} and this
+agument is set to \code{NULL} no permutation test to tune-up the parameters
+for \code{MultiCCA}. When filles, \code{permute[1]} corresponds to
+the number permutations (default in \code{MultiCCa.permute} is \code{25})
+and \code{permute[2]} the number of iterations
+(default in \code{MultiCCA.permute} is 3).}
+
 \item{verbose}{(default \code{FALSE}) If set to \code{TRUE}, a series of
 messages descriving the process are shown.}
 
@@ -38,4 +45,10 @@ This function allows to perform a Transcriptome-Wide Association Study
 by using an \code{\link{ExposmeSet}} and an \code{\link{ExpressionSet}}. It
 allows to perform an adjustment using Surrogate Variable Analysis (from
 R package \code{\link{sva}}).
+}
+\examples{
+dta(methy_r)
+data(gexp_r)
+rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
+rst
 }

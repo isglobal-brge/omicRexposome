@@ -1,9 +1,9 @@
 #' Function to perform a Transcriptome-Wide Association Study
 #'
 #' This function allows to perform a Transcriptome-Wide Association Study
-#' by using an \code{\link{ExposmeSet}} and an \code{\link{ExpressionSet}}. It
+#' by using an \code{ExposomeSet} and an \code{ExpressionSet}. It
 #' allows to perform an adjustment using Surrogate Variable Analysis (from
-#' R package \code{\link{sva}}).
+#' R package \code{sva}).
 #'
 #' @param x An \code{\link{ExposomeSet}} object or an
 #' \code{\link{ExposomeClust}} object.
@@ -20,25 +20,31 @@
 #' @param vfilter (defaul \code{NULL}) Number of probes from transcriptome
 #' to perform the Surrogate Variable Analysis. If \code{NULL}, all the probes
 #' are used.
+#' @param eBayes (default \code{TRUE}) If \code{TRUE} applies \code{eBayes}
+#' after \code{lmFit}.
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
 #' messages descriving the process are shown.
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
+#' @examples
+#' data(prot_r)
+#' data(exp_r)
+#' assocES(exp_r, prot_r, eBayes=FALSE)
 #' @export
 assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
-    vfilter=NULL, eBayes=FALSE, verbose=FALSE, warnings=TRUE, ...) {
+    vfilter=NULL, eBayes=TRUE, verbose=FALSE, warnings=TRUE, ...) {
 
     ## ----------------------------------------------------------------- ##
     # CHECK FOR INPUT CLASSES
-    if(class(x) %in% c("ExpressionSet", "ExposomeClust") &
-        class(y) == "ExposomeSet") {
+    if(class(y) %in% c("ExposomeSet", "ExposomeClust") &
+        class(x) == "ExpressionSet") {
         t <- x
         x <- y
         y <- x
         rm(t)
     }
-    if(!(class(x) == "ExposomeSet" & class(y) == "ExpressionSet")) {
+    if(!(class(x) %in% c("ExposomeSet", "ExposomeClust") & class(y) == "ExpressionSet")) {
         stop("Required object of class 'ExposomeSet'/'ExposomeClust' and ",
              "'ExpressionSet' for arguments 'x, and 'y'.")
     }
@@ -60,10 +66,15 @@ assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
     y <- y[ , samples_selection]
     l2 <- sapply(list(x, y), function(n) length(Biobase::sampleNames(n)))
     l3 <- mapply('-', l1, l2, SIMPLIFY = FALSE)
+    names(l3) <- c(class(x), class(y))
 
     if(verbose) {
         message(paste(unlist(l3), names(l3),
                       sep = " samples were reduced from ", collapse = ", "))
+    }
+
+    if(length(samples_selection) == 0) {
+        stop("No samles in common between both datasets.")
     }
     ## ----------------------------------------------------------------- ##
 

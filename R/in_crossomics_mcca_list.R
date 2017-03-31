@@ -1,5 +1,5 @@
 .crossomics_mcca_list <- function(list, ncomponents = 2, ..., na.rm = FALSE,
-                             verbose = FALSE, warnings = TRUE) {
+                             permute=NULL, verbose = FALSE, warnings = TRUE) {
 
     ## --------------------------------------------------------------------- ##
     ## CREATE LIST OF TABLES IN BASE OF THE TYPE OF DATA
@@ -16,7 +16,7 @@
             dta <- t(snpToContinuous(set, verbose))
             rownames(dta) <- Biobase::sampleNames(set)
             colnames(dta) <- Biobase::featureData(set)
-            fdt <- fData(set)[colnames(dta), ]
+            fdt <- Biobase::fData(set)[colnames(dta), ]
 
             if(sum(is.na(dta)) != 0 & !na.rm) {
                 stop("Table SnpSet contains NA values.")
@@ -32,7 +32,7 @@
                 }
                 rm(onc)
 
-                fdt <- fData(set)[colnames(dta), ]
+                fdt <- Biobase::fData(set)[colnames(dta), ]
             }
 
             dta_list[[ii]] <- dta
@@ -43,7 +43,7 @@
                 message("Creating table for ExpressionSet.")
             }
             dta <- t(Biobase::exprs(set))
-            fdt <- fData(set)[colnames(dta), ]
+            fdt <- Biobase::fData(set)[colnames(dta), ]
 
             if(sum(is.na(dta)) != 0 & !na.rm) {
                 stop("Table ExpressionSet contains NA values.")
@@ -73,7 +73,7 @@
             if(verbose | warnings) {
                 warning("Factor exposures will be discarded.")
             }
-            sel <- exposureNames(set)[fData(set)[ , '_type', drop=FALSE] == "numeric"]
+            sel <- rexposome::exposureNames(set)[fData(set)[ , '_type', drop=FALSE] == "numeric"]
             dta <- dta[ , sel, drop=FALSE]
             fdt <- fData(set)[colnames(dta), ]
 
@@ -91,7 +91,7 @@
                 }
                 rm(onc)
 
-                fdt <- fData(set)[colnames(dta), ]
+                fdt <- Biobase::fData(set)[colnames(dta), ]
             }
 
             dta_list[[ii]] <- dta
@@ -109,7 +109,14 @@
         message("Performing crossomics")
     }
 
-    int <- PMA::MultiCCA(dta_list, ncomponents = ncomponents, ...)
+    if(is.null(permute)) {
+        int <- PMA::MultiCCA(dta_list, ncomponents = ncomponents, ...)
+    } else {
+        perm.out <- PMA::MultiCCA.permute(dta_list, nperms = permute[1],
+            niter = permute[2])
+        int <- PMA::MultiCCA(dta_list, ncomponents = ncomponents,
+            penalty = perm.out$bestpenalties, ws=perm.out$ws.init, ...)
+    }
     ## --------------------------------------------------------------------- ##
 
     new("ResultSet",
@@ -122,6 +129,7 @@
             names = names(list),
             ncomponents = ncomponents,
             na.rm = na.rm,
+            permute = permute,
             method="MultiCCA",
             package="PMA"
         )

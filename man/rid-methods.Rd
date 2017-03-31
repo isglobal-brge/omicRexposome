@@ -16,3 +16,9 @@ A character vector of \code{rid}s.
 This method resunts as character with the \code{rid}
 in a given \link{ResultSet}.
 }
+\examples{
+data(prot_r)
+data(exp_r)
+rst <- assocES(exp_r, prot_r, formula=~sex+age, eBayes=FALSE)
+rid(rst)
+}

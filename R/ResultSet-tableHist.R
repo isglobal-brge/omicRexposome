@@ -1,4 +1,5 @@
-
+#' @describeIn ResultSet Returns a table with the number of hits in each
+#' result of the \code{ResultSet}.
 setMethod(
     f = "tableHits",
     signature = "ResultSet",

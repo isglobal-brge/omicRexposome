@@ -20,3 +20,11 @@
 #' @importFrom ggplot2 scale_colour_manual
 #' @importFrom ggplot2 xlab ylab
 #' @importFrom ggrepel geom_text_repel
+#' @importFrom omicade4 mcia
+#' @importFrom PMA MultiCCA MultiCCA.permute
+#' @importFrom grDevices rainbow
+#' @importFrom graphics plot
+#' @importFrom methods as new
+#' @importFrom stats as.formula model.matrix qbeta qchisq qnorm
+#' @importFrom gridExtra grid.arrange
+#' @importFrom qqman manhattan
