@@ -1,6 +1,6 @@
-Package: omicRexposome
+﻿Package: omicRexposome
 Title: Exposome and omic data associatin and integration
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
