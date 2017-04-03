@@ -23,29 +23,33 @@ splot_variables <- function (x, axis1 = 1, axis2 = 2, colors) {
     colnames(co)[1:2] <- c("axis1", "axis2")
 
     ggplot2::ggplot(co, ggplot2::aes_string(x="axis1", y="axis2")) +
-        ggplot2::geom_point(shape=19, ggplot2::aes_string(color="color")) +
+        ggplot2::geom_point(shape=19, alpha=0.5, ggplot2::aes_string(color="color")) +
         ggplot2::scale_color_manual(values=colors, name="Data Set") +
         ggplot2::theme(legend.position="right") +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::ggtitle("Feaure Space")
+        ggplot2::ggtitle("Feaure Space") +
+        ggplot2::theme_bw()
 }
 
 splot_samples <- function (x, axis1 = 1, axis2 = 2, colors) {
     dfxy2 <- x$mcoa$Tl1
     dfxy2$ID <- sapply(strsplit(rownames(dfxy2), "\\."), "[[", 1)
+    dfxy2$label <- dfxy2$ID
+    dfxy2[duplicated(dfxy2$label), "label"] <- ""
     dfxy2$color <- names(colors)[as.numeric(gsub("df", "", sapply(strsplit(rownames(dfxy2), "\\."), "[[", 2)))]
     colnames(dfxy2)[1:2] <- c("axis1", "axis2")
 
     ggplot2::ggplot(dfxy2, ggplot2::aes_string(x="axis1", y="axis2", group="ID")) +
-        ggplot2::geom_text(ggplot2::aes_string(label="ID")) +
         ggplot2::geom_point(shape=19, size=2, ggplot2::aes_string(color="color")) +
         ggplot2::scale_color_manual(values=colors) +
-        ggplot2::geom_line() +
+        ggplot2::geom_line(color="DarkGray") +
+        ggplot2::theme_bw() +
         ggplot2::theme(legend.position="none") +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::ggtitle("Sample Space")
+        ggplot2::ggtitle("Sample Space") +
+        ggplot2::geom_text(ggplot2::aes_string(label="label"))
 }
 
 
@@ -59,18 +63,22 @@ plot_mcia <- function (mcoin, cmpX=1, cmpY=2, colors) {
 
     eigen_plot <- ggplot2::ggplot(eig, ggplot2::aes_string(x="Component", y="Explained")) +
         ggplot2::geom_bar(stat = "identity") +
-        ggplot2::xlab("Eigen Value")
+        ggplot2::xlab("Eigen Value") +
+        ggplot2::ylab("") +
+        ggplot2::theme_bw()
 
     cov2 <- as.data.frame(mcoin$mcoa$cov2[, c(cmpX, cmpY)])
     colnames(cov2) <- paste0("ax", 1:2)
-    cov2$label <- rownames(cov2)
+    cov2$label <- names(colors)
 
     set_plot <- ggplot2::ggplot(cov2, ggplot2::aes_string(x="ax1", y="ax2")) +
-        ggplot2::geom_point() +
-        ggplot2::geom_text(ggplot2::aes_string(label="label")) +
+        ggplot2::geom_point(shape=19, size=5, ggplot2::aes_string(color="label")) +
+        #ggplot2::geom_text(ggplot2::aes_string(label="label")) +
         ggplot2::xlab(paste("pseudoeig", cmpX)) +
-        ggplot2::ylab(paste("pseudoeig", cmpY))
-
+        ggplot2::ylab(paste("pseudoeig", cmpY)) +
+        ggplot2::scale_color_manual(values=colors) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position="none")
 
     gridExtra::grid.arrange(
         splot_samples(mcoin, axis1 = cmpX, axis2 = cmpY, colors = colors),

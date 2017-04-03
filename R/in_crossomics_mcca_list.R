@@ -119,6 +119,7 @@
     }
     ## --------------------------------------------------------------------- ##
 
+    names(fdt_list) <- names(list)
     new("ResultSet",
         fun_origin = "crossomics",
         results = list("crossomics"=list("result" = int)),

@@ -107,6 +107,8 @@
     dta_list <- lapply(dta_list, t)
 
     mres <- omicade4::mcia(dta_list, cia.nf = ncomponents, ...)
+
+    names(fdt_list) <- names(list)
     new("ResultSet",
         fun_origin = "crossomics",
         results = list("crossomics"=list("result" = mres)),

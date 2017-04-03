@@ -278,7 +278,7 @@ When a `ResultSet` is generated using `crossomics` the methods `plotHits`, `plot
 
 ```{r integration_colors}
 colors <- c("red", "green", "blue")
-names(colors) <- c("exposome", "transcriptome", "methylome")
+names(colors) <- c("methylome", "transcriptome", "exposome")
 ```
 
 ### Plotting Multiple Co-Inertia Analysis Results
