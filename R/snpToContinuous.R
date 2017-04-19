@@ -11,7 +11,7 @@
 #' @param verbose If set to \code{TRUE}, messages will be shown.
 #' @return An \code{matrix} of the calls of the SNPs converted to a continuous
 #' variable.
-#' @export snpToContinuous
+# @export snpToContinuous
 #' @seealso \link{crossomics} use this function
 snpToContinuous <- function(snpSet, verbose = FALSE) {
   .snpToNumeric <- function(x) {

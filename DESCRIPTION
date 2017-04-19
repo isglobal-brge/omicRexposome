@@ -1,10 +1,10 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration
-Version: 0.99.12
+Version: 0.99.14
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
-Description: This apckage was bouild to allows to perform both association and 
+Description: This apckage was built to allows to perform both association and 
     inegration alalyses envolving both exposome and omic data.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -15,6 +15,10 @@ Depends:
     R (>= 3.4),
     Biobase
 Imports:
+    stats,
+    utils, 
+    grDevices, 
+    graphics,
     methods,
     rexposome,
     limma,
@@ -28,7 +32,8 @@ Imports:
 Suggests: 
     BiocStyle,
     knitr,
-    rmarkdown
+    rmarkdown,
+    snpStats
 biocViews:
     WorkflowStep, 
     MultipleComparison, 

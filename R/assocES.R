@@ -32,7 +32,6 @@
 #' @return An object of class \code{\link{ResultSet}}.
 #' @param ... Arguments passed to \code{\link{lmFit}}.
 #' @examples
-#' library(rexposome)
 #' data(gexp_r)
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
@@ -111,7 +110,7 @@ assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
             } else { ## set == "phenotypes"
                 warning("No given 'select'. Association test will be ",
                     "computed for all phenotypes")
-                select <- Biobase::phenotypeNames(x)
+                select <- rexposome::phenotypeNames(x)
             }
         }
     }
