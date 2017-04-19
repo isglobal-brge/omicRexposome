@@ -28,7 +28,7 @@
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
 #' @examples
-#' dta(methy_r)
+#' data(methy_r)
 #' data(gexp_r)
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' rst

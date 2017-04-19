@@ -15,6 +15,7 @@ An \code{ExposomeSet} object.
 \code{ExpressionSet} for illustration purpouses.
 }
 \examples{
+library(rexposome)
 data("exp_r")
 exposureNames(exp_r)
 }

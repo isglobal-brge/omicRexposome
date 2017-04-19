@@ -39,7 +39,7 @@ An integration plot
 This function draws a plots for the ResultSet from integration function
 }
 \examples{
-dta(methy_r)
+data(methy_r)
 data(gexp_r)
 rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 plotIntegration(rst)

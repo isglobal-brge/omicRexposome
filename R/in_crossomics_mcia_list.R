@@ -74,7 +74,7 @@
             if(verbose | warnings) {
                 warning("Factor exposures will be discarded.")
             }
-            sel <- exposureNames(set)[fData(set)[ , '_type', drop=FALSE] == "numeric"]
+            sel <- rexposome::exposureNames(set)[fData(set)[ , '_type', drop=FALSE] == "numeric"]
             dta <- dta[ , sel, drop=FALSE]
             fdt <- fData(set)[colnames(dta), ]
 

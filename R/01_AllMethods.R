@@ -67,7 +67,7 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #' pacage (argument \code{axes} is filled with values from \code{cmpX} and
 #' \code{cmpY}).
 #' @examples
-#' dta(methy_r)
+#' data(methy_r)
 #' data(gexp_r)
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' plotIntegration(rst)

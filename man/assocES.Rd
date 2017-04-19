@@ -2,7 +2,7 @@
 % Please edit documentation in R/assocES.R
 \name{assocES}
 \alias{assocES}
-\title{Function to perform a Transcriptome-Wide Association Study}
+\title{Function to perform a Feature-Wide Association Study}
 \usage{
 assocES(x, y, formula, select, set = "exposures", sva = FALSE,
   vfilter = NULL, eBayes = TRUE, verbose = FALSE, warnings = TRUE, ...)
@@ -47,13 +47,9 @@ warnings are shown when required user atention.}
 An object of class \code{\link{ResultSet}}.
 }
 \description{
-This function allows to perform a Transcriptome-Wide Association Study
-by using an \code{ExposomeSet} and an \code{ExpressionSet}. It
-allows to perform an adjustment using Surrogate Variable Analysis (from
-R package \code{sva}).
-}
-\examples{
-data(prot_r)
-data(exp_r)
-assocES(exp_r, prot_r, eBayes=FALSE)
+This function allows to perform a Feature-Wide Association Study
+by using an \code{ExposomeSet} and an \code{ExpressionSet}. The function
+allows to perform the test to any continuous feature (aka. transcriptome,
+methylome, proteome, etc.) It allows to perform an adjustment using Surrogate
+Variable Analysis (from R package \code{sva}).
 }

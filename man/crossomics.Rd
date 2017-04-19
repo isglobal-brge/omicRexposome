@@ -47,7 +47,7 @@ allows to perform an adjustment using Surrogate Variable Analysis (from
 R package \code{sva}).
 }
 \examples{
-dta(methy_r)
+data(methy_r)
 data(gexp_r)
 rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 rst

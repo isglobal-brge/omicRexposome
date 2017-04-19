@@ -1,9 +1,10 @@
-#' Function to perform a Transcriptome-Wide Association Study
+#' Function to perform a Feature-Wide Association Study
 #'
-#' This function allows to perform a Transcriptome-Wide Association Study
-#' by using an \code{ExposomeSet} and an \code{ExpressionSet}. It
-#' allows to perform an adjustment using Surrogate Variable Analysis (from
-#' R package \code{sva}).
+#' This function allows to perform a Feature-Wide Association Study
+#' by using an \code{ExposomeSet} and an \code{ExpressionSet}. The function
+#' allows to perform the test to any continuous feature (aka. transcriptome,
+#' methylome, proteome, etc.) It allows to perform an adjustment using Surrogate
+#' Variable Analysis (from R package \code{sva}).
 #'
 #' @param x An \code{\link{ExposomeSet}} object or an
 #' \code{\link{ExposomeClust}} object.
@@ -30,10 +31,6 @@
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
 #' @param ... Arguments passed to \code{\link{lmFit}}.
-#' @examples
-#' data(prot_r)
-#' data(exp_r)
-#' assocES(exp_r, prot_r, eBayes=FALSE)
 #' @export
 assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
     vfilter=NULL, eBayes=TRUE, verbose=FALSE, warnings=TRUE, ...) {
@@ -84,7 +81,7 @@ assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
     ## ----------------------------------------------------------------- ##
     ## CONVERT FORMULA
     formula <- as.character(as.formula(formula))
-    exp.dt <- data.frame(pData(x), expos(x))
+    exp.dt <- data.frame(Biobase::pData(x), rexposome::expos(x))
 
     if(class(x) == "ExposomeClust") {
         ## ------------------------------------------------------------- ##
