@@ -53,3 +53,10 @@ allows to perform the test to any continuous feature (aka. transcriptome,
 methylome, proteome, etc.) It allows to perform an adjustment using Surrogate
 Variable Analysis (from R package \code{sva}).
 }
+\examples{
+library(rexposome)
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+rst
+}
