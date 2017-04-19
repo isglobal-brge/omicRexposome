@@ -28,3 +28,6 @@
 #' @importFrom stats as.formula model.matrix qbeta qchisq qnorm
 #' @importFrom gridExtra grid.arrange
 #' @importFrom qqman manhattan
+#' @importFrom grDevices rainbow
+#' @importFrom methods as new
+#' @importFrom stats as.formula model.matrix qbeta qchisq qnorm

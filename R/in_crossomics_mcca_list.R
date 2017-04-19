@@ -59,7 +59,7 @@
                 }
                 rm(onc)
 
-                fdt <- fData(set)[colnames(dta), ]
+                fdt <- Biobase::fData(set)[colnames(dta), ]
             }
 
             dta_list[[ii]] <- dta
@@ -73,9 +73,9 @@
             if(verbose | warnings) {
                 warning("Factor exposures will be discarded.")
             }
-            sel <- rexposome::exposureNames(set)[fData(set)[ , '_type', drop=FALSE] == "numeric"]
+            sel <- rexposome::exposureNames(set)[Biobase::fData(set)[ , '_type', drop=FALSE] == "numeric"]
             dta <- dta[ , sel, drop=FALSE]
-            fdt <- fData(set)[colnames(dta), ]
+            fdt <- Biobase::fData(set)[colnames(dta), ]
 
             if(sum(is.na(dta)) != 0 & !na.rm) {
                 stop("Table ExposomeSet contains NA values.")

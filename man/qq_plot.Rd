@@ -15,3 +15,9 @@ An object obtained from \link{ggplot}.
 \description{
 Function to draw a QQ Plot from a vector of numbers
 }
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
+qq_plot(rst$P.Value)
+}

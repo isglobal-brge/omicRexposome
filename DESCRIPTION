@@ -1,12 +1,12 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration
-Version: 0.99.8
+Version: 0.99.9
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
 Description: This apckage was bouild to allows to perform both association and 
     inegration alalyses envolving both exposome and omic data.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
@@ -17,18 +17,35 @@ Depends:
 Imports:
     methods,
     rexposome,
-    snpStats,
     limma,
     sva,
     ggplot2,
     ggrepel,
     PMA,
     omicade4,
-    ggplot2,
     qqman,
     gridExtra
 Suggests: 
     BiocStyle,
     knitr,
-    rmarkdown,
-    BRGEdata
+    rmarkdown
+biocViews:
+    WorkflowStep, 
+    MultipleComparison, 
+    Visualization, 
+    AssayDomain, 
+    DNAMethylation, 
+    GeneExpression, 
+    SNP, 
+    BiologicalQuestion, 
+    DifferentialExpression,  
+    DifferentialMethylation, 
+    GeneRegulation, 
+    ResearchField, 
+    BiomedicalInformatics, 
+    Cheminformatics, 
+    Epigenetics, 
+    Proteomics, 
+    Transcriptomics, S
+    tatisticalMethod, 
+    Regression

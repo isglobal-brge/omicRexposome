@@ -24,3 +24,9 @@ Homologous methods from \code{limma}, \code{topTable} resturns a
 \code{data.frame} with the \code{logFC} and  \code{PValue} per
 featrue for the selcted \code{coef} and for given result (\code{rid}).
 }
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+topTable(rst, rid=1)
+}

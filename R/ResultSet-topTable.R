@@ -10,7 +10,6 @@ setMethod(
             if(missing(rid)) {
                 res <- lapply(names(object@results), function(nme) {
                     if(class(object@results[[nme]]$result) == "MArrayLM") {
-                        message(nme)
                         tt <- ff(object@results[[nme]]$result, coef=coef, n=Inf)
                         tt$exposure <- nme
                         return(tt)

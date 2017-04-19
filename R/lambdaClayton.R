@@ -4,7 +4,7 @@
 #'
 #' @author Juran R. González
 #' @param x Vector of P-Value
-#' @param x (default \code{0.5})
+#' @param trim (default \code{0.5})
 #' @export
 lambdaClayton <- function(x, trim=0.5) {
     xx <- qnorm(1-x)^2

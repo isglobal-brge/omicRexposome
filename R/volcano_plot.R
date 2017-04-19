@@ -15,6 +15,11 @@
 #' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, the X-axis
 #' will should \code{2^logFC} instead to teh default \code{logFC}.
 #' @return A \code{ggplot} object
+#' @examples
+#' data(gexp_r)
+#' data(exp_r)
+#' rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
+#' volcano_plot(rst$P.Value, rst$logFC, rownames(rst))
 #' @export
 volcano_plot <- function(pval, fc, names, size=2, tFC=2, tPV=-log10(0.001),
                          show.effect=FALSE) {

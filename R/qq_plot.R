@@ -2,6 +2,11 @@
 #'
 #' @param  values Numeric vector of P.Values
 #' @return An object obtained from \link{ggplot}.
+#' @examples
+#' data(gexp_r)
+#' data(exp_r)
+#' rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
+#' qq_plot(rst$P.Value)
 #' @export
 qq_plot <- function(values) {
     values <- as.numeric(values)

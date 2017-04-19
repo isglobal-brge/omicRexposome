@@ -141,6 +141,7 @@ setGeneric("tableLambda", function(object, trim=0.5)
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
 #' @return A labeled numeric vector with the exposures and the number of hits.
+#' @examples
 #' data(gexp_r)
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
@@ -190,7 +191,7 @@ setGeneric("plotLambda", function(object, width=0.75)
 #' @examples
 #' data(gexp_r)
 #' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r)
+#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' plotHits(rst)
 #' @return An hits plot
 #' @export plotHits
@@ -214,6 +215,11 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' multicategorical variable, contasr selects the comparison.
 #' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
 #' by P-Value.
+#' @examples
+#' data(gexp_r)
+#' data(exp_r)
+#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+#' topTable(rst, rid=1)
 #' @export topTable
 setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
     standardGeneric("topTable")
@@ -228,9 +234,10 @@ setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
 #' @rdname opt-methods
 #' @aliases opt
 #' @param object A \code{\link{ResultSet}} object.
+#' @examples
 #' data(gexp_r)
 #' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r)
+#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' opt(rst)
 #' @export opt
 setGeneric("opt", function(object)

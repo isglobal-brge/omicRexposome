@@ -33,3 +33,9 @@ A \code{ggplot} object
 Function that takes two numeric vectors (P-Value and fold change)
 and draws a volcano plot using \link{ggplot2}
 }
+\examples{
+data(gexp_r)
+data(exp_r)
+rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
+volcano_plot(rst$P.Value, rst$logFC, rownames(rst))
+}

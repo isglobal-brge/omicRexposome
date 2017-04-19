@@ -24,6 +24,6 @@ stored in the given \link{ResultSet}.
 \examples{
 data(gexp_r)
 data(exp_r)
-rst <- assocES(exp_r, gexp_r)
+rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 plotHits(rst)
 }
