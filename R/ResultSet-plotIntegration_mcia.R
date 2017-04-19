@@ -17,7 +17,7 @@
 
 splot_variables <- function (x, axis1 = 1, axis2 = 2, colors) {
     co <- x$mcoa$Tco[, c(axis1, axis2)]
-    c <- as.numeric(x$mcoa$TC$T)
+    c <- as.numeric(x$mcoa$TC[["T"]])
     c <- names(colors)[c]
     co <- cbind(co, color=c, feature=rownames(co))
     colnames(co)[1:2] <- c("axis1", "axis2")

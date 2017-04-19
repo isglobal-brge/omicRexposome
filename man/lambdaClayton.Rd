@@ -11,6 +11,10 @@ lambdaClayton(x, trim = 0.5)
 
 \item{trim}{(default \code{0.5})}
 }
+\value{
+A lambda value, indicatinf the inflation/deflation of the
+analysis.
+}
 \description{
 Implementation of Clayton's lambda score for a vector of P-Values
 }

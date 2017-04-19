@@ -215,6 +215,8 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' multicategorical variable, contasr selects the comparison.
 #' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
 #' by P-Value.
+#' @return A \code{data.frame} with the result of the association study,
+#' including P-Value and Fold Change.
 #' @examples
 #' data(gexp_r)
 #' data(exp_r)
@@ -234,6 +236,7 @@ setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
 #' @rdname opt-methods
 #' @aliases opt
 #' @param object A \code{\link{ResultSet}} object.
+#' @return A list with the options used to create the \code{ResultSet}.
 #' @examples
 #' data(gexp_r)
 #' data(exp_r)

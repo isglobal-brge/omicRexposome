@@ -9,6 +9,9 @@ opt(object)
 \arguments{
 \item{object}{A \code{\link{ResultSet}} object.}
 }
+\value{
+A list with the options used to create the \code{ResultSet}.
+}
 \description{
 Method that returns a list with the options used to create the
 \code{ResultSet}.

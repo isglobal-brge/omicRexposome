@@ -10,7 +10,7 @@
 #' @export
 qq_plot <- function(values) {
     values <- as.numeric(values)
-    o <- -log10(sort(values, decreasing=F))
+    o <- -log10(sort(values, decreasing=FALSE))
     e <- -log10(1:length(o)/length(o))
     c975 <- rep(0,length(o))
     c025 <- rep(0,length(o))

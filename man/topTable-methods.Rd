@@ -19,6 +19,10 @@ multicategorical variable, contasr selects the comparison.}
 \item{sort}{(default \code{TRUE}) If \code{TRUE}, results are ordered
 by P-Value.}
 }
+\value{
+A \code{data.frame} with the result of the association study,
+including P-Value and Fold Change.
+}
 \description{
 Homologous methods from \code{limma}, \code{topTable} resturns a
 \code{data.frame} with the \code{logFC} and  \code{PValue} per
