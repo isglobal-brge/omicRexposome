@@ -1,55 +1,27 @@
-# omicRexposome
+# [Start Bootstrap](http://startbootstrap.com/) - [Heroic Features](http://startbootstrap.com/template-overviews/heroic-features/)
 
-## Summary
+[Heroic Features](http://startbootstrap.com/template-overviews/heroic-features/) is a multipurpose HTML template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
 
-`omicRexposome` is an R package for extending `rexposome` capabilities and include exposome-omic data analysis and integration. It depends in a series of third party R packages to provide:
+## Getting Started
 
-  1. A series of pipelines to test exposome-omic and diseasome-omic associations.
-    * [UNDER DEVELOPMENT] Basic GWAS pipeline based on `snpStats`
-    * Methylome, Transcriptome and Proteome Association Analysis based on `limma`
-  2. Two different approaches to integrate exposome with omic data are implemented using *multiple co-inertia analysis* from `omicade4` and *multi canonical correlation analysis* from `PMA`
+To begin using this template, choose one of the following options to get started:
+* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/heroic-features/)
+* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-heroic-features.git`
+* Fork the repo
 
-## Installation
+## Bugs and Issues
 
-`omicRexposome` requires R version equal or newer than 3.3.0. The following script allows to install `rexposome` dependencies:
+Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-heroic-features/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/heroic-features/).
 
-```r
-source( "http://bioconductor.org/biocLite.R" )
+## Creator
 
-packages = c('Biobase', 'methods', 'snpStats', 'limma', 'sva', 'ggplot2',
-    'ggrepel', 'PMA', 'omicade4', 'ggplot2', 'qqman', 'gridExtra'
-)
-for( pkg in packages ) {
-  if( !pkg %in% rownames( installed.packages() ) ) {
-    message( "Installing ", pkg )
-    biocLite( pkg )
-  }
-}
-```
+Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
 
-The package can be installed using the R package `devtools`. `devtools` can be installed win the following code:
+* https://twitter.com/davidmillerskt
+* https://github.com/davidtmiller
 
-```r
-install.packages("devtools")
-```
+Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
 
-Once `devtools` and the dependences are installed, the following code installs `omicRexposome` and the basic dependence `rexposome`:
+## Copyright and License
 
-```r
-devtools::install_github("isglobal-brge/rexposome")
-devtools::install_github("isglobal-brge/omicRexposome")
-```
-
-## Basic Guide
-
-Exposome-Omic Association is done using the function `assocES`. This function requires an argument `x` being an `ExposomeSet` and an argument `y` being an `ExpressionSet` with the correct omic data (gene expression for transcriptome, betas or Ms for methylome, and protein level for proteome).
-
-  * `plotAssociation` allows to plot the result of all _assoc*_ functions having an argument `type` that can takes:
-    * `"manhattan"` to draw a typical Manhattan plot
-    * `"protein"` to draw an adapted version of a Manhattan plot for protein data
-    * `"volcano"` to draw a volcano plot, having the option to fill the arguments `tPV` (significant P-Value) and `tFC` (significant fold change)
-    * `"qq"` to draw a standard QQ plot
-
-Function `crossomics` allows to perform a multi-omic integration join exposome by selecting one of the available methods (`"mcia"` or `"mcca"`). The main argument, called `list`, must be filled with a list of `ExpressionSet`s (plus `ExposomeSet`s).
-
-  * `plotIntegration` allows to plot the results of `crossomics`, having a proper visualization for each method.
+Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-heroic-features/blob/gh-pages/LICENSE) license.
