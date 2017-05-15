@@ -1,4 +1,4 @@
-.plot_assoc <- function(object, rid, coef, contrast, type, tPV, tFC, ...) {
+.plot_assoc <- function(object, rid, coef, contrast, type, tPV, tFC, effect) {
     dta <- topTable(object, rid=rid, coef=coef, contrast=contrast)
 
     if(type == "qq") {
@@ -24,7 +24,8 @@
             fc=dta$logFC,
             names=rownames(dta),
             tFC=tFC,
-            tPV=tPV
+            tPV=tPV,
+            show.effect=effect
         )
     } else if(type == "protein") {
         dta$PV <- -log10(dta$P.Value)
