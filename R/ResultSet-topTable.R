@@ -5,7 +5,7 @@ setMethod(
     f = "topTable",
     signature = "ResultSet",
     definition = function(object, rid, coef=2, sort=TRUE) {
-        if(object@fun_origin == "assocES") {
+        if(object@fun_origin == "association") {
             ff <- ifelse(object@options$eBayes, limma::topTable, limma::toptable)
             if(missing(rid)) {
                 res <- lapply(names(object@results), function(nme) {

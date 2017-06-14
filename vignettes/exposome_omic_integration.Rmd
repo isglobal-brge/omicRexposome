@@ -40,17 +40,20 @@ Two different types of analyses can be done with `omicRexposome`:
 
 | Analysis          | `omicRexposome` function |
 |:------------------|:-------------------------|
-| Association Study | `assocES`                |
+| Association Study | `association`            |
 | Integration Study | `crossomics`             |
 
-The function `assocES` requires two objects: an object of class `ExposomeSet` and an object of class `ExpressionSet`. `ExposomeSet` objects are created with functions `read_exposome` and `load_exposome` from `rexposome` R package (see next section *Loading Exposome Data*) and encapsulates exposome data. `assocES` uses `ExpressionSet`s as input data for *transcriptome*, *methylome*, *proteome* and *metabolome* data.
+Both association an dintegration studies are based in objects of class `MultiDataSet`. A `MultiDataSet` object is a contained for multiple layers of sample information. Once the exposome data and the omics data are encapsulated in a `MultiDataSet` the object can be used for both association and integration studies.
+
+The method `association` requires a `MultiDataSet` object having to types of information: the exposome data from an `ExposomeSet` object and omic information from objects of class `ExpressionSet`, `MethylationSet`, `SummarizedExperiment` or others. `ExposomeSet` objects are created with functions `read_exposome` and `load_exposome` from `rexposome` R package (see next section *Loading Exposome Data*) and encapsulates exposome data. The method `crossomics` expects a `MultiDataSet` with any number of different data-sets (at last two). Compared with `association` method, `crossomics` do not requires an `ExposomeSet`.
 
 # Analysis
 
-`omicRexposome` R package is loaded using the standard library command:
+`omicRexposome` and `MultiDataSet` R packages are loaded using the standard library command:
 
 ```{r load_omicRexposome, message=FALSE}
 library(omicRexposome)
+library(MultiDataSet)
 ```
 
 ## Loading Exposome Data
@@ -80,17 +83,18 @@ The previous code located three files: *exposure* file, *description* file and *
 
 ## Association Studies
 
-The association studies are performed using the function `assocES`. This function requires, at last three, augments:
+The association studies are performed using the method `association`. This function requires, at last four, augments:
 
- 1. Argument `x` should be filled with an `ExposomeSet`.
- 2. Argument `y` should be filled with an `ExpressionSet`.
- 3. Argument `formula` should be filled with an expression containing the covariates used to adjust the model.
+ 1. Argument `object` should be filled with a `MultiDataSet` object.
+ 2. Argument `formula` should be filled with an expression containing the covariates used to adjust the model.
+ 3. Argument `expset` should be filled with the name that the exposome-set recevies in the `MultiDataSet` object.
+ 4. Argument `omicset` should be filled with the name that the omic-set recevies in the `MultiDataSet` object.
+ 
+The argument `formula` should follow the pattern: `~sex+age`. The function `association` will fill the exposures in the `ExposomeSet` between `~` and the covariates `sex+age`.
 
-The argument `formula` should follow the pattern: `~sex+age`. The function `assocES` will fill the exposures in the `ExposomeSet` between `~` and the covariates `sex+age`.
+`association` implements the `limma` pipeline (`lmFit` and `eBayes`) by taking care of the missing data in exposures, outcomes and omics data and locating and filtering common samples. The argiment `method` allows to select the fitting method used in `lmFit`. By default it takes the value `"ls"`  for least squares but it can also takes `"robust"` for robust regression.
 
-`assocES` implements the `limma` pipeline (`lmFit` and `eBayes`) by taking care of the missing data in exposures, outcomes and omics data and locating and filtering common samples.
-
-The following subsections illustrates the usage of `assocES` with different types of omics data: *methylome*, *transcriptome* and *proteome*.
+The following subsections illustrates the usage of `association` with different types of omics data: *methylome*, *transcriptome* and *proteome*.
 
 ### Exposome - Methylation Data Association
 
@@ -103,11 +107,15 @@ data("methy_r", package = "omicRexposome")
 Then we perform the association between the methylation and four exposures (we use the argument `select` to specify four exposures).
 
 ```{r methy_analysis, message=FALSE, warning=FALSE}
-methy <- assocES(exp, methy_r, ~sex+age, 
-    select = c("Pb", "Co", "THM", "G_pesticides"))
+mds <- createMultiDataSet()
+mds <- add_methy(mds, methy_r)
+mds <- add_exp(mds, exp[c("Pb", "Co", "THM", "G_pesticides"), ])
+names(mds)
+methy <- association(mds, formula=~sex+age, 
+    expset = "exposures", omicset = "methylation")
 ```
 
-Function `assocME` returns an object of class `ResultSet`:
+Function `association` returns an object of class `ResultSet`:
 
 ```{r methy_show}
 methy
@@ -151,8 +159,12 @@ data("gexp_r", package = "omicRexposome")
 The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The function used is `assocES`.
 
 ```{r gexp_analysis, message=FALSE, warning=FALSE}
-gexp <- assocES(exp, gexp_r, ~sex+age, 
-    select = c("Pb", "Co", "THM", "G_pesticides"))
+mds <- createMultiDataSet()
+mds <- add_genexp(mds, gexp_r)
+mds <- add_exp(mds, exp[c("Pb", "Co", "THM", "G_pesticides"), ])
+names(mds)
+gexp <- association(mds, formula=~sex+age, 
+    expset = "exposures", omicset = "expression")
 ```
 
 We can have a look to the number of hits and the lambda score of each analysis with the methods `tableHits` and `tableLambda`.
@@ -167,8 +179,8 @@ cbind(
 Since all the models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `assocES` function by setting the argument `sva` to `TRUE`.
 
 ```{r gexp_analysis_sva, message=FALSE, warning=FALSE}
-gexp <- assocES(exp, gexp_r, ~sex+age, sva = TRUE,
-    select = c("Pb", "Co", "THM", "G_pesticides"))
+gexp <- association(mds, formula=~sex+age, 
+    expset = "exposures", omicset = "expression", sva = TRUE)
 ```
 
 We can re-check the results creating the same table than before:

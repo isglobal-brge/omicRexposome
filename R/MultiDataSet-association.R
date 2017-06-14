@@ -97,10 +97,14 @@ setMethod(
                 }
                 exp.dt <- exp.dt[-na.loc, , drop=FALSE]
             }
+            omic <- omic[ , rownames(design.mm), drop = FALSE]
 
-            if(sum(!sapply(sapply(apply(exp.dt, 2, table), length), ">", 1)) != 0) {
+            tbl <- sapply(apply(exp.dt[ , all.vars(design)], 2, table), length)
+            if(sum(!sapply(tbl, ">", 1)) != 0) {
                 warning("When testing for '", ex, "', at last one covariate ",
-                        "is constant")
+                        "is constant (",
+                        paste(paste(names(tbl), tbl, sep=": "), collapse=", "),
+                        ")")
                 list(
                     N=NA,
                     sva.num=NA,
@@ -112,7 +116,6 @@ setMethod(
             } else {
                 # Design model
                 design.mm <- model.matrix(formula(design), data = exp.dt)
-                omic <- omic[ , rownames(exp.dt), drop = FALSE]
                 # If required, apply SVA
                 n.sv <- NA
                 if(sva) {
@@ -156,10 +159,15 @@ setMethod(
             "ExpressionSet")
         new("ResultSet",
             fun_origin = "association",
-            class_origin=class_origin,
-            names = c(expset, omicset),
             results = results,
-            fData = fData(object)[c(expset, omicset)]
+            fData = fData(object)[c(expset, omicset)],
+            options = list(
+                method="assocES",
+                sva=sva,
+                eBayes=ebayes,
+                class_origin=class_origin,
+                names = c(expset, omicset)
+            )
         )
         ## --------------------------------------------------------------------
     }
