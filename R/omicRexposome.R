@@ -21,10 +21,10 @@
 #' @import utils
 #' @import methods
 #'
-# @importClassesFrom MultiDataSet MultiDataSet
+#' @importClassesFrom MultiDataSet MultiDataSet
 #' @importClassesFrom rexposome ExposomeSet ExposomeClust
 #'
-# @importFrom MultiDataSet commonSamples betas getMs
+#' @importFrom MultiDataSet commonSamples
 #' @importFrom Biobase sampleNames pData fData
 #' @importFrom rexposome exposureNames phenotypeNames
 #' @importFrom sva num.sv sva

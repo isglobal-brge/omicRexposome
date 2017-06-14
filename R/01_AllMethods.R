@@ -246,3 +246,77 @@ setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
 setGeneric("opt", function(object)
     standardGeneric("opt")
 )
+
+# -----------------------------------------------------------------------------
+
+#' Method to add an ExposomeSet to a MultiDataSet
+#'
+#' This method allows to insert an object of class \link{ExposomeSet} as an
+#' independent dataset into an object of class \link{MultiDataSet}.
+#'
+#' @name add_exp
+#' @rdname add_exp-methods
+#' @aliases add_exp
+#' @param object An object of class \link{MultiDataSet}.
+#' @param expoSet An object of class \link{ExposomeSet}.
+#' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
+#' not be displayed.
+#' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
+#' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
+#' independent dataset.
+#' @examples
+#' data("exposome")
+#' library(MultiDataSet)
+#' md <- new("MultiDataSet")
+#' names(md)
+#' md <- add_exp(md, expo)
+#' names(md)
+#' @export add_exp
+setGeneric("add_exp", function(object, expoSet, warnings = TRUE, ...)
+    standardGeneric("add_exp")
+)
+
+#' Method to add an ExposomeClust to a MultiDataSet
+#'
+#' This method allows to insert an object of class \link{ExposomeClust} as an
+#' independent dataset into an object of class \link{MultiDataSet}.
+#'
+#' @name add_cls
+#' @rdname add_cls-methods
+#' @aliases add_cls
+#' @param object An object of class \link{MultiDataSet}.
+#' @param clsSet An object of class \link{ExposomeClust}.
+#' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
+#' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
+#' independent dataset.
+#' @examples
+#' data("eclust")
+#' library(MultiDataSet)
+#' md <- new("MultiDataSet")
+#' names(md)
+#' md <- add_cls(md, expo_c)
+#' names(md)
+#' @export add_cls
+setGeneric("add_cls", function(object, clsSet, ...)
+    standardGeneric("add_cls")
+)
+
+#' # -----------------------------------------------------------------------------
+
+#' Method to perform an association study between transcriptome and exposom
+#'
+#' This function allows to perform an association study between gene
+#' expression from microarray and the exposome. An \link{ExpresionSet} is
+#' the object storing the gene expresion and an \link{ExposomeSet} the one
+#' storing the exposome. Both of them needs to be encapsulated in a
+#' \link{MultiDataSet}. The association study is perform through standard
+#' \link{limma} pipeline. The function allows to perform multiple tests using
+#' the argument \code{exposures}.
+#'
+#' @name association
+#' @rdname association-methods
+#' @export association
+setGeneric("association", function(object, formula, expset, omicset, set = "exposures",
+        method = "ls", ..., sva = FALSE, ebayes = TRUE, verbose = FALSE, warnings = TRUE)
+    standardGeneric("association")
+)

@@ -31,7 +31,8 @@
 \S4method{opt}{ResultSet}(object)
 
 \S4method{plotAssociation}{ResultSet}(object, rid = 1, coef = 2,
-  contrast = 1, type, tPV, tFC)
+  contrast = 1, type = c("manhattan", "qq"), tPV, tFC,
+  show.effect = FALSE)
 
 \S4method{plotHits}{ResultSet}(object, th = 0.05, width = 0.75)
 
@@ -46,8 +47,7 @@
 
 \S4method{tableLambda}{ResultSet}(object, trim = 0.5)
 
-\S4method{topTable}{ResultSet}(object, rid, coef = 2, contrast = 1,
-  sort = TRUE)
+\S4method{topTable}{ResultSet}(object, rid, coef = 2, sort = TRUE)
 }
 \arguments{
 \item{object}{A \code{ResultSet} object.}
