@@ -97,7 +97,7 @@ setMethod(
                 }
                 exp.dt <- exp.dt[-na.loc, , drop=FALSE]
             }
-            omic <- omic[ , rownames(design.mm), drop = FALSE]
+            omic <- omic[ , rownames(exp.dt), drop = FALSE]
 
             tbl <- sapply(apply(exp.dt[ , all.vars(design)], 2, table), length)
             if(sum(!sapply(tbl, ">", 1)) != 0) {

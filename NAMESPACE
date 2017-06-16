@@ -2,7 +2,6 @@
 
 export(add_cls)
 export(add_exp)
-export(assocES)
 export(association)
 export(crossomics)
 export(lambdaClayton)

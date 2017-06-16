@@ -32,7 +32,7 @@
 #' data(gexp_r)
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' rst
-#' @export
+# @export
 crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
         permute = c(100, 3), verbose=FALSE, warnings=TRUE) {
     ## --------------------------------------------------------------------- ##

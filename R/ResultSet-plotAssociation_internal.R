@@ -19,7 +19,7 @@
 
         qqman::manhattan(dta, ylab="-log10(P.Value)", ...)
     } else if(type == "volcano") {
-        volcano_plot(
+        rexposome::volcano_plot(
             pval=dta$P.Value,
             fc=dta$logFC,
             names=rownames(dta),

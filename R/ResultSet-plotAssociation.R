@@ -19,7 +19,7 @@ setMethod(
         if(missing(tFC)) tFC <- NULL
 
         #if(object@fun_origin %in% c("assocGE", "assocME")) {
-        if(object@fun_origin == "assocES") {
+        if(object@fun_origin == "association") {
             # if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
             #     stop("Invalid object 'ResultSet'. Expected an object ",
             #          "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
@@ -43,14 +43,14 @@ setMethod(
                                                collapse="', '"), "'")
             }
             .plot_assoc_snps(object, type, ...)
-        } else if(object@fun_origin == "assocPRT") {
-            if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
-                stop("Invalid object 'ResultSet'. Expected an object ",
-                     "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
-                     "Given one from '", paste(object@class_origin,
-                                               collapse="', '"), "'")
-            }
-            .plot_assoc_prot(object, rid, type, ...)
+        # } else if(object@fun_origin == "assocPRT") {
+        #     if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
+        #         stop("Invalid object 'ResultSet'. Expected an object ",
+        #              "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
+        #              "Given one from '", paste(object@class_origin,
+        #                                        collapse="', '"), "'")
+        #     }
+        #     .plot_assoc_prot(object, rid, type, ...)
         } else {
             stop("Invalid 'object'. Value for attribue 'fun_origin' (",
                  object@fun_origin, ") not recognized.")

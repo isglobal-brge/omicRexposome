@@ -47,6 +47,10 @@ Both association an dintegration studies are based in objects of class `MultiDat
 
 The method `association` requires a `MultiDataSet` object having to types of information: the exposome data from an `ExposomeSet` object and omic information from objects of class `ExpressionSet`, `MethylationSet`, `SummarizedExperiment` or others. `ExposomeSet` objects are created with functions `read_exposome` and `load_exposome` from `rexposome` R package (see next section *Loading Exposome Data*) and encapsulates exposome data. The method `crossomics` expects a `MultiDataSet` with any number of different data-sets (at last two). Compared with `association` method, `crossomics` do not requires an `ExposomeSet`.
 
+## Exposome and Omic Data
+
+In order to illustrate the camabilities of `omicRexposome` and the exposome-omic analysis pipeline, we will use the data from `BRGdata` package. This package includes different omic-sets including methylation, transcriptome and proteome data-sets and an exposome-data set.
+
 # Analysis
 
 `omicRexposome` and `MultiDataSet` R packages are loaded using the standard library command:
@@ -55,31 +59,6 @@ The method `association` requires a `MultiDataSet` object having to types of inf
 library(omicRexposome)
 library(MultiDataSet)
 ```
-
-## Loading Exposome Data
-
-In order to illustrate how to load exposome data, we will use the code from the vignette *Exposome Data Analysis* (from `rexposome` R package).
-
-```{r load_exposome, message=FALSE}
-library(rexposome)
-
-path <- paste0(path.package("rexposome"), .Platform$file.sep, "extdata")
-description <- paste0(path, .Platform$file.sep, "description.csv")
-phenotype <- paste0(path, .Platform$file.sep, "phenotypes.csv")
-exposures <- paste0(path, .Platform$file.sep, "exposures.csv")
-
-exp <- read_exposome(
-    exposures = exposures, 
-    description = description, 
-    phenotype = phenotype,
-    exposures.samCol = 1, 
-    description.expCol = 2, 
-    description.famCol = 1, 
-    phenotype.samCol = 1
-)
-```
-
-The previous code located three files: *exposure* file, *description* file and *phenotype* file. The first correspond to the matrix of exposures (columns are exposures and rows are measures). The second corresponds to the description of the exposures, having the definition of families (columns are descriptive elements of the exposures including the family and rows are exposures). The last is the file with the outcomes and covariates (columns are covariates and rows are samples).
 
 ## Association Studies
 
@@ -98,72 +77,29 @@ The following subsections illustrates the usage of `association` with different 
 
 ### Exposome - Methylation Data Association
 
-First we retrieve the methylation (beta values) data from the package.
+First we get the exposome data from `BRGdata` package that we will use in the whole section.
 
-```{r methy_data, cache=FALSE}
-data("methy_r", package = "omicRexposome")
+```{r expos_data, cache=FALSE}
+data("brge_expo", package = "BRGEdata")
+class(brge_expo)
 ```
-
-Then we perform the association between the methylation and four exposures (we use the argument `select` to specify four exposures).
-
-```{r methy_analysis, message=FALSE, warning=FALSE}
-mds <- createMultiDataSet()
-mds <- add_methy(mds, methy_r)
-mds <- add_exp(mds, exp[c("Pb", "Co", "THM", "G_pesticides"), ])
-names(mds)
-methy <- association(mds, formula=~sex+age, 
-    expset = "exposures", omicset = "methylation")
-```
-
-Function `association` returns an object of class `ResultSet`:
-
-```{r methy_show}
-methy
-```
-
-The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
-
-```{r methy_tables}
-cbind(
-    Hits=tableHits(methy, th = 0.001),
-    Lambda=tableLambda(methy)[ , -1]
-)
-```
-
-These results can be plotted with the methods `plotHist` and `plotLambda`:
-
-```{r methy_plot_tables}
-gridExtra::grid.arrange(
-    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation - Hits per Exposure"),
-    plotLambda(methy) + ggplot2::ggtitle("Methylation - Lambda per Exposure"),
-    nrow=2
-)
-```
-
-The conclusion here are:
- 
- * The model for cooper (`Co`, lambda: `1.14`) is a bit inflated.
- * The model for garden pesticides (`G_pesticides`, lambda `0.91`) is a bit deflated.
- * The other two exposures are ok.
-
-To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `assocES` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
 
 ### Exposome - Transcriptome Data Association
 
-The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the package.
+The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the `BRGEdata` package.
 
 ```{r gexp_data, cache=FALSE}
-data("gexp_r", package = "omicRexposome")
+data("brge_gexp", package = "BRGEdata")
 ```
 
-The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The function used is `assocES`.
+The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The function used is `association`, that takes as input an object of `MultiDataSet` class.
 
 ```{r gexp_analysis, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
-mds <- add_genexp(mds, gexp_r)
-mds <- add_exp(mds, exp[c("Pb", "Co", "THM", "G_pesticides"), ])
-names(mds)
-gexp <- association(mds, formula=~sex+age, 
+mds <- add_genexp(mds, brge_gexp)
+mds <- add_exp(mds, brge_expo)
+
+gexp <- association(mds, formula=~Sex+Age, 
     expset = "exposures", omicset = "expression")
 ```
 
@@ -176,10 +112,10 @@ cbind(
 )
 ```
 
-Since all the models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `assocES` function by setting the argument `sva` to `TRUE`.
+Since most of all models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `association` method but by setting the argument `sva` to `TRUE`.
 
 ```{r gexp_analysis_sva, message=FALSE, warning=FALSE}
-gexp <- association(mds, formula=~sex+age, 
+gexp <- association(mds, formula=~Sex+Age, 
     expset = "exposures", omicset = "expression", sva = TRUE)
 ```
 
@@ -196,9 +132,9 @@ The objects of class `ResultSet` have a method called `plotAssociation` that all
 
 ```{r gexp_plot_qq}
 gridExtra::grid.arrange(
-    plotAssociation(gexp, rid="Pb", type="qq") + 
+    plotAssociation(gexp, rid="Ben_p", type="qq") + 
         ggplot2::ggtitle("Transcriptome - Pb Association"),
-    plotAssociation(gexp, rid="THM", type="qq") + 
+    plotAssociation(gexp, rid="BPA_p", type="qq") + 
         ggplot2::ggtitle("Transcriptome - THM Association"),
     ncol=2
 )
@@ -208,9 +144,9 @@ Following this line, the same method `plotAssociation` can be used to create vol
 
 ```{r gexp_plot_volcano}
 gridExtra::grid.arrange(
-    plotAssociation(gexp, rid="Pb", type="volcano", tPV=-log10(1e-03)) + 
+    plotAssociation(gexp, rid="Ben_p", type="volcano", tPV=-log10(1e-04)) + 
         ggplot2::ggtitle("Transcriptome - Pb Association"),
-    plotAssociation(gexp, rid="THM", type="volcano", tPV=-log10(1e-03)) + 
+    plotAssociation(gexp, rid="BPA_p", type="volcano", tPV=-log10(1e-04)) + 
         ggplot2::ggtitle("Transcriptome - THM Association"),
     ncol=2
 )
@@ -218,21 +154,25 @@ gridExtra::grid.arrange(
 
 ### Exposome - Proteome Data Association
 
-The data included in `omicRexposome` has 5 proteins for 32 samples.
+The pretoein data-set included in `BRGEdata` has 47 proteins for 90 samples.
 
 ```{r prot_data, cache=FALSE}
-data("prot_r", package="omicRexposome")
-prot_r
+data("brge_prot", package="BRGEdata")
+brge_prot
 ```
 
-The association analysis between exposures and proteome is also done using `assocES` but avoiding the call to `eBayes` since we only have 5 features. The `eBayes` call can be avoided setting the argument `eBayes` to `FALSE`:
+The association analysis between exposures and proteome is also done using `association` method but avoiding the call to `eBayes` since we only have 47 features. The `eBayes` call can be avoided setting the argument `ebayes` to `FALSE`:
 
 ```{r prot_analysis, message=FALSE, warning=FALSE}
-prot <- assocES(exp, prot_r, ~sex+age, 
-    select = c("Cd", "Cotinine"), eBayes=FALSE)
+mds <- createMultiDataSet()
+mds <- add_eset(mds, brge_prot, dataset.type  ="proteome")
+mds <- add_exp(mds, brge_expo)
+
+prot <- association(mds, formula=~Sex+Age, ebayes=FALSE,
+    expset = "exposures", omicset = "proteome")
 ```
 
-The `tableHits` indicates that no association was found between the 5 proteins and the 2 exposures.
+The `tableHits` indicates that no association was found between the 47 proteins and the exposures.
 
 ```{r prot_hits}
 tableHits(prot, th=0.001)
@@ -242,10 +182,10 @@ This is also seen in the Manhattan plot for proteins that can be obtained from `
 
 ```{r prot_plot_volcano}
 gridExtra::grid.arrange(
-    plotAssociation(prot, rid="Cd", type="protein") + 
+    plotAssociation(prot, rid="Ben_p", type="protein") + 
         ggplot2::ggtitle("Proteome - Cd Association") +
         ggplot2::geom_hline(yintercept = 1, color = "LightPink"),
-    plotAssociation(prot, rid="Cotinine", type="protein") + 
+    plotAssociation(prot, rid="NO2_p", type="protein") + 
         ggplot2::ggtitle("Proteome - Cotinine Association") +
         ggplot2::geom_hline(yintercept = 1, color = "LightPink"),
     ncol=2
@@ -256,31 +196,40 @@ gridExtra::grid.arrange(
 
 ## Integration Analysis
 
-`omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor).
+`omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor). The two methods are encapsulated in the `crossomics` method. 
 
-The two methods are encapsulated in the `crossomics` function. The first step in the integration analysis is to avoid missing values. Hence, we perform a fast imputation on the exposures side:
+The differences between `association` and `crossomics` are that the first method test association between two complete data-sets, by removing the sampels having missing values in any of the invlved data-sets, and the second try to find latent relationships between two or more sets.
 
-```{r impute_Exp}
-exp <- impute(exp)
+Hence, we need to explore the missing data in the exposome data-set. This can be done using the methods `plotMissings` and `tableMissings` from `rexposome` R package.
+
+```{r missing_exp, message=FALSE}
+library(rexposome)
+plotMissings(brge_expo, set = "exposures")
+```
+
+From the plot we can see that more of the exposures have up to 25% of missing values. Hence the first step in the integration analysis is to avoid missing values. so, we perform a fast imputation on the exposures side:
+
+```{r impute_exp, message=FALSE}
+brge_exp <- imputation(brge_expo)
 ```
 
 `crossomics` function expects to obtain the different data-sets in a single labelled-list, in the argument called `list`. The argument `method` from `crossomics` function can be set to `mcia` (for *multiple co-inertia analysis*) or to `mcca` (for *multi canonical correlation analysis*).
 
 ```{r crossomics_mcia, message=FALSE, warning=FALSE}
+mds <- createMultiDataSet()
+mds <- add_eset(mds, brge_prot, dataset.type  ="proteome")
+mds <- add_genexp(mds, brge_gexp)
+mds <- add_exp(mds, brge_expo)
+
 cr_mcia <- crossomics(
-    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
-    method = "mcia"
-)
+    list(brge_prot, brge_gexp, brge_expo), method = "mcia")
 cr_mcia
 ```
 
 As can be seen, `crossomics` returns an object of class `ResultSet`. This also happens when method is set to `mcca`.
 
 ```{r crossomics_mcca, message=FALSE, warning=FALSE, results='hide'}
-cr_mcca <- crossomics(
-    list(exposome=exp, transcriptome=gexp_r, methylome=methy_r), 
-    method = "mcca", permute=c(5, 3)
-)
+cr_mcca <- crossomics(mds, method = "mcca", permute=c(5, 3))
 cr_mcca
 ```
 

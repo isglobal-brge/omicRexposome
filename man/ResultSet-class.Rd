@@ -93,7 +93,7 @@ An object of class \code{ResultSet}
 \description{
 Class \code{ResultSet} encapsulates the results from the association and
 integration processes developed in \code{omicRexposome}. This include
-the functions \code{\link{assocES}} and \code{\link{crossomics}}.
+the functions \code{\link{association}} and \code{\link{crossomics}}.
 }
 \section{Methods (by generic)}{
 \itemize{
