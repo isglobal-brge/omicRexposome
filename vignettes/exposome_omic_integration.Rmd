@@ -62,22 +62,22 @@ library(MultiDataSet)
 
 ## Association Studies
 
-The association studies are performed using the method `association`. This function requires, at last four, augments:
+The association studies are performed using the method `association`. This method requires, at last four, augments:
 
  1. Argument `object` should be filled with a `MultiDataSet` object.
  2. Argument `formula` should be filled with an expression containing the covariates used to adjust the model.
  3. Argument `expset` should be filled with the name that the exposome-set recevies in the `MultiDataSet` object.
  4. Argument `omicset` should be filled with the name that the omic-set recevies in the `MultiDataSet` object.
  
-The argument `formula` should follow the pattern: `~sex+age`. The function `association` will fill the exposures in the `ExposomeSet` between `~` and the covariates `sex+age`.
+The argument `formula` should follow the pattern: `~sex+age`. The method `association` will fill the formula placing the exposures in the `ExposomeSet`m between `~` and the covariates `sex+age`.
 
-`association` implements the `limma` pipeline (`lmFit` and `eBayes`) by taking care of the missing data in exposures, outcomes and omics data and locating and filtering common samples. The argiment `method` allows to select the fitting method used in `lmFit`. By default it takes the value `"ls"`  for least squares but it can also takes `"robust"` for robust regression.
+`association` implements the `limma` pipeline using `lmFit` and `eBayes` in the extraction methods from `MultiDataSet`. The method takes care of the missing data in exposures, outcomes and omics data and locating and is subsets both data-sets, exposome data and omic data, by common samples. The argument `method` allows to select the fitting method used in `lmFit`. By default it takes the value `"ls"`  for *least squares* but it can also takes `"robust"` for *robust regression*.
 
 The following subsections illustrates the usage of `association` with different types of omics data: *methylome*, *transcriptome* and *proteome*.
 
 ### Exposome - Methylation Data Association
 
-first we get the exposome data from `BRGdata` package that we will use in the whole section.
+First we get the exposome data from `BRGdata` package that we will use in the whole section.
 
 ```{r expos_data, cache=FALSE}
 data("brge_expo", package = "BRGEdata")
@@ -93,13 +93,13 @@ data("brge_methy", package = "BRGEdata")
 class(brge_methy)
 ```
 
-Methylation data is encapsulated in a `GenomicRatioSet` object. In otehr to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object.
+Methylation data is encapsulated in a `GenomicRatioSet` object, from `minfi` R package. In orther to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object. Then the `MultiDataSet` object is passed to the `association` method.
 
 ```{r methy_analysis, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
 mds <- add_methy(mds, brge_methy)
 mds <- add_exp(mds, brge_expo)
-names(mds)
+
 methy <- association(mds, formula=~sex+age, 
     expset = "exposures", omicset = "methylation")
 ```
@@ -119,7 +119,7 @@ cbind(
 )
 ```
 
-These results can be plotted with the methods `plotHist` and `plotLambda`:
+`omicRexposome` implements the methods `ploHits` and `plotLambda` so these results can also be plotted:
 
 ```{r methy_plot_tables}
 gridExtra::grid.arrange(
@@ -135,7 +135,7 @@ The conclusion here are:
  * The model for garden pesticides (`G_pesticides`, lambda `0.91`) is a bit deflated.
  * The other two exposures are ok.
 
-To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `assocES` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
+To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `association` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
 
 ### Exposome - Transcriptome Data Association
 
@@ -145,7 +145,7 @@ The aim of this analysis is to perform an association test between the gene expr
 data("brge_gexp", package = "BRGEdata")
 ```
 
-The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The function used is `association`, that takes as input an object of `MultiDataSet` class.
+The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The method used is `association`, that takes as input an object of `MultiDataSet` class with both exposome and expression data.
 
 ```{r gexp_analysis, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
@@ -156,7 +156,7 @@ gexp <- association(mds, formula=~Sex+Age,
     expset = "exposures", omicset = "expression")
 ```
 
-We can have a look to the number of hits and the lambda score of each analysis with the methods `tableHits` and `tableLambda`.
+We can have a look to the number of hits and the lambda score of each analysis with the methods `tableHits` and `tableLambda`, seen in the previous section.
 
 ```{r gexp_tables}
 cbind(
@@ -214,14 +214,14 @@ data("brge_prot", package="BRGEdata")
 brge_prot
 ```
 
-The association analysis between exposures and proteome is also done using `association` method but avoiding the call to `eBayes` since we only have 47 features. The `eBayes` call can be avoided setting the argument `ebayes` to `FALSE`:
+The association analysis between exposures and proteome is also done using `association`.
 
 ```{r prot_analysis, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
 mds <- add_eset(mds, brge_prot, dataset.type  ="proteome")
 mds <- add_exp(mds, brge_expo)
 
-prot <- association(mds, formula=~Sex+Age, ebayes=FALSE,
+prot <- association(mds, formula=~Sex+Age,
     expset = "exposures", omicset = "proteome")
 ```
 
@@ -245,7 +245,7 @@ gridExtra::grid.arrange(
 )
 ```
 
-**NOTE**: A real Manhattan plot can be draw with `plotAssociation` by setting the argument `type` to `"manhattan"`.
+**NOTE**: A real Manhattan plot can be draw with `plot` method for `ResultSet` objects by setting the argument `type` to `"manhattan"`.
 
 ## Integration Analysis
 

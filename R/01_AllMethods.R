@@ -1,3 +1,47 @@
+#' Function to draw de result of an association study
+#'
+#' This function draws two type of plots for the ResultSet from association
+#' functions
+#'
+#' @name plotAssociation
+#' @rdname plotAssociation-methods
+#' @aliases plotAssociation,ResultSet-methods
+#' @param object An object of class \link{ResultSet} obtained from assoc_*
+#' functions.
+#' @param rid (default \code{1}) Index or name of the test to be plotted.
+#  Not used it the \code{ResultSet} comes from \link{assocSNP}.
+#' @param coef (default \code{2}) Index of the coefficient to be extracted.
+#' @param contrast (default \code{1}) When \code{code} corresponds to a
+#' multicategorical variable, contasr selects the comparison.
+#' @param type Can take \code{"volcano"}, \code{"qq"},  \code{"manhattan"} and
+#' \code{"protein"}. \code{"protein"} lot is a type of Manhattan plot designed
+#' for protein association analysis.
+#' @param tPV (optional) Threshold for P.Value when \code{type="volcano"}.
+#' @param tFC (optional) Threshold for Fold Change or Effect when
+#' \code{type="volcano"}.
+#' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, when
+#' \code{type="volcano"} the X-axis will show \code{2^logFC} instead of
+#' \code{logFC}.
+#' @examples
+#' data(prot_r)
+#' data(gexp_r)
+#' data(exp_r)
+#'
+#' # Manhattan like plot
+#' rst <- assocES(exp_r, prot_r, formula=~sex+age, eBayes=FALSE)
+#' plotAssociation(rst, type="protein")
+#'
+#' # Volcano plot
+#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
+#' plotAssociation(rst, rid="Cotinine", type="qq")
+#' @return An association plot
+#' @export plotAssociation
+#' @seealso \link{plotIntegration} for plotting integration results
+setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
+                                       type = c("manhattan", "qq", "volcano"), tPV, tFC,
+                                       show.effect=FALSE)
+    standardGeneric("plotAssociation")
+)
 
 #' Function to draw de result of an integration study
 #'

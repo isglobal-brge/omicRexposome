@@ -5,6 +5,7 @@ setMethod(
                        permute = c(100, 3), verbose=FALSE, warnings=TRUE) {
         ## --------------------------------------------------------------------- ##
         ## GENERAL CHECKS
+        method <- tolower(method)
         method <- match.arg(method, choices = c("mcca", "mcia"))
         if(length(object) < 2) {
             stop("At last two different datasets are required for integration processes.")
@@ -29,10 +30,10 @@ setMethod(
         ## --------------------------------------------------------------------- ##
 
         if(method == "mcca") {
-            .crossomics_mcca_list(mds, ncomponents=ncomponents, na.rm=na.rm,
+            .crossomics_mcca(mds, ncomponents=ncomponents, na.rm=na.rm,
                 permute=permute, verbose=verbose, warnings=warnings, ...)
         } else if(method == "mcia") {
-            .crossomics_mcia_list(mds, ncomponents=ncomponents,
+            .crossomics_mcia(mds, ncomponents=ncomponents,
                 verbose=verbose, warnings=warnings, ...)
         } else {
             stop("Invalid method (", method, ") was given.")

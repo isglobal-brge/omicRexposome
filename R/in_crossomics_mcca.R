@@ -1,9 +1,9 @@
-.crossomics_mcca_list <- function(mds, ncomponents = 2, ..., na.rm = FALSE,
+.crossomics_mcca <- function(mds, ncomponents = 2, ..., na.rm = FALSE,
                              permute=NULL, verbose = FALSE, warnings = TRUE) {
 
     ## --------------------------------------------------------------------- ##
     ## CREATE LIST OF TABLES IN BASE OF THE TYPE OF DATA
-    in_mds_for_crosomics(mds, na.rm = na.rm, verbose = verbose, warnings = warnings)
+    dta_list <- in_mds_for_crosomics(mds, na.rm = na.rm, verbose = verbose, warnings = warnings)
     ## --------------------------------------------------------------------- ##
 
     ## --------------------------------------------------------------------- ##

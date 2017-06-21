@@ -1,4 +1,4 @@
-.crossomics_mcia_list <- function(mds, ncomponents = 2, ...,
+.crossomics_mcia <- function(mds, ncomponents = 2, ...,
                              verbose = FALSE, warnings = TRUE) {
 
     ## --------------------------------------------------------------------- ##

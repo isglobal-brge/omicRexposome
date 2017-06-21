@@ -8,7 +8,7 @@ setMethod(
         data.frame(
             "exposure"=unique(rid(object)),
             "lambda"=sapply(rid(object), function(expo) {
-                lambdaClayton(topTable(object, rid=expo)$P.Value, trim=trim)
+                MultiDataSet::lambdaClayton(MultiDataSet::topTable(object, rid=expo)$P.Value, trim=trim)
                 #qchisq(median(extract(object, rid=expo)$P.Value), df=2, lower.tail=FALSE)
             })
         )
