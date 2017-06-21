@@ -21,7 +21,7 @@
 #' @import utils
 #' @import methods
 #'
-#' @importClassesFrom MultiDataSet MultiDataSet
+#' @importClassesFrom MultiDataSet MultiDataSet ResultSet
 #' @importClassesFrom rexposome ExposomeSet ExposomeClust
 #'
 #' @importFrom MultiDataSet commonSamples

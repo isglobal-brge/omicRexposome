@@ -1,47 +1,3 @@
-#' Function to draw de result of an association study
-#'
-#' This function draws two type of plots for the ResultSet from association
-#' functions
-#'
-#' @name plotAssociation
-#' @rdname plotAssociation-methods
-#' @aliases plotAssociation,ResultSet-methods
-#' @param object An object of class \link{ResultSet} obtained from assoc_*
-#' functions.
-#' @param rid (default \code{1}) Index or name of the test to be plotted.
-#  Not used it the \code{ResultSet} comes from \link{assocSNP}.
-#' @param coef (default \code{2}) Index of the coefficient to be extracted.
-#' @param contrast (default \code{1}) When \code{code} corresponds to a
-#' multicategorical variable, contasr selects the comparison.
-#' @param type Can take \code{"volcano"}, \code{"qq"},  \code{"manhattan"} and
-#' \code{"protein"}. \code{"protein"} lot is a type of Manhattan plot designed
-#' for protein association analysis.
-#' @param tPV (optional) Threshold for P.Value when \code{type="volcano"}.
-#' @param tFC (optional) Threshold for Fold Change or Effect when
-#' \code{type="volcano"}.
-#' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, when
-#' \code{type="volcano"} the X-axis will show \code{2^logFC} instead of
-#' \code{logFC}.
-#' @examples
-#' data(prot_r)
-#' data(gexp_r)
-#' data(exp_r)
-#'
-#' # Manhattan like plot
-#' rst <- assocES(exp_r, prot_r, formula=~sex+age, eBayes=FALSE)
-#' plotAssociation(rst, type="protein")
-#'
-#' # Volcano plot
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' plotAssociation(rst, rid="Cotinine", type="qq")
-#' @return An association plot
-#' @export plotAssociation
-#' @seealso \link{plotIntegration} for plotting integration results
-setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
-                                       type = c("manhattan", "qq"), tPV, tFC,
-                                       show.effect=FALSE)
-    standardGeneric("plotAssociation")
-)
 
 #' Function to draw de result of an integration study
 #'
@@ -81,25 +37,6 @@ setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
 
 # -----------------------------------------------------------------------------
 
-#' Obtain the "rid"s from a ResultSet
-#'
-#' This method resunts as character with the \code{rid}
-#' in a given \link{ResultSet}.
-#'
-#' @name rid
-#' @rdname rid-methods
-#' @aliases rid
-#' @param object An object of class \link{ResultSet}
-#' @return A character vector of \code{rid}s.
-#' @examples
-#' data(prot_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, prot_r, formula=~sex+age, eBayes=FALSE)
-#' rid(rst)
-#' @export rid
-setGeneric("rid", function(object)
-    standardGeneric("rid")
-)
 
 #' Compute a lambda score on the results stored in a ResultSet
 #'
@@ -199,53 +136,6 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
     standardGeneric("plotHits")
 )
 
-#' Method to extrat feature result from a ResultSet
-#'
-#' Homologous methods from \code{limma}, \code{topTable} resturns a
-#' \code{data.frame} with the \code{logFC} and  \code{PValue} per
-#' featrue for the selcted \code{coef} and for given result (\code{rid}).
-#'
-#' @name topTable
-#' @rdname topTable-methods
-#' @aliases topTable
-#' @param object A \code{\link{ResultSet}} object.
-#' @param rid The name or index of the result to be extracted.
-#' @param coef (default \code{2}) Index of the coefficient to be extracted.
-#' @param contrast (default \code{1}) When \code{code} corresponds to a
-#' multicategorical variable, contasr selects the comparison.
-#' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
-#' by P-Value.
-#' @return A \code{data.frame} with the result of the association study,
-#' including P-Value and Fold Change.
-#' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' topTable(rst, rid=1)
-#' @export topTable
-setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
-    standardGeneric("topTable")
-)
-
-#' Method to get the options sued to create the ResultSet
-#'
-#' Method that returns a list with the options used to create the
-#' \code{ResultSet}.
-#'
-#' @name opt
-#' @rdname opt-methods
-#' @aliases opt
-#' @param object A \code{\link{ResultSet}} object.
-#' @return A list with the options used to create the \code{ResultSet}.
-#' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' opt(rst)
-#' @export opt
-setGeneric("opt", function(object)
-    standardGeneric("opt")
-)
 
 # -----------------------------------------------------------------------------
 

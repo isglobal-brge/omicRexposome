@@ -33,7 +33,7 @@
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' rst
 # @export
-crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
+crossomics2222 <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
         permute = c(100, 3), verbose=FALSE, warnings=TRUE) {
     ## --------------------------------------------------------------------- ##
     ## GENERAL CHECKS
@@ -49,12 +49,20 @@ crossomics <- function(list, method="mcca", ncomponents=2, ..., na.rm=FALSE,
     ## --------------------------------------------------------------------- ##
     ## REDUCE DATASETS TO COMMON SAMPLES
     if(warnings | verbose) {
-        warning("Sets in list will be reduced to common samples.")
+        warning("Sets from 'MultiDataSet' will be reduced to common samples")
     }
 
-    sc <- Reduce(intersect, lapply(list, Biobase::sampleNames))
-    list <- lapply(list, function(it) it[ , sc])
+    l1 <- vapply(Biobase::sampleNames(object), length, FUN.VALUE = numeric(1))
+    object <- MultiDataSet::commonSamples(object)
+    l2 <- sapply(Biobase::sampleNames(object), length)
+    l3 <- mapply('-', l1, l2, SIMPLIFY = FALSE)
+
+    if(verbose) {
+        message(paste(unlist(l3), names(l3),
+                      sep = " samples were reduced from ", collapse = ", "))
+    }
     ## --------------------------------------------------------------------- ##
+
 
     if(method == "mcca") {
         .crossomics_mcca_list(list, ncomponents=ncomponents, na.rm=na.rm,

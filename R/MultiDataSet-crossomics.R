@@ -3,33 +3,37 @@ setMethod(
     signature = "MultiDataSet",
     definition =  function(object, method="mcca", ncomponents=2, ..., na.rm=FALSE,
                        permute = c(100, 3), verbose=FALSE, warnings=TRUE) {
-        list <- as_list_mds(object); rm( object )
         ## --------------------------------------------------------------------- ##
         ## GENERAL CHECKS
         method <- match.arg(method, choices = c("mcca", "mcia"))
-        if(length(list) < 2) {
+        if(length(object) < 2) {
             stop("At last two different datasets are required for integration processes.")
-        }
-        if(is.null(names(list))) {
-            names(list) <- paste("set", 1:length(list))
         }
         ## --------------------------------------------------------------------- ##
 
         ## --------------------------------------------------------------------- ##
         ## REDUCE DATASETS TO COMMON SAMPLES
         if(warnings | verbose) {
-            warning("Sets in list will be reduced to common samples.")
+            warning("Sets from 'MultiDataSet' will be reduced to common samples")
         }
 
-        sc <- Reduce(intersect, lapply(list, Biobase::sampleNames))
-        list <- lapply(list, function(it) it[ , sc])
+        l1 <- vapply(Biobase::sampleNames(object), length, FUN.VALUE = numeric(1))
+        object <- MultiDataSet::commonSamples(object)
+        l2 <- sapply(Biobase::sampleNames(object), length)
+        l3 <- mapply('-', l1, l2, SIMPLIFY = FALSE)
+
+        if(verbose) {
+            message(paste(unlist(l3), names(l3),
+                          sep = " samples were reduced from ", collapse = ", "))
+        }
         ## --------------------------------------------------------------------- ##
 
         if(method == "mcca") {
-            .crossomics_mcca_list(list, ncomponents=ncomponents, na.rm=na.rm,
-                                  permute=permute, verbose=verbose, warnings=warnings, ...)
+            .crossomics_mcca_list(mds, ncomponents=ncomponents, na.rm=na.rm,
+                permute=permute, verbose=verbose, warnings=warnings, ...)
         } else if(method == "mcia") {
-            .crossomics_mcia_list(list, verbose=verbose, warnings=warnings, ...)
+            .crossomics_mcia_list(mds, ncomponents=ncomponents,
+                verbose=verbose, warnings=warnings, ...)
         } else {
             stop("Invalid method (", method, ") was given.")
         }

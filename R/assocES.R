@@ -36,7 +36,6 @@
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' rst
-# @export
 assocES <- function(x, y, formula, select, set="exposures", sva=FALSE,
     vfilter=NULL, eBayes=TRUE, verbose=FALSE, warnings=TRUE, ...) {
 

@@ -39,7 +39,7 @@ setMethod(
             warning("Sets from 'MultiDataSet' will be reduced to common samples")
         }
 
-        l1 <- sapply(Biobase::sampleNames(object)[c(omicset, expset)], length)
+        l1 <- vapply(Biobase::sampleNames(object)[c(omicset, expset)], length, FUN.VALUE = numeric(1))
         object <- MultiDataSet::commonSamples(object)
         l2 <- sapply(Biobase::sampleNames(object)[c(omicset, expset)], length)
         l3 <- mapply('-', l1, l2, SIMPLIFY = FALSE)
@@ -87,6 +87,7 @@ setMethod(
             if(verbose) {
                 message("Evaluating model '", as.character(design), "'.")
             }
+            exp.dt <- exp.dt[ , all.vars(design)]
 
             na.loc <- rowSums(apply(exp.dt, 2, is.na))
             na.loc <- which(na.loc != 0)
@@ -100,7 +101,21 @@ setMethod(
             omic <- omic[ , rownames(exp.dt), drop = FALSE]
 
             tbl <- sapply(apply(exp.dt[ , all.vars(design)], 2, table), length)
-            if(sum(!sapply(tbl, ">", 1)) != 0) {
+
+            if(nrow(exp.dt) == 0) {
+                warning("When testing for '", ex, "', number of samples was ",
+                        "reduced to 0.")
+
+                list(
+                    N=0,
+                    sva.num=NA,
+                    ebayes=ebayes,
+                    design=NA,
+                    result=NA,
+                    error=paste0("Number of samples was reduced to 0 when ",
+                        "checking NA values.")
+                )
+            } else if(sum(!sapply(tbl, ">", 1)) != 0) {
                 warning("When testing for '", ex, "', at last one covariate ",
                         "is constant (",
                         paste(paste(names(tbl), tbl, sep=": "), collapse=", "),
@@ -162,7 +177,6 @@ setMethod(
             results = results,
             fData = fData(object)[c(expset, omicset)],
             options = list(
-                method="assocES",
                 sva=sva,
                 eBayes=ebayes,
                 class_origin=class_origin,

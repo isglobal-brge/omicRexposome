@@ -77,12 +77,65 @@ The following subsections illustrates the usage of `association` with different 
 
 ### Exposome - Methylation Data Association
 
-First we get the exposome data from `BRGdata` package that we will use in the whole section.
+first we get the exposome data from `BRGdata` package that we will use in the whole section.
 
 ```{r expos_data, cache=FALSE}
 data("brge_expo", package = "BRGEdata")
 class(brge_expo)
 ```
+
+As can be seen, the exposome data is encpaulated in an `ExposomeSet` from `rexposome` r package. 
+
+Second we retrieve the methylation (beta values) data from `BRGdata` package.
+
+```{r methy_data, cache=FALSE}
+data("brge_methy", package = "BRGEdata")
+class(brge_methy)
+```
+
+Methylation data is encapsulated in a `GenomicRatioSet` object. In otehr to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object.
+
+```{r methy_analysis, message=FALSE, warning=FALSE}
+mds <- createMultiDataSet()
+mds <- add_methy(mds, brge_methy)
+mds <- add_exp(mds, brge_expo)
+names(mds)
+methy <- association(mds, formula=~sex+age, 
+    expset = "exposures", omicset = "methylation")
+```
+
+Function `association` returns an object of class `ResultSet`:
+
+```{r methy_show}
+methy
+```
+
+The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
+
+```{r methy_tables}
+cbind(
+    Hits=tableHits(methy, th = 0.001),
+    Lambda=tableLambda(methy)[ , -1]
+)
+```
+
+These results can be plotted with the methods `plotHist` and `plotLambda`:
+
+```{r methy_plot_tables}
+gridExtra::grid.arrange(
+    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation - Hits per Exposure"),
+    plotLambda(methy) + ggplot2::ggtitle("Methylation - Lambda per Exposure"),
+    nrow=2
+)
+```
+
+The conclusion here are:
+ 
+ * The model for cooper (`Co`, lambda: `1.14`) is a bit inflated.
+ * The model for garden pesticides (`G_pesticides`, lambda `0.91`) is a bit deflated.
+ * The other two exposures are ok.
+
+To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `assocES` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
 
 ### Exposome - Transcriptome Data Association
 
@@ -107,7 +160,7 @@ We can have a look to the number of hits and the lambda score of each analysis w
 
 ```{r gexp_tables}
 cbind(
-    Hits=tableHits(gexp, th=0.001),
+    Hits=tableHits(gexp, th=0.001)[ , -1],
     Lambda=tableLambda(gexp)[ , -1]
 )
 ```
@@ -123,7 +176,7 @@ We can re-check the results creating the same table than before:
 
 ```{r gexp_tables_sva}
 cbind(
-    Hits=tableHits(gexp, th=0.001),
+    Hits=tableHits(gexp, th=0.001)[ , -1],
     Lambda=tableLambda(gexp)[ , -1]
 )
 ```
@@ -217,12 +270,11 @@ brge_exp <- imputation(brge_expo)
 
 ```{r crossomics_mcia, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
-mds <- add_eset(mds, brge_prot, dataset.type  ="proteome")
+mds <- add_eset(mds, brge_prot, dataset.type = "proteome")
 mds <- add_genexp(mds, brge_gexp)
 mds <- add_exp(mds, brge_expo)
 
-cr_mcia <- crossomics(
-    list(brge_prot, brge_gexp, brge_expo), method = "mcia")
+cr_mcia <- crossomics(mds, method = "mcia" )
 cr_mcia
 ```
 

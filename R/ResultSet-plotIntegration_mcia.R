@@ -28,7 +28,7 @@ splot_variables <- function (x, axis1 = 1, axis2 = 2, colors) {
         ggplot2::theme(legend.position="right") +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::ggtitle("Feaure Space") +
+        ggplot2::ggtitle("Feature Space") +
         ggplot2::theme_bw()
 }
 
