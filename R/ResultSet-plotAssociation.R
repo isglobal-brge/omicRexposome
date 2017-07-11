@@ -1,20 +1,10 @@
-#' @describeIn ResultSet Allows to plot a series of plots (QQ plot, Manhattan
-#' plot and Volcano plot) depending on the results stored in the
-#' \code{ResultSet}.
-#' @param rid Name or index of the internal result to be used
-#' @param coef Coefficient to be returne, usually 2
-#' @param contrast If coefficient to be used was multicategorical, number
-#' of the contrast to be returned.
-#' @param type Type of plot to be drawn
-#' @param tPV Threshold for P-Value
-#' @param tFC Threshold for log FC of effect
 setMethod(
     f = "plotAssociation",
     signature = "ResultSet",
-    definition = function(object, rid = 1, coef = 2, contrast = 1, type, tPV,
-                          tFC, show.effect=FALSE) {
+    definition = function(object, rid = 1, coef = 2, contrast = NULL, type,
+            tPV, tFC, show.effect=FALSE) {
         if(type == "protein") {
-            dta <- MultiDataSet::topTable(object,
+            dta <- MultiDataSet::getAssociation(object,
                 rid=rid, coef=coef, contrast=contrast)
             if(nrow(dta) == 1) {
                 stop("Invalid data obtained from 'topTable.'")
@@ -36,8 +26,9 @@ setMethod(
                     colours = c("darkgray", "darkblue"))
 
         } else {
-            plot(object, rid = rid, coef = coef, contrast = contrast,
-                 type = type, tPV = tPV, tFC = tFC, show.effect = show.effect)
+            MultiDataSet::plot(object, rid = rid, coef = coef,
+                contrast = contrast, type = type, tPV = tPV, tFC = tFC,
+                show.effect = show.effect)
         }
     }
 )

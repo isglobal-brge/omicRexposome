@@ -12,7 +12,7 @@ plotLambda(object, width = 0.75)
 \item{width}{(default \code{0.70}) width of the bar}
 }
 \value{
-An lambda plot
+A ggplot2 object
 }
 \description{
 This method draws a baplor with the lambda score of each result in the

@@ -5,7 +5,8 @@
 #'
 #' @name plotAssociation
 #' @rdname plotAssociation-methods
-#' @aliases plotAssociation,ResultSet-methods
+#' @aliases plotAssociation
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet} obtained from assoc_*
 #' functions.
 #' @param rid (default \code{1}) Index or name of the test to be plotted.
@@ -34,7 +35,7 @@
 #' # Volcano plot
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' plotAssociation(rst, rid="Cotinine", type="qq")
-#' @return An association plot
+#' @return A ggplot2 object
 #' @export plotAssociation
 #' @seealso \link{plotIntegration} for plotting integration results
 setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
@@ -49,7 +50,8 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #'
 #' @name plotIntegration
 #' @rdname plotIntegration-methods
-#' @aliases plotIntegration,ResultSet-methods
+#' @aliases plotIntegration
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet} obtained from
 #' \link{crossomics}.
 #' @param cmpX (default \code{1}) Value of the X-axis when ploting rsults
@@ -71,7 +73,7 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #' data(gexp_r)
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' plotIntegration(rst)
-#' @return An integration plot
+#' @return A ggplot2 object
 #' @export plotIntegration
 #' @seealso \link{plotAssociation} for plotting association results
 setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
@@ -81,6 +83,21 @@ setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
 
 # -----------------------------------------------------------------------------
 
+#' Function to obtain the integration scores
+#'
+#' This function draws a plots for the ResultSet from integration function
+#'
+#' @name plotIntegration
+#' @rdname plotIntegration-methods
+#' @aliases plotIntegration
+#' @aliases ResultSet-omicRexposome
+#' @param object An object of class \link{ResultSet} obtained from
+setGeneric("getIntegration", function(object, ...)
+    standardGeneric("getIntegration")
+)
+
+
+# -----------------------------------------------------------------------------
 
 #' Compute a lambda score on the results stored in a ResultSet
 #'
@@ -90,6 +107,7 @@ setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
 #' @name tableLambda
 #' @rdname tableLambda-methods
 #' @aliases tableLambda
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @return Returns a \code{data.frame} having the exposures and the computed
 #' lambda score.
@@ -118,6 +136,7 @@ setGeneric("tableLambda", function(object, trim=0.5)
 #' @name tableHist
 #' @rdname tableHist-methods
 #' @aliases tableHits
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
@@ -144,6 +163,7 @@ setGeneric("tableHits", function(object, th=0.05)
 #' @name plotLambda
 #' @rdname plotLambda-methods
 #' @aliases plotLambda
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param width (default \code{0.70}) width of the bar
 #' @examples
@@ -151,7 +171,7 @@ setGeneric("tableHits", function(object, th=0.05)
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' plotLambda(rst)
-#' @return An lambda plot
+#' @return A ggplot2 object
 #' @export plotLambda
 setGeneric("plotLambda", function(object, width=0.75)
     standardGeneric("plotLambda")
@@ -165,6 +185,7 @@ setGeneric("plotLambda", function(object, width=0.75)
 #' @name plotHits
 #' @rdname plotHits-methods
 #' @aliases plotHits
+#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
@@ -174,7 +195,7 @@ setGeneric("plotLambda", function(object, width=0.75)
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
 #' plotHits(rst)
-#' @return An hits plot
+#' @return A ggplot2 object
 #' @export plotHits
 setGeneric("plotHits", function(object, th=0.05, width=0.75)
     standardGeneric("plotHits")
@@ -191,6 +212,7 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' @name add_exp
 #' @rdname add_exp-methods
 #' @aliases add_exp
+#' @aliases MultiDataSet-omicRexposome
 #' @param object An object of class \link{MultiDataSet}.
 #' @param expoSet An object of class \link{ExposomeSet}.
 #' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
@@ -218,6 +240,7 @@ setGeneric("add_exp", function(object, expoSet, warnings = TRUE, ...)
 #' @name add_cls
 #' @rdname add_cls-methods
 #' @aliases add_cls
+#' @aliases MultiDataSet-omicRexposome
 #' @param object An object of class \link{MultiDataSet}.
 #' @param clsSet An object of class \link{ExposomeClust}.
 #' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
@@ -249,6 +272,8 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #'
 #' @name association
 #' @rdname association-methods
+#' @aliases association
+#' @aliases MultiDataSet-omicRexposome
 #' @export association
 setGeneric("association", function(object, formula, expset, omicset, set = "exposures",
         method = "ls", ..., sva = FALSE, ebayes = TRUE, verbose = FALSE, warnings = TRUE)
@@ -263,6 +288,10 @@ setGeneric("association", function(object, formula, expset, omicset, set = "expo
 #' allows to perform an adjustment using Surrogate Variable Analysis (from
 #' R package \code{sva}).
 #'
+#' @name crossomics
+#' @rdname crossomics-methods
+#' @aliases crossomics
+#' @aliases MultiDataSet-omicRexposome
 #' @param list A list containing at last two \code{eSet} based objects
 #' like \code{ExposomeSet}, \code{ExpressionSet} or \code{MethylationSet}.
 #' @param method (default \code{"mcca"}) It can takes values \code{"mcca"} for
@@ -290,8 +319,6 @@ setGeneric("association", function(object, formula, expset, omicset, set = "expo
 #' data(gexp_r)
 #' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
 #' rst
-#' @name crossomics
-#' @rdname crossomics-methods
 #' @export crossomics
 setGeneric("crossomics", function(object, method="mcca", ncomponents=2, ...,
         na.rm=FALSE, permute = c(100, 3), verbose=FALSE, warnings=TRUE)

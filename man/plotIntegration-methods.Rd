@@ -2,11 +2,13 @@
 % Please edit documentation in R/01_AllMethods.R
 \name{plotIntegration}
 \alias{plotIntegration}
-\alias{plotIntegration,ResultSet-methods}
+\alias{plotIntegration}
 \title{Function to draw de result of an integration study}
 \usage{
 plotIntegration(object, cmpX = 1, cmpY = 2, lb.th = 0.2,
   legend.show = TRUE, colors, ...)
+
+getIntegration(object, ...)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet} obtained from
@@ -31,11 +33,15 @@ random colores are chosen.}
 \item{...}{Optional arguments are given to \code{plot} from \link{omicade4}
 pacage (argument \code{axes} is filled with values from \code{cmpX} and
 \code{cmpY}).}
+
+\item{object}{An object of class \link{ResultSet} obtained from}
 }
 \value{
-An integration plot
+A ggplot2 object
 }
 \description{
+This function draws a plots for the ResultSet from integration function
+
 This function draws a plots for the ResultSet from integration function
 }
 \examples{

@@ -1,11 +1,15 @@
 Package: omicRexposome
-Title: Exposome and omic data associatin and integration
+Title: Exposome and omic data associatin and integration analysis
 Version: 0.99.15
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
-Description: This package takes advantage of MultiDataSet to perform both
-    association and integration analysis between exposome data and omic data.
+Description: omicRexposome systematizes the association evaluation between 
+    exposures and omic data, takeing advantage of MultiDataSet for coordinated
+    data managment, rexposome for exposome data definition and limma
+    for association testing. Also to perform data integration mixing exposome
+    and omic data using multi co-inhertia analysis (omicade4) and 
+    multi-canonical corelation analysis (PMA).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -1,14 +1,10 @@
-#' @describeIn ResultSet Draws a bar plot with the number of hits in each
-#' result of the \code{ResultSet}.
-#' @param th Threshold to considere a P-Value a hit
-#' @param width Width of the bars
 setMethod(
     f = "plotHits",
     signature = "ResultSet",
     definition = function(object, th=0.05, width=0.75) {
         tt <- tableHits(object, th)
-        ggplot2::ggplot(tt, ggplot2::aes(x=exposure, y=hits, width=width)) +
-            ggplot2::geom_bar(stat="identity") +
+        ggplot2::ggplot(tt, ggplot2::aes_string(x="exposure", y="hits")) +
+            ggplot2::geom_bar(stat="identity",  width=width) +
             ggplot2::ylab("#hits") + ggplot2::xlab("") +
             ggplot2::theme(
                 axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)

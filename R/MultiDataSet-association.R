@@ -175,12 +175,12 @@ setMethod(
         new("ResultSet",
             fun_origin = "association",
             results = results,
-            fData = fData(object)[c(expset, omicset)],
+            fData = fData(object)[c(omicset, expset)],
             options = list(
                 sva=sva,
                 eBayes=ebayes,
                 class_origin=class_origin,
-                names = c(expset, omicset)
+                names = c(omicset, expset)
             )
         )
         ## --------------------------------------------------------------------

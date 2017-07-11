@@ -15,7 +15,7 @@ as a hit.}
 \item{width}{(default \code{0.70}) width of the bar}
 }
 \value{
-An hits plot
+A ggplot2 object
 }
 \description{
 This method draws a barplot with the number of hits in each result

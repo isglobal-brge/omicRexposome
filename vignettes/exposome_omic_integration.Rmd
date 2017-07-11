@@ -88,14 +88,14 @@ As can be seen, the exposome data is encpaulated in an `ExposomeSet` from `rexpo
 
 Second we retrieve the methylation (beta values) data from `BRGdata` package.
 
-```{r methy_data, cache=FALSE}
+```{r methy_data, cache=FALSE, eval=FALSE}
 data("brge_methy", package = "BRGEdata")
 class(brge_methy)
 ```
 
 Methylation data is encapsulated in a `GenomicRatioSet` object, from `minfi` R package. In orther to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object. Then the `MultiDataSet` object is passed to the `association` method.
 
-```{r methy_analysis, message=FALSE, warning=FALSE}
+```{r methy_analysis, message=FALSE, warning=FALSE, eval=FALSE}
 mds <- createMultiDataSet()
 mds <- add_methy(mds, brge_methy)
 mds <- add_exp(mds, brge_expo)
@@ -106,13 +106,13 @@ methy <- association(mds, formula=~sex+age,
 
 Function `association` returns an object of class `ResultSet`:
 
-```{r methy_show}
+```{r methy_show, eval=FALSE}
 methy
 ```
 
 The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
 
-```{r methy_tables}
+```{r methy_tables, eval=FALSE}
 cbind(
     Hits=tableHits(methy, th = 0.001),
     Lambda=tableLambda(methy)[ , -1]
@@ -121,7 +121,7 @@ cbind(
 
 `omicRexposome` implements the methods `ploHits` and `plotLambda` so these results can also be plotted:
 
-```{r methy_plot_tables}
+```{r methy_plot_tables, eval=FALSE}
 gridExtra::grid.arrange(
     plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation - Hits per Exposure"),
     plotLambda(methy) + ggplot2::ggtitle("Methylation - Lambda per Exposure"),
@@ -159,10 +159,9 @@ gexp <- association(mds, formula=~Sex+Age,
 We can have a look to the number of hits and the lambda score of each analysis with the methods `tableHits` and `tableLambda`, seen in the previous section.
 
 ```{r gexp_tables}
-cbind(
-    Hits=tableHits(gexp, th=0.001)[ , -1],
-    Lambda=tableLambda(gexp)[ , -1]
-)
+hit <- tableHits(gexp, th=0.001)
+lab <- tableLambda(gexp)
+merge(hit, lab, by="exposure")
 ```
 
 Since most of all models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `association` method but by setting the argument `sva` to `TRUE`.
@@ -175,10 +174,9 @@ gexp <- association(mds, formula=~Sex+Age,
 We can re-check the results creating the same table than before:
 
 ```{r gexp_tables_sva}
-cbind(
-    Hits=tableHits(gexp, th=0.001)[ , -1],
-    Lambda=tableLambda(gexp)[ , -1]
-)
+hit <- tableHits(gexp, th=0.001)
+lab <- tableLambda(gexp)
+merge(hit, lab, by="exposure")
 ```
 
 The objects of class `ResultSet` have a method called `plotAssociation` that allows to create QQ Plots (that are another useful way to see if there are some inflation/deflation in the P-Values).
