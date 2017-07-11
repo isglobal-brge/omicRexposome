@@ -2,7 +2,7 @@
 
     ## Create single table will all the correlations
     all <- data.frame(do.call(rbind, lapply(1:object@options$S, function(ii) {
-        tbl <- cbind(object@results$crossomics$result$ws[[ii]], object@options$names[ii])
+        tbl <- cbind(getIntegration(object)$ws[[ii]], object@options$names[ii])
         rownames(tbl) <- rownames(object@fData[[ii]])
         colnames(tbl) <- c("x", "y", "feature")
         tbl[ tbl[ , 1] != 0 | tbl[ , 2] != 0, ]

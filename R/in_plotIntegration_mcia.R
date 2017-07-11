@@ -8,7 +8,7 @@
     }
 
 
-    plot_mcia(object@results[[1]]$result, cmpX, cmpY, colors=tcolors)
+    plot_mcia(getIntegration(object), cmpX, cmpY, colors=tcolors)
 }
 
 #colors <- c("red", "blue", "yellow")

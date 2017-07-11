@@ -30,10 +30,10 @@ setMethod(
         ## --------------------------------------------------------------------- ##
 
         if(method == "mcca") {
-            .crossomics_mcca(mds, ncomponents=ncomponents, na.rm=na.rm,
+            .crossomics_mcca(object, ncomponents=ncomponents, na.rm=na.rm,
                 permute=permute, verbose=verbose, warnings=warnings, ...)
         } else if(method == "mcia") {
-            .crossomics_mcia(mds, ncomponents=ncomponents,
+            .crossomics_mcia(object, ncomponents=ncomponents,
                 verbose=verbose, warnings=warnings, ...)
         } else {
             stop("Invalid method (", method, ") was given.")

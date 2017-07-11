@@ -88,7 +88,7 @@ As can be seen, the exposome data is encpaulated in an `ExposomeSet` from `rexpo
 
 Second we retrieve the methylation (beta values) data from `BRGdata` package.
 
-```{r methy_data, cache=FALSE, eval=FALSE}
+```{r methy_data, cache=FALSE, eval=FALSE, message=FALSE}
 data("brge_methy", package = "BRGEdata")
 class(brge_methy)
 ```
@@ -262,7 +262,7 @@ plotMissings(brge_expo, set = "exposures")
 From the plot we can see that more of the exposures have up to 25% of missing values. Hence the first step in the integration analysis is to avoid missing values. so, we perform a fast imputation on the exposures side:
 
 ```{r impute_exp, message=FALSE}
-brge_exp <- imputation(brge_expo)
+brge_expo <- imputation(brge_expo)
 ```
 
 `crossomics` function expects to obtain the different data-sets in a single labelled-list, in the argument called `list`. The argument `method` from `crossomics` function can be set to `mcia` (for *multiple co-inertia analysis*) or to `mcca` (for *multi canonical correlation analysis*).
@@ -273,14 +273,16 @@ mds <- add_eset(mds, brge_prot, dataset.type = "proteome")
 mds <- add_genexp(mds, brge_gexp)
 mds <- add_exp(mds, brge_expo)
 
-cr_mcia <- crossomics(mds, method = "mcia" )
+cr_mcia <- crossomics(mds, method = "mcia", verbose = TRUE )
 cr_mcia
 ```
 
-As can be seen, `crossomics` returns an object of class `ResultSet`. This also happens when method is set to `mcca`.
+As can be seen, `crossomics` returns an object of class `ResultSet`. In the integration process, the different ets are subseted by common samples. This is done takeing advantadge of `MultiDataSet` capabilies. 
+
+The same is done when method is set to `mcca`.
 
 ```{r crossomics_mcca, message=FALSE, warning=FALSE, results='hide'}
-cr_mcca <- crossomics(mds, method = "mcca", permute=c(5, 3))
+cr_mcca <- crossomics(mds, method = "mcca", permute=c(4, 2))
 cr_mcca
 ```
 
