@@ -247,6 +247,7 @@ gridExtra::grid.arrange(
 
 **NOTE**: A real Manhattan plot can be draw with `plot` method for `ResultSet` objects by setting the argument `type` to `"manhattan"`.
 
+
 ## Integration Analysis
 
 `omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor). The two methods are encapsulated in the `crossomics` method. 

@@ -1,15 +1,18 @@
-.crossomics_mcca <- function(mds, ncomponents = 2, ..., na.rm = FALSE,
+.crossomics_mcca <- function(object, ncomponents = 2, ..., na.rm = FALSE,
                              permute=NULL, verbose = FALSE, warnings = TRUE) {
 
     ## --------------------------------------------------------------------- ##
     ## CREATE LIST OF TABLES IN BASE OF THE TYPE OF DATA
-    dta_list <- in_mds_for_crosomics(mds, na.rm = na.rm, verbose = verbose, warnings = warnings)
+    dta_list <- in_mds_for_crosomics(object,
+        na.rm = na.rm, verbose = verbose, warnings = warnings)
+    fdt_list <- dta_list[["fdata"]]
+    dta_list <- dta_list[["adata"]]
     ## --------------------------------------------------------------------- ##
 
     ## --------------------------------------------------------------------- ##
     ## PERFORM THE INTEGRATION WITH MCCA
     if(verbose) {
-        message("Performing crossomics")
+        message("Performing crossomics (MCCA)")
     }
 
     if(is.null(permute)) {
@@ -36,7 +39,7 @@
 
     MultiDataSet::create_resultset(
         fOrigin = "crossomics",
-        lresults = list("crossomics"=list("result" = int)),
+        lResults = list("crossomics"=list("result" = int, error=NA)),
         fData = fdt_list,
         lOptions = options
     )

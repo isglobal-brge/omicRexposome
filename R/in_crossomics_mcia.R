@@ -1,9 +1,10 @@
-.crossomics_mcia <- function(mds, ncomponents = 2, ...,
+.crossomics_mcia <- function(object, ncomponents = 2, ...,
                              verbose = FALSE, warnings = TRUE) {
 
     ## --------------------------------------------------------------------- ##
     ## CREATE LIST OF TABLES IN BASE OF THE TYPE OF DATA
-    dta_list <- in_mds_for_crosomics(mds, na.rm = FALSE, verbose = verbose, warnings = warnings)
+    dta_list <- in_mds_for_crosomics(object, na.rm = FALSE,
+        verbose = verbose, warnings = warnings)
     fdt_list <- dta_list[["fdata"]]
     dta_list <- dta_list[["adata"]]
 
@@ -12,7 +13,11 @@
 
     ## --------------------------------------------------------------------- ##
     ## PERFORM THE INTEGRATION WITH MCIA
-    mres <- omicade4::mcia(dta_list, cia.nf = ncomponents, ...)
+    if(verbose) {
+        message("Performing crossomics (MCIA)")
+    }
+
+    mres <- omicade4::mcia(dta_list, cia.nf = ncomponents)#, ...)
     ## --------------------------------------------------------------------- ##
 
     names(fdt_list) <- names(list)
@@ -27,7 +32,7 @@
 
     MultiDataSet::create_resultset(
         fOrigin = "crossomics",
-        lresults = list("crossomics"=list("result" = mres)),
+        lResults = list("crossomics"=list("result" = mres, error=NA)),
         fData = fdt_list,
         lOptions = options
     )

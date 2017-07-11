@@ -1,4 +1,4 @@
-in_mds_for_crosomics <- function(mds, na.rm = FALSE) {
+in_mds_for_crosomics <- function(mds, na.rm = FALSE, verbose=FALSE, warnings=TRUE) {
     ## --------------------------------------------------------------------- ##
     ## CREATE LIST OF TABLES IN BASE OF THE TYPE OF DATA
     dta_list <- list()
@@ -101,8 +101,8 @@ in_mds_for_crosomics <- function(mds, na.rm = FALSE) {
         ii <- ii + 1
     }
     ## --------------------------------------------------------------------- ##
-    return(
+    return(list(
         adata = dta_list,
         fdata = fdt_list
-    )
+    ))
 }
