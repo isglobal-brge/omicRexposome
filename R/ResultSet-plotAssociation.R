@@ -2,10 +2,10 @@ setMethod(
     f = "plotAssociation",
     signature = "ResultSet",
     definition = function(object, rid = 1, coef = 2, contrast = NULL, type,
-            tPV, tFC, show.effect=FALSE) {
+            tPV = NULL, tFC = NULL, show.effect = FALSE) {
         if(type == "protein") {
-            dta <- MultiDataSet::getAssociation(object,
-                rid=rid, coef=coef, contrast=contrast)
+            dta <- MultiDataSet::getAssociation(object, fNames = NULL,
+                rid = rid, coef = coef, contrast = contrast)
             if(nrow(dta) == 1) {
                 stop("Invalid data obtained from 'topTable.'")
             }
@@ -28,7 +28,7 @@ setMethod(
         } else {
             MultiDataSet::plot(object, rid = rid, coef = coef,
                 contrast = contrast, type = type, tPV = tPV, tFC = tFC,
-                show.effect = show.effect)
+                show.effect = show.effect, fNames = NULL)
         }
     }
 )

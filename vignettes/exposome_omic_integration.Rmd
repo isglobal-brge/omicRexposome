@@ -88,31 +88,31 @@ As can be seen, the exposome data is encpaulated in an `ExposomeSet` from `rexpo
 
 Second we retrieve the methylation (beta values) data from `BRGdata` package.
 
-```{r methy_data, cache=FALSE, eval=FALSE, message=FALSE}
+```{r methy_data, cache=FALSE, message=FALSE}
 data("brge_methy", package = "BRGEdata")
 class(brge_methy)
 ```
 
 Methylation data is encapsulated in a `GenomicRatioSet` object, from `minfi` R package. In orther to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object. Then the `MultiDataSet` object is passed to the `association` method.
 
-```{r methy_analysis, message=FALSE, warning=FALSE, eval=FALSE}
+```{r methy_analysis, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
 mds <- add_methy(mds, brge_methy)
 mds <- add_exp(mds, brge_expo)
 
-methy <- association(mds, formula=~sex+age, 
+methy <- association(mds, formula=~Sex+Age, 
     expset = "exposures", omicset = "methylation")
 ```
 
 Function `association` returns an object of class `ResultSet`:
 
-```{r methy_show, eval=FALSE}
+```{r methy_show}
 methy
 ```
 
 The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
 
-```{r methy_tables, eval=FALSE}
+```{r methy_tables}
 cbind(
     Hits=tableHits(methy, th = 0.001),
     Lambda=tableLambda(methy)[ , -1]
@@ -136,6 +136,10 @@ The conclusion here are:
  * The other two exposures are ok.
 
 To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `association` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
+
+```{r rm_methy, shows=FALSE}
+rm(brge_methy, methy)
+```
 
 ### Exposome - Transcriptome Data Association
 
@@ -267,17 +271,19 @@ brge_expo <- imputation(brge_expo)
 
 `crossomics` function expects to obtain the different data-sets in a single labelled-list, in the argument called `list`. The argument `method` from `crossomics` function can be set to `mcia` (for *multiple co-inertia analysis*) or to `mcca` (for *multi canonical correlation analysis*).
 
+The following code shows how to perform the integration of the exposome and the proteome. The method `crossomics` request a `MultiDataSet` object as input, containing the data-set to be integrated.
+
 ```{r crossomics_mcia, message=FALSE, warning=FALSE}
 mds <- createMultiDataSet()
-mds <- add_eset(mds, brge_prot, dataset.type = "proteome")
 mds <- add_genexp(mds, brge_gexp)
+mds <- add_eset(mds, brge_prot, dataset.type = "proteome")
 mds <- add_exp(mds, brge_expo)
 
-cr_mcia <- crossomics(mds, method = "mcia", verbose = TRUE )
+cr_mcia <- crossomics(mds, method = "mcia", verbose = TRUE)
 cr_mcia
 ```
 
-As can be seen, `crossomics` returns an object of class `ResultSet`. In the integration process, the different ets are subseted by common samples. This is done takeing advantadge of `MultiDataSet` capabilies. 
+As can be seen, `crossomics` returns an object of class `ResultSet`. In the integration process, the different data-sets are subseted by common samples. This is done takeing advantadge of `MultiDataSet` capabilies. 
 
 The same is done when method is set to `mcca`.
 
@@ -291,16 +297,14 @@ We used an extra argument (`permute`) into the previous call to `crossomics` usi
 When a `ResultSet` is generated using `crossomics` the methods `plotHits`, `plotLambda` and `plotAssociation` can **NOT** be used. But the `plotIntegration` will help us to understand what was done. This method allows to provide the colours to be used on the plots:
 
 ```{r integration_colors}
-colors <- c("red", "green", "blue")
-names(colors) <- c("methylome", "transcriptome", "exposome")
+colors <- c("green", "blue", "red")
+names(colors) <- names(mds)
 ```
-
-### Plotting Multiple Co-Inertia Analysis Results
 
 The graphical representation of the results from a *multiple co-inertia analysis* is a composition of four different plots.
 
-```{r plot_mcia, messages=FALSE, warnings=FALSE}
-plotIntegration(cr_mcia, colors=colors)
+```{r plot_pe_mcia, messages=FALSE, warnings=FALSE}
+plotIntegration(cr_pe_mcia, colors=colors)
 ```
 
 The first plot (first row, first column) is the samples space. It illustrates how the different data-sets are related in terms of intra-sample variability (each dataset has a different colour). The second plot (first row, second column) shows the feature space. The features of each set are drawn on the same components so the relation between each data-set can be seen (the features are coloured depending of the set were they belong).
@@ -308,12 +312,16 @@ The first plot (first row, first column) is the samples space. It illustrates ho
 The third plot (second row, first column) shows the inertia of each component. The two first plots are drawn on the first and second component. Finally, the fourth plot shows the behaviour of the data-sets.
 
 
-### Plotting Multi Canonical Correlation Analysis Results
-
 A radar plots is obtained when `plotIntegration` is used on a `ResultSet` created though *multi canonical correlation analysis*.
 
-```{r plot_mcca, messages=FALSE, warnings=FALSE, fig.height=8, fig.width=9}
-plotIntegration(cr_mcca, colors=colors)
+```{r plot_pe_mcca, messages=FALSE, warnings=FALSE, fig.height=8, fig.width=9}
+plotIntegration(cr_pe_mcca, colors=colors)
 ```
 
 This plot shows the features of the three data-sets in the same 2D space.The relation between the features can be understood by proximity. This means that the features that clusters, or that are in the same quadrant are related and goes in a different direction than the features in the other quadrants.
+
+# Session info {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```

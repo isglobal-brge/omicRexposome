@@ -5,7 +5,8 @@
 \title{Function to draw de result of an association study}
 \usage{
 plotAssociation(object, rid = 1, coef = 2, contrast = 1,
-  type = c("manhattan", "qq", "volcano"), tPV, tFC, show.effect = FALSE)
+  type = c("manhattan", "qq", "volcano"), tPV = NULL, tFC = NULL,
+  show.effect = FALSE)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet} obtained from assoc_*

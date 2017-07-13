@@ -5,11 +5,11 @@ Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.o
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
 Description: omicRexposome systematizes the association evaluation between 
-    exposures and omic data, takeing advantage of MultiDataSet for coordinated
-    data managment, rexposome for exposome data definition and limma
-    for association testing. Also to perform data integration mixing exposome
-    and omic data using multi co-inhertia analysis (omicade4) and 
-    multi-canonical corelation analysis (PMA).
+    exposures and omic data, taking advantage of MultiDataSet for coordinated 
+    data management, rexposome for exposome data definition and limma for 
+    association testing. Also to perform data integration mixing exposome and 
+    omic data using multi co-inherent analysis (omicade4) and multi-canonical 
+    correlation analysis (PMA).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -44,20 +44,13 @@ Suggests:
 biocViews:
     WorkflowStep, 
     MultipleComparison, 
-    Visualization, 
-    AssayDomain, 
-    DNAMethylation, 
+    Visualization,
     GeneExpression, 
-    SNP, 
-    BiologicalQuestion, 
     DifferentialExpression,  
     DifferentialMethylation, 
     GeneRegulation, 
-    ResearchField, 
-    BiomedicalInformatics, 
-    Cheminformatics, 
     Epigenetics, 
     Proteomics, 
-    Transcriptomics, S
-    tatisticalMethod, 
+    Transcriptomics, 
+    StatisticalMethod, 
     Regression

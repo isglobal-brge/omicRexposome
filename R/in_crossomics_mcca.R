@@ -7,6 +7,8 @@
         na.rm = na.rm, verbose = verbose, warnings = warnings)
     fdt_list <- dta_list[["fdata"]]
     dta_list <- dta_list[["adata"]]
+
+    names(dta_list) <- names(fdt_list) <- names(object)
     ## --------------------------------------------------------------------- ##
 
     ## --------------------------------------------------------------------- ##
@@ -28,8 +30,8 @@
     names(fdt_list) <- names(list)
     options=list(
         N = nrow(dta_list[[1]]),
-        S = length(list),
-        names = names(list),
+        S = length(names(object)),
+        names = names(object),
         ncomponents = ncomponents,
         na.rm = na.rm,
         permute = permute,
@@ -37,10 +39,13 @@
         package="PMA"
     )
 
-    MultiDataSet::create_resultset(
+    rs <- MultiDataSet::create_resultset(
         fOrigin = "crossomics",
         lResults = list("crossomics"=list("result" = int, error=NA)),
         fData = fdt_list,
         lOptions = options
     )
+
+    names(rs@fData) <- names(object)
+    rs
 }

@@ -2,8 +2,7 @@ setMethod(
     f = "association",
     signature = "MultiDataSet",
     definition = function(object, formula, expset, omicset, set = "exposures",
-            method = "ls", ..., sva = FALSE, ebayes = TRUE, verbose = FALSE,
-            warnings = TRUE) {
+            method = "ls", ..., sva = FALSE, verbose = FALSE, warnings = TRUE) {
         ## CHEKS
         ## --------------------------------------------------------------------
         if(missing(expset) | missing(omicset)) {
@@ -109,7 +108,6 @@ setMethod(
                 list(
                     N=0,
                     sva.num=NA,
-                    ebayes=ebayes,
                     design=NA,
                     result=NA,
                     error=paste0("Number of samples was reduced to 0 when ",
@@ -123,7 +121,6 @@ setMethod(
                 list(
                     N=NA,
                     sva.num=NA,
-                    ebayes=ebayes,
                     design=NA,
                     result=NA,
                     error=paste0("Covariate in model '", as.character(design) ,"' is constant")
@@ -153,14 +150,10 @@ setMethod(
                 }
 
                 fit <- limma::lmFit(omic, design.mm, method=method, ...)
-                if(ebayes) {
-                    fit <- limma::eBayes(fit)
-                }
 
                 list(
                     N=nrow(exp.dt),
                     sva.num=n.sv,
-                    ebayes=ebayes,
                     error=NA,
                     design=design,
                     result=fit
@@ -178,7 +171,6 @@ setMethod(
             fData = fData(object)[c(omicset, expset)],
             options = list(
                 sva=sva,
-                eBayes=ebayes,
                 class_origin=class_origin,
                 names = c(omicset, expset)
             )

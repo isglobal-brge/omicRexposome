@@ -39,8 +39,8 @@
 #' @export plotAssociation
 #' @seealso \link{plotIntegration} for plotting integration results
 setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
-                                       type = c("manhattan", "qq", "volcano"), tPV, tFC,
-                                       show.effect=FALSE)
+        type = c("manhattan", "qq", "volcano"), tPV = NULL, tFC = NULL,
+        show.effect=FALSE)
     standardGeneric("plotAssociation")
 )
 
