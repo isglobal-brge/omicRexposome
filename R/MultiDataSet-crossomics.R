@@ -1,3 +1,5 @@
+#' @aliases crossomics
+#' @rdname crossomics-methods
 setMethod(
     f = "crossomics",
     signature = "MultiDataSet",

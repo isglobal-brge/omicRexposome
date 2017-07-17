@@ -1,3 +1,5 @@
+#' @aliases tableHits
+#' @rdname tableHits-methods
 setMethod(
     f = "tableHits",
     signature = "ResultSet",

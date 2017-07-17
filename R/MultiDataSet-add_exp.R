@@ -1,6 +1,5 @@
-# @describeIn ExposomeSet Allows to add an \code{ExposomeSet} to a
-# \code{MultiDataSet} object.
-# @param expoSet An \code{\link{ExposomeSet}} object
+#' @aliases add_exp
+#' @rdname add_exp-methods
 setMethod(
     f = "add_exp",
     signature = c("MultiDataSet", "ExposomeSet"),

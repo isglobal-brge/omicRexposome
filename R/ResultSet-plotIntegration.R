@@ -1,3 +1,5 @@
+#' @aliases plotIntegration
+#' @rdname plotIntegration-methods
 setMethod(
     f = "plotIntegration",
     signature = "ResultSet",
@@ -5,20 +7,20 @@ setMethod(
                           colors, ...) {
         if(missing(colors)) {
             colors <- rainbow(length(Biobase::fData(object)))
-            names(colors) <- names(object)
+            names(colors) <- names(Biobase::fData(object))
         } else {
-            if(sum(names(object@fData) %in% names(colors)) != length(colors)) {
+            if(sum(names(Biobase::fData(object)) %in% names(colors)) != length(colors)) {
                 stop("Invalid colors given. Colors must be a vector with names",
                      " equal to original list of data-sets.")
             } else {
-                colors <- colors[names(object@fData)]
+                colors <- colors[names(Biobase::fData(object))]
             }
         }
 
-        if(object@options$method == "MultiCCA") {
+        if(MultiDataSet::opt(object)$method == "MultiCCA") {
             .plot_integration_mcca(object, tcolors=colors, lb.th=lb.th,
                                    legend.show=legend.show, ...)
-        } else if(object@options$method == "mcia") {
+        } else if(MultiDataSet::opt(object)$method == "mcia") {
             .plot_integration_mcia(object,
                                    cmpX=cmpX, cmpY=cmpY, tcolors=colors)
         }

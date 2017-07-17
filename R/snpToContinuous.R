@@ -29,16 +29,16 @@ snpToContinuous <- function(snpSet, verbose = FALSE) {
   if(class(snpSet) != "SnpSet") { stop("Argumpent 'snpSet' must be an object of class 'SnpSet'.") }
 
   if(verbose) { message("Getting calls from SNP") }
-  cc <- snpCall(snpSet)
+  cc <- Biobase::snpCall(snpSet)
 
   if(verbose) { message("Transforming genotype to numeric") }
   snpN <- do.call(cbind,
-    mclapply(1:ncol(cc), function(nc){ .snpToNumeric(cc[ , nc]) })
+    parallel::mclapply(1:ncol(cc), function(nc){ .snpToNumeric(cc[ , nc]) })
   )
   rm(cc)
   if(verbose){ message("Transforming numeric to frequency")}
   snpN <- do.call(rbind,
-    mclapply(1:nrow(snpN), function(nr){ .normSNP(snpN[nr, ]) })
+    parallel::mclapply(1:nrow(snpN), function(nr){ .normSNP(snpN[nr, ]) })
   )
 }
 

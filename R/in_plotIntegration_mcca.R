@@ -1,12 +1,14 @@
 .plot_integration_mcca <- function(object, main, tcolors, legend.show, lb.th) {
 
     ## Create single table will all the correlations
-    all <- data.frame(do.call(rbind, lapply(1:object@options$S, function(ii) {
+
+    all <- lapply(1:MultiDataSet::opt(object)$S, function(ii) {
         tbl <- cbind(getIntegration(object)$ws[[ii]], object@options$names[ii])
         rownames(tbl) <- rownames(object@fData[[ii]])
         colnames(tbl) <- c("x", "y", "feature")
         tbl[ tbl[ , 1] != 0 | tbl[ , 2] != 0, ]
-    })), stringsAsFactors = FALSE)
+    })
+    all <- data.frame(do.call(rbind, all), stringsAsFactors = FALSE)
     all$x <- as.numeric(all$x)
     all$y <- as.numeric(all$y)
     ## /
@@ -62,11 +64,13 @@
     ## /
 
     ## Extra bar charts
-    uplot <- ggplot2::ggplot(all, ggplot2::aes_string(x="x", y="x", color="feature")) +
+    uplot <- ggplot2::ggplot(all, ggplot2::aes_string(x="x", y="x", color="feature", fill="feature")) +
         ggplot2::geom_bar(stat="identity") +
         ggplot2::scale_x_continuous(limits = c(-1, 1)) +
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +
-        ggplot2::scale_color_manual(values=tcolors) + ggplot2::theme_bw() +
+        ggplot2::scale_color_manual(values=tcolors) +
+        ggplot2::scale_fill_manual(values=tcolors) +
+        ggplot2::theme_bw() +
         ggplot2::theme(
             legend.position="none",
             axis.title.x=ggplot2::element_blank(),
@@ -93,7 +97,7 @@
 
     ## Add titles
     if(missing(main)) {
-        uplot <- uplot + ggplot2::ggtitle(paste0("Crossomics\n", paste(names(object), collapse = " - "))) +
+        uplot <- uplot + ggplot2::ggtitle(paste0("Crossomics\n", paste(names(object@fData), collapse = " - "))) +
             ggplot2::theme(plot.title = ggplot2::element_text(lineheight = 0.8, face = "bold"))
     } else {
         uplot <- uplot + ggplot2::ggtitle(main) +

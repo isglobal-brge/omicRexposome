@@ -1,3 +1,5 @@
+#' @aliases association
+#' @rdname association-methods
 setMethod(
     f = "association",
     signature = "MultiDataSet",
@@ -58,7 +60,7 @@ setMethod(
             pData(object[[omicset]]))
         rm(es)
 
-        if(length(grep("cluster", names(mds))) == 1) {
+        if(length(grep("cluster", names(object))) == 1) {
             ## EXPOSOME CLUSTER ANALYSIS
             ## ----------------------------------------------------------------
             if(warnings | verbose) {
@@ -182,8 +184,8 @@ setMethod(
 
 as_list_mds <- function(x) {
     ll <- lapply(names(x), function(dtype) {
-        elm <- assayDataElementNames(assayData(x)[[dtype]])[1]
-        assayDataElement(assayData(x)[[dtype]], elm)
+        elm <- Biobase::assayDataElementNames(Biobase::assayData(x)[[dtype]])[1]
+        Biobase::assayDataElement(Biobase::assayData(x)[[dtype]], elm)
     })
     names(ll) <- names(x)
     return(ll)

@@ -1,3 +1,5 @@
+#' @aliases getIntegration
+#' @rdname getIntegration-methods
 setMethod(
     f = "getIntegration",
     signature = "ResultSet",

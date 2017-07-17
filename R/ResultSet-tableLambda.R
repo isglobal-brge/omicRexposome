@@ -1,3 +1,5 @@
+#' @aliases tableLambda
+#' @rdname tableLambda-methods
 setMethod(
     f = "tableLambda",
     signature = "ResultSet",

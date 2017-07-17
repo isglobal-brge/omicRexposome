@@ -1,3 +1,5 @@
+#' @aliases plotLambda
+#' @rdname plotLambda-methods
 setMethod(
     f = "plotLambda",
     signature = "ResultSet",

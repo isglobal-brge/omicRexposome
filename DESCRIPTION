@@ -1,6 +1,6 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration analysis
-Version: 0.99.15
+Version: 0.99.16
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
@@ -35,12 +35,16 @@ Imports:
     gridExtra,
     MultiDataSet,
     SmartSVA,
-    isva
+    isva,
+    parallel,
+    SummarizedExperiment,
+    stringr
 Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
-    snpStats
+    snpStats,
+    BRGEdata
 biocViews:
     WorkflowStep, 
     MultipleComparison, 

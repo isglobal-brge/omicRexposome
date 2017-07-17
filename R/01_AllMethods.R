@@ -6,7 +6,6 @@
 #' @name plotAssociation
 #' @rdname plotAssociation-methods
 #' @aliases plotAssociation
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet} obtained from assoc_*
 #' functions.
 #' @param rid (default \code{1}) Index or name of the test to be plotted.
@@ -24,20 +23,14 @@
 #' \code{type="volcano"} the X-axis will show \code{2^logFC} instead of
 #' \code{logFC}.
 #' @examples
-#' data(prot_r)
-#' data(gexp_r)
-#' data(exp_r)
-#'
-#' # Manhattan like plot
-#' rst <- assocES(exp_r, prot_r, formula=~sex+age, eBayes=FALSE)
-#' plotAssociation(rst, type="protein")
-#'
-#' # Volcano plot
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' plotAssociation(rst, rid="Cotinine", type="qq")
+#' data("asr", package = "omicRexposome")
+#' plotAssociation(asr, type = "qq")
+#' plotAssociation(asr, type = "volcano")
 #' @return A ggplot2 object
 #' @export plotAssociation
-#' @seealso \link{plotIntegration} for plotting integration results
+#' @seealso \code{\link{plotIntegration}} for plotting integration results.
+#' \code{\link{association}} to create a \code{ResultSet} to be passed to
+#' this function.
 setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
         type = c("manhattan", "qq", "volcano"), tPV = NULL, tFC = NULL,
         show.effect=FALSE)
@@ -51,7 +44,6 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #' @name plotIntegration
 #' @rdname plotIntegration-methods
 #' @aliases plotIntegration
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet} obtained from
 #' \link{crossomics}.
 #' @param cmpX (default \code{1}) Value of the X-axis when ploting rsults
@@ -69,13 +61,13 @@ setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
 #' pacage (argument \code{axes} is filled with values from \code{cmpX} and
 #' \code{cmpY}).
 #' @examples
-#' data(methy_r)
-#' data(gexp_r)
-#' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
-#' plotIntegration(rst)
+#' data("crs", package = "omicRexposome")
+#' plotIntegration(crs)
 #' @return A ggplot2 object
 #' @export plotIntegration
-#' @seealso \link{plotAssociation} for plotting association results
+#' @seealso \code{\link{plotAssociation}} for plotting association results.
+#' \code{\link{crossomics}} to create a \code{ResultSet} to be passed to
+#' this function.
 setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
                                        legend.show=TRUE, colors, ...)
     standardGeneric("plotIntegration")
@@ -83,15 +75,23 @@ setGeneric("plotIntegration", function(object, cmpX=1, cmpY=2, lb.th=0.20,
 
 # -----------------------------------------------------------------------------
 
-#' Function to obtain the integration scores
+#' Method to extrat integration-feature result from a ResultSet
 #'
-#' This function draws a plots for the ResultSet from integration function
+#' Homologous methods from \code{MultiDataSet} (\code{getAssociation}) but
+#' for \code{ResultsSet} created by \code{\link{crossomics}}. It Resturns a
+#' \code{data.frame} with the result from \code{mcia} (\code{omicade4}) or
+#' from \code{MultiCCA} (\code{PMA}).
 #'
-#' @name plotIntegration
-#' @rdname plotIntegration-methods
-#' @aliases plotIntegration
-#' @aliases ResultSet-omicRexposome
+#' @name getIntegration
+#' @rdname getIntegration-methods
+#' @aliases getIntegration
 #' @param object An object of class \link{ResultSet} obtained from
+#' @param ... NOT USED
+#' @return A \code{data.frame}
+#' @examples
+#' data("crs", package = "omicRexposome")
+#' class(getIntegration(crs))
+#' @export getIntegration
 setGeneric("getIntegration", function(object, ...)
     standardGeneric("getIntegration")
 )
@@ -107,7 +107,6 @@ setGeneric("getIntegration", function(object, ...)
 #' @name tableLambda
 #' @rdname tableLambda-methods
 #' @aliases tableLambda
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @return Returns a \code{data.frame} having the exposures and the computed
 #' lambda score.
@@ -115,12 +114,10 @@ setGeneric("getIntegration", function(object, ...)
 #' \link{lambdaClayton}.
 #' @return A labeled numeric vector with the lambda score for each exposure.
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' tableLambda(rst)
+#' data("asr", package = "omicRexposome")
+#' tableLambda(asr)
 #' @export tableLambda
-#' @seealso \code{\link{tableHist}} for the number of hits per analysys,
+#' @seealso \code{\link{tableHits}} for the number of hits per analysys,
 #' \code{\link{plotHits}} for a graphical representation of the hists
 #' per analysys, \code{\link{plotLambda}} for a graphical representation of
 #' the lambda score per analysys
@@ -133,19 +130,16 @@ setGeneric("tableLambda", function(object, trim=0.5)
 #' Given a threshold it counts the number of hits in each result in the
 #' given \link{ResultSet}.
 #'
-#' @name tableHist
-#' @rdname tableHist-methods
+#' @name tableHits
+#' @rdname tableHits-methods
 #' @aliases tableHits
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
 #' @return A labeled numeric vector with the exposures and the number of hits.
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' tableHits(rst, th=0.05)
+#' data("asr", package = "omicRexposome")
+#' tableHits(asr)
 #' @export tableHits
 #' @seealso \code{\link{tableLambda}} for the lambda score per analysys,
 #' \code{\link{plotLambda}} for a graphical representation of
@@ -163,15 +157,15 @@ setGeneric("tableHits", function(object, th=0.05)
 #' @name plotLambda
 #' @rdname plotLambda-methods
 #' @aliases plotLambda
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param width (default \code{0.70}) width of the bar
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' plotLambda(rst)
+#' data("asr", package = "omicRexposome")
+#' plotLambda(asr)
 #' @return A ggplot2 object
+#' @seealso \code{\link{plotHits}} for a graphical representation of
+#' the hits per analysys, \code{\link{tableLambda}} for the lambda
+#' score per analysys, \code{\link{tableHits}} for the hists per analysys
 #' @export plotLambda
 setGeneric("plotLambda", function(object, width=0.75)
     standardGeneric("plotLambda")
@@ -185,17 +179,17 @@ setGeneric("plotLambda", function(object, width=0.75)
 #' @name plotHits
 #' @rdname plotHits-methods
 #' @aliases plotHits
-#' @aliases ResultSet-omicRexposome
 #' @param object An object of class \link{ResultSet}
 #' @param th (default \code{0.05}) Threshold (p-value) to considere a result
 #' as a hit.
 #' @param width (default \code{0.70}) width of the bar
-#' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' plotHits(rst)
 #' @return A ggplot2 object
+#' @examples
+#' data(asr, package = "omicRexposome")
+#' plotHits(asr)
+#' @seealso \code{\link{plotLambda}} for a graphical representation of
+#' the lambda score per analysys, \code{\link{tableLambda}} for the lambda
+#' score per analysys, \code{\link{tableHits}} for the hists per analysys
 #' @export plotHits
 setGeneric("plotHits", function(object, th=0.05, width=0.75)
     standardGeneric("plotHits")
@@ -212,7 +206,6 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' @name add_exp
 #' @rdname add_exp-methods
 #' @aliases add_exp
-#' @aliases MultiDataSet-omicRexposome
 #' @param object An object of class \link{MultiDataSet}.
 #' @param expoSet An object of class \link{ExposomeSet}.
 #' @param warnings (default \code{TRUE}) If set to \code{FALSE} warnings will
@@ -221,7 +214,7 @@ setGeneric("plotHits", function(object, th=0.05, width=0.75)
 #' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
 #' independent dataset.
 #' @examples
-#' data("exposome")
+#' data("exposome", package = "rexposome")
 #' library(MultiDataSet)
 #' md <- new("MultiDataSet")
 #' names(md)
@@ -239,15 +232,14 @@ setGeneric("add_exp", function(object, expoSet, warnings = TRUE, ...)
 #'
 #' @name add_cls
 #' @rdname add_cls-methods
-#' @aliases add_cls
-#' @aliases MultiDataSet-omicRexposome
+#'
 #' @param object An object of class \link{MultiDataSet}.
 #' @param clsSet An object of class \link{ExposomeClust}.
 #' @param ... Arguments given to \link{add_eset} from \link{MultiDataSet}.
 #' @return A \link{MultiDataSet} with the \link{ExpressionSet} added as an
 #' independent dataset.
 #' @examples
-#' data("eclust")
+#' data("eclust", package = "rexposome")
 #' library(MultiDataSet)
 #' md <- new("MultiDataSet")
 #' names(md)
@@ -263,20 +255,51 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #' Method to perform an association study between transcriptome and exposom
 #'
 #' This function allows to perform an association study between gene
-#' expression from microarray and the exposome. An \link{ExpresionSet} is
-#' the object storing the gene expresion and an \link{ExposomeSet} the one
+#' expression from microarray and the exposome. An \code{ExpresionSet} is
+#' the object storing the gene expresion and an \code{ExposomeSet} the one
 #' storing the exposome. Both of them needs to be encapsulated in a
-#' \link{MultiDataSet}. The association study is perform through standard
-#' \link{limma} pipeline. The function allows to perform multiple tests using
+#' \code{MultiDataSet}. The association study is perform through standard
+#' \code{limma} pipeline. The function allows to perform multiple tests using
 #' the argument \code{exposures}.
 #'
 #' @name association
 #' @rdname association-methods
 #' @aliases association
-#' @aliases MultiDataSet-omicRexposome
+#' @param object A \code{MultiDataSet} object containing at last one omic
+#' data-sets like \code{ExpressionSet}, \code{MethylationSet}... and, at last,
+#' one \code{ExposomeSet}.
+#' @param formula formula to be evaluated by each exposure (or phenotype, see
+#' \code{set} argument). It should not contain any exposures (or phenotype),
+#' it will be added automatically when evaluated.
+#' @param expset Name of the \code{ExposomeSet} in \code{object}.
+#' @param omicset Name of the omic data-set in \code{object}.
+#' @param set (default \code{"exposures"}) Can take value \code{"exposures"}
+#' to test the association of the exposures in the \code{ExposomeSet} vs.
+#' the features in the omic data-set. If takes \code{"phenotypes"} all
+#' phenotypes in \code{ExposomeSet} are tested.
+#' @param method (default \code{"lm"}) Check \code{limma} help pages.
+#' @param sva (default \code{FALSE}) If set to \code{TRUE} surrogate
+#' variable analysis using \code{SmartSVA} is performed.
+#' @param ... Arguments passed to \code{limma}'s \code{lmFit}.
+#' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
+#' messages descriving the process are shown.
+#' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
+#' warnings are shown when required user atention.
+#' @return An object of class \code{\link{ResultSet}}.
+#' @examples
+#' library(MultiDataSet)
+#' data(brge_prot, package = "BRGEdata")
+#' data(brge_expo, package = "BRGEdata")
+#' mds <- createMultiDataSet()
+#' mds <- add_eset(mds, brge_prot, dataset.type = "proteines")
+#' mds <- add_eset(mds, brge_expo, dataset.type = "exposures", GRanges = NA)
+#'
+#' asr <- association(mds, formula = Asthma ~ Sex + Age,
+#'   expset = "exposures", omicset = "proteines")
+#' asr
 #' @export association
 setGeneric("association", function(object, formula, expset, omicset, set = "exposures",
-        method = "ls", ..., sva = FALSE, ebayes = TRUE, verbose = FALSE, warnings = TRUE)
+        method = "ls", ..., sva = FALSE, verbose = FALSE, warnings = TRUE)
     standardGeneric("association")
 )
 
@@ -291,13 +314,14 @@ setGeneric("association", function(object, formula, expset, omicset, set = "expo
 #' @name crossomics
 #' @rdname crossomics-methods
 #' @aliases crossomics
-#' @aliases MultiDataSet-omicRexposome
-#' @param list A list containing at last two \code{eSet} based objects
-#' like \code{ExposomeSet}, \code{ExpressionSet} or \code{MethylationSet}.
+#' @param object A \code{MultiDataSet} object containing at last two data-sets
+#' like \code{ExposomeSet}, \code{ExpressionSet}, \code{MethylationSet}...
 #' @param method (default \code{"mcca"}) It can takes values \code{"mcca"} for
 #' Multiple Canonical Correlation Analysis or \code{"mcia"} for Multiple
 #' Co-Inertia Analysis.
 #' @param ncomponents (default \code{2}) Number of components to be estimated.
+#' @param ... Other arguments given to \code{mcia} (from \code{omicade4}) or
+#' to \code{MultiCCA} (from \code{PMA}).
 #' @param na.rm (default \code{FALSE}) If \code{method} was set to
 #' \code{"mcca"} and \code{na.rm} was set to \code{TRUE}, features containing
 #' missing values are removed.
@@ -307,18 +331,23 @@ setGeneric("association", function(object, formula, expset, omicset, set = "expo
 #' the number permutations (default in \code{MultiCCa.permute} is \code{25})
 #' and \code{permute[2]} the number of iterations
 #' (default in \code{MultiCCA.permute} is 3).
-#' @param ... Other arguments given to \code{mcia} (from \code{omicade4}) or
-#' to \code{MultiCCA} (from \code{PMA}).
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
 #' messages descriving the process are shown.
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
 #' warnings are shown when required user atention.
 #' @return An object of class \code{\link{ResultSet}}.
 #' @examples
-#' data(methy_r)
-#' data(gexp_r)
-#' rst <- crossomics(list(methy=methy_r, gexp=gexp_r), permute=NULL)
-#' rst
+#' library(MultiDataSet)
+#' library(rexposome)
+#' data(brge_prot, package = "BRGEdata")
+#' data(brge_expo, package = "BRGEdata")
+#' mds <- createMultiDataSet()
+#' mds <- add_eset(mds, brge_prot, dataset.type = "proteines")
+#' mds <- add_eset(mds, imputation(brge_expo),
+#'     dataset.type = "exposures", GRanges = NA)
+#'
+#' crs <- crossomics(mds, method = "mcia")
+#' crs
 #' @export crossomics
 setGeneric("crossomics", function(object, method="mcca", ncomponents=2, ...,
         na.rm=FALSE, permute = c(100, 3), verbose=FALSE, warnings=TRUE)

@@ -1,3 +1,5 @@
+#' @aliases plotAssociation
+#' @rdname plotAssociation-methods
 setMethod(
     f = "plotAssociation",
     signature = "ResultSet",

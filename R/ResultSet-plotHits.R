@@ -1,3 +1,5 @@
+#' @aliases plotHits
+#' @rdname plotHits-methods
 setMethod(
     f = "plotHits",
     signature = "ResultSet",

@@ -75,7 +75,7 @@ The argument `formula` should follow the pattern: `~sex+age`. The method `associ
 
 The following subsections illustrates the usage of `association` with different types of omics data: *methylome*, *transcriptome* and *proteome*.
 
-### Exposome - Methylation Data Association
+### Exposome - Transcriptome Data Association
 
 First we get the exposome data from `BRGdata` package that we will use in the whole section.
 
@@ -84,64 +84,6 @@ data("brge_expo", package = "BRGEdata")
 class(brge_expo)
 ```
 
-As can be seen, the exposome data is encpaulated in an `ExposomeSet` from `rexposome` r package. 
-
-Second we retrieve the methylation (beta values) data from `BRGdata` package.
-
-```{r methy_data, cache=FALSE, message=FALSE}
-data("brge_methy", package = "BRGEdata")
-class(brge_methy)
-```
-
-Methylation data is encapsulated in a `GenomicRatioSet` object, from `minfi` R package. In orther to perform the association analysis between the methylation and exposome we encapsulate both data-sets into a `MultiDataSet` object. Then the `MultiDataSet` object is passed to the `association` method.
-
-```{r methy_analysis, message=FALSE, warning=FALSE}
-mds <- createMultiDataSet()
-mds <- add_methy(mds, brge_methy)
-mds <- add_exp(mds, brge_expo)
-
-methy <- association(mds, formula=~Sex+Age, 
-    expset = "exposures", omicset = "methylation")
-```
-
-Function `association` returns an object of class `ResultSet`:
-
-```{r methy_show}
-methy
-```
-
-The class `ResultSet` has two methods to allows to summarize the results obtained: `tableHits` and `tableLambda`. The method `tableHist` returns a vector of the number of hits (aka, number of CpGs differentially methylated) per analysis (aka, exposures). The method `tableLambda` computed the lambda score per each analysis. The *lambda score* allows to identify if a mode is inflated (excess of observed hits) when the score is over one, or deflated (leak of observed hits) when the score is under one. 
-
-```{r methy_tables}
-cbind(
-    Hits=tableHits(methy, th = 0.001),
-    Lambda=tableLambda(methy)[ , -1]
-)
-```
-
-`omicRexposome` implements the methods `ploHits` and `plotLambda` so these results can also be plotted:
-
-```{r methy_plot_tables, eval=FALSE}
-gridExtra::grid.arrange(
-    plotHits(methy, th=0.001) + ggplot2::ggtitle("Methilation - Hits per Exposure"),
-    plotLambda(methy) + ggplot2::ggtitle("Methylation - Lambda per Exposure"),
-    nrow=2
-)
-```
-
-The conclusion here are:
- 
- * The model for cooper (`Co`, lambda: `1.14`) is a bit inflated.
- * The model for garden pesticides (`G_pesticides`, lambda `0.91`) is a bit deflated.
- * The other two exposures are ok.
-
-To overcome this situation, we should consider to use *Surrogate Variable Analysis* on the models. `association` provides this option and can be set-up setting the argument `sva` to `TRUE` (see next section for a demonstration).
-
-```{r rm_methy, shows=FALSE}
-rm(brge_methy, methy)
-```
-
-### Exposome - Transcriptome Data Association
 
 The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the `BRGEdata` package.
 
@@ -250,6 +192,11 @@ gridExtra::grid.arrange(
 **NOTE**: A real Manhattan plot can be draw with `plot` method for `ResultSet` objects by setting the argument `type` to `"manhattan"`.
 
 
+```{r, rm_asc, echo=FALSE, message=FALSE}
+rm(prot, gexp)
+gc()
+```
+
 ## Integration Analysis
 
 `omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor). The two methods are encapsulated in the `crossomics` method. 
@@ -304,7 +251,7 @@ names(colors) <- names(mds)
 The graphical representation of the results from a *multiple co-inertia analysis* is a composition of four different plots.
 
 ```{r plot_pe_mcia, messages=FALSE, warnings=FALSE}
-plotIntegration(cr_pe_mcia, colors=colors)
+plotIntegration(cr_mcia, colors=colors)
 ```
 
 The first plot (first row, first column) is the samples space. It illustrates how the different data-sets are related in terms of intra-sample variability (each dataset has a different colour). The second plot (first row, second column) shows the feature space. The features of each set are drawn on the same components so the relation between each data-set can be seen (the features are coloured depending of the set were they belong).
@@ -315,10 +262,14 @@ The third plot (second row, first column) shows the inertia of each component. T
 A radar plots is obtained when `plotIntegration` is used on a `ResultSet` created though *multi canonical correlation analysis*.
 
 ```{r plot_pe_mcca, messages=FALSE, warnings=FALSE, fig.height=8, fig.width=9}
-plotIntegration(cr_pe_mcca, colors=colors)
+plotIntegration(cr_mcca, colors=colors)
 ```
 
 This plot shows the features of the three data-sets in the same 2D space.The relation between the features can be understood by proximity. This means that the features that clusters, or that are in the same quadrant are related and goes in a different direction than the features in the other quadrants.
+
+```{r, rm_crs}
+rm(cr_mcia, cr_mcca)
+```
 
 # Session info {.unnumbered}
 

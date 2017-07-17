@@ -1,9 +1,9 @@
 .plot_integration_mcia <- function(object, cmpX, cmpY, tcolors, ...) {
-    if(object@results[[1]]$result$coa[[1]]$nf < 2) {
+    if(getIntegration(object)$coa[[1]]$nf < 2) {
         stop("Input ResultSet was created for less than 2 components.")
     }
 
-    if(sum(c(cmpX, cmpY) <= object@results[[1]]$result$coa[[1]]$nf) != 2) {
+    if(sum(c(cmpX, cmpY) <= getIntegration(object)$coa[[1]]$nf) != 2) {
         stop("Given component X or component Y (cmpX, cmpY) higher than number of axis in ResultSet.")
     }
 
