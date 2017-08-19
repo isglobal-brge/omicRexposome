@@ -278,9 +278,11 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #' the features in the omic data-set. If takes \code{"phenotypes"} all
 #' phenotypes in \code{ExposomeSet} are tested.
 #' @param method (default \code{"lm"}) Check \code{limma} help pages.
+#' @param ... Arguments passed to \code{limma}'s \code{lmFit}.
+#' @param baselevels (optional) If set, must be a labeled vector with the
+#' default base level for categorical exposures.
 #' @param sva (default \code{FALSE}) If set to \code{TRUE} surrogate
 #' variable analysis using \code{SmartSVA} is performed.
-#' @param ... Arguments passed to \code{limma}'s \code{lmFit}.
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
 #' messages descriving the process are shown.
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
@@ -298,8 +300,9 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #'   expset = "exposures", omicset = "proteines")
 #' asr
 #' @export association
-setGeneric("association", function(object, formula, expset, omicset, set = "exposures",
-        method = "ls", ..., sva = FALSE, verbose = FALSE, warnings = TRUE)
+setGeneric("association", function(object, formula, expset, omicset,
+        set = "exposures", method = "ls", ..., baselevels, sva = FALSE,
+        verbose = FALSE, warnings = TRUE)
     standardGeneric("association")
 )
 

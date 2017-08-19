@@ -4,7 +4,8 @@ setMethod(
     f = "association",
     signature = "MultiDataSet",
     definition = function(object, formula, expset, omicset, set = "exposures",
-            method = "ls", ..., sva = FALSE, verbose = FALSE, warnings = TRUE) {
+            method = "ls", ..., baselevels, sva = FALSE, verbose = FALSE,
+            warnings = TRUE) {
         ## CHEKS
         ## --------------------------------------------------------------------
         if(missing(expset) | missing(omicset)) {
@@ -81,6 +82,7 @@ setMethod(
         ## --------------------------------------------------------------------
 
 
+        cL <- ifelse(missing(baselevels), FALSE, TRUE)
         ## EXTRACT SETS AND PERFORM ANALYSIS
         ## --------------------------------------------------------------------
         results <- lapply(select, function(ex) {
@@ -88,7 +90,15 @@ setMethod(
             if(verbose) {
                 message("Evaluating model '", as.character(design), "'.")
             }
-            exp.dt <- exp.dt[ , all.vars(design)]
+            exp.dt <- exp.dt[ , all.vars(design), drop = FALSE]
+
+            # check if relevel is necessary
+            if(cL) {
+                if(ex %in% names(baselevels)) {
+                    exp.dt[ , ex] <- relevel(exp.dt[ , ex], baselevels[ex])
+                }
+            }
+            # /
 
             na.loc <- rowSums(apply(exp.dt, 2, is.na))
             na.loc <- which(na.loc != 0)
@@ -97,16 +107,15 @@ setMethod(
                     warning("There are missing values. ", length(na.loc),
                             " samples will be removed.")
                 }
-                exp.dt <- exp.dt[-na.loc, , drop=FALSE]
+                exp.dt <- exp.dt[-na.loc, , drop = FALSE]
             }
             omic <- omic[ , rownames(exp.dt), drop = FALSE]
 
-            tbl <- sapply(apply(exp.dt[ , all.vars(design)], 2, table), length)
+            tbl <- sapply(all.vars(design), function(x) length(table( exp.dt[ , x, drop = FALSE])))
 
             if(nrow(exp.dt) == 0) {
                 warning("When testing for '", ex, "', number of samples was ",
                         "reduced to 0.")
-
                 list(
                     N=0,
                     sva.num=NA,
@@ -170,7 +179,7 @@ setMethod(
         new("ResultSet",
             fun_origin = "association",
             results = results,
-            fData = fData(object)[c(omicset, expset)],
+            fData = Biobase::fData(object)[c(omicset, expset)],
             options = list(
                 sva=sva,
                 class_origin=class_origin,

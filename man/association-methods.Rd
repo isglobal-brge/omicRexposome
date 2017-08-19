@@ -9,11 +9,12 @@
 Method to perform an association study between transcriptome and exposom}
 \usage{
 association(object, formula, expset, omicset, set = "exposures",
-  method = "ls", ..., sva = FALSE, verbose = FALSE, warnings = TRUE)
+  method = "ls", ..., baselevels, sva = FALSE, verbose = FALSE,
+  warnings = TRUE)
 
 \S4method{association}{MultiDataSet}(object, formula, expset, omicset,
-  set = "exposures", method = "ls", ..., sva = FALSE, verbose = FALSE,
-  warnings = TRUE)
+  set = "exposures", method = "ls", ..., baselevels, sva = FALSE,
+  verbose = FALSE, warnings = TRUE)
 }
 \arguments{
 \item{object}{A \code{MultiDataSet} object containing at last one omic
@@ -36,6 +37,9 @@ phenotypes in \code{ExposomeSet} are tested.}
 \item{method}{(default \code{"lm"}) Check \code{limma} help pages.}
 
 \item{...}{Arguments passed to \code{limma}'s \code{lmFit}.}
+
+\item{baselevels}{(optional) If set, must be a labeled vector with the
+default base level for categorical exposures.}
 
 \item{sva}{(default \code{FALSE}) If set to \code{TRUE} surrogate
 variable analysis using \code{SmartSVA} is performed.}
