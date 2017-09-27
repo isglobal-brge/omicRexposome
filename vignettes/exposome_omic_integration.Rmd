@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE, warnings=FALSE)
 
 # Introduction
 
-`omicRexposome` is an R package designed to work join with `rexposome`. The aim of `omicRexposome` is to perform analysis joining exposome and omic data with the goal to find the relationship between a single or set of exposures (external exposome) and the behaviour of a gene, a group of CpGs, the level of a protein, etcetera. Also to provide a series of tools to analyse exposome and omic data using standard methods from Biocondcutor.
+`omicRexposome` is an R package designed to work join with `rexposome`. The aim of `omicRexposome` is to perform analysis joining exposome and omic data with the goal to find the relationship between a single or set of exposures (external exposome) and the behavior of a gene, a group of CpGs, the level of a protein, etc. Also to provide a series of tools to analyse exposome and omic data using standard methods from Biocondcutor.
 
 ## Installation
 
@@ -43,13 +43,13 @@ Two different types of analyses can be done with `omicRexposome`:
 | Association Study | `association`            |
 | Integration Study | `crossomics`             |
 
-Both association an dintegration studies are based in objects of class `MultiDataSet`. A `MultiDataSet` object is a contained for multiple layers of sample information. Once the exposome data and the omics data are encapsulated in a `MultiDataSet` the object can be used for both association and integration studies.
+Both association and integration studies are based in objects of class `MultiDataSet`. A `MultiDataSet` object is a contained for multiple layers of sample information. Once the exposome data and the omics data are encapsulated in a `MultiDataSet` the object can be used for both association and integration studies.
 
 The method `association` requires a `MultiDataSet` object having to types of information: the exposome data from an `ExposomeSet` object and omic information from objects of class `ExpressionSet`, `MethylationSet`, `SummarizedExperiment` or others. `ExposomeSet` objects are created with functions `read_exposome` and `load_exposome` from `rexposome` R package (see next section *Loading Exposome Data*) and encapsulates exposome data. The method `crossomics` expects a `MultiDataSet` with any number of different data-sets (at last two). Compared with `association` method, `crossomics` do not requires an `ExposomeSet`.
 
 ## Exposome and Omic Data
 
-In order to illustrate the camabilities of `omicRexposome` and the exposome-omic analysis pipeline, we will use the data from `BRGdata` package. This package includes different omic-sets including methylation, transcriptome and proteome data-sets and an exposome-data set.
+In order to illustrate the capabilities of `omicRexposome` and the exposome-omic analysis pipeline, we will use the data from `BRGdata` package. This package includes different omic-sets including methylation, transcriptome and proteome data-sets and an exposome-data set.
 
 # Analysis
 
@@ -66,8 +66,8 @@ The association studies are performed using the method `association`. This metho
 
  1. Argument `object` should be filled with a `MultiDataSet` object.
  2. Argument `formula` should be filled with an expression containing the covariates used to adjust the model.
- 3. Argument `expset` should be filled with the name that the exposome-set recevies in the `MultiDataSet` object.
- 4. Argument `omicset` should be filled with the name that the omic-set recevies in the `MultiDataSet` object.
+ 3. Argument `expset` should be filled with the name that the exposome-set receives in the `MultiDataSet` object.
+ 4. Argument `omicset` should be filled with the name that the omic-set receives in the `MultiDataSet` object.
  
 The argument `formula` should follow the pattern: `~sex+age`. The method `association` will fill the formula placing the exposures in the `ExposomeSet`m between `~` and the covariates `sex+age`.
 
@@ -110,11 +110,11 @@ lab <- tableLambda(gexp)
 merge(hit, lab, by="exposure")
 ```
 
-Since most of all models have a lambda under one, we should considerer use *Surrogate Variable Analysis*. This can be done using the same `association` method but by setting the argument `sva` to `TRUE`.
+Since most of all models have a lambda under one, we should consider use *Surrogate Variable Analysis*. This can be done using the same `association` method but by setting the argument `sva` to `"fast"` so the pipeline of `isva` and `SmartSVA` R packages is applied. If `sva` is set to `"slow"` the applied. pipeline is the one from `sva` R package.
 
 ```{r gexp_analysis_sva, message=FALSE, warning=FALSE}
 gexp <- association(mds, formula=~Sex+Age, 
-    expset = "exposures", omicset = "expression", sva = TRUE)
+    expset = "exposures", omicset = "expression", sva = "fast")
 ```
 
 We can re-check the results creating the same table than before:
@@ -151,7 +151,7 @@ gridExtra::grid.arrange(
 
 ### Exposome - Proteome Data Association
 
-The pretoein data-set included in `BRGEdata` has 47 proteins for 90 samples.
+The proteome data-set included in `BRGEdata` has 47 proteins for 90 samples.
 
 ```{r prot_data, cache=FALSE}
 data("brge_prot", package="BRGEdata")
@@ -201,7 +201,7 @@ gc()
 
 `omicRexposome` allows to study the relation between exposures and omic-features from another perspective, different from the association analyses. The integration analysis can be done, in `omicRexposome` using *multi canonical correlation analysis* or using *multiple co-inertia analysis*. The first methods is implemented in R package `PMA` (CRAN) and the second in `omicade4` R package (Bioconductor). The two methods are encapsulated in the `crossomics` method. 
 
-The differences between `association` and `crossomics` are that the first method test association between two complete data-sets, by removing the sampels having missing values in any of the invlved data-sets, and the second try to find latent relationships between two or more sets.
+The differences between `association` and `crossomics` are that the first method test association between two complete data-sets, by removing the samples having missing values in any of the involved data-sets, and the second try to find latent relationships between two or more sets.
 
 Hence, we need to explore the missing data in the exposome data-set. This can be done using the methods `plotMissings` and `tableMissings` from `rexposome` R package.
 
@@ -230,7 +230,7 @@ cr_mcia <- crossomics(mds, method = "mcia", verbose = TRUE)
 cr_mcia
 ```
 
-As can be seen, `crossomics` returns an object of class `ResultSet`. In the integration process, the different data-sets are subseted by common samples. This is done takeing advantadge of `MultiDataSet` capabilies. 
+As can be seen, `crossomics` returns an object of class `ResultSet`. In the integration process, the different data-sets are subset by common samples. This is done taking advantage of `MultiDataSet` capabilities. 
 
 The same is done when method is set to `mcca`.
 
@@ -241,7 +241,7 @@ cr_mcca
 
 We used an extra argument (`permute`) into the previous call to `crossomics` using *multi canonical correlation analysis*. This argument allows to set the internal argument corresponding to `permutations` and `iterations`, that are used to tune-up internal parameters.
 
-When a `ResultSet` is generated using `crossomics` the methods `plotHits`, `plotLambda` and `plotAssociation` can **NOT** be used. But the `plotIntegration` will help us to understand what was done. This method allows to provide the colours to be used on the plots:
+When a `ResultSet` is generated using `crossomics` the methods `plotHits`, `plotLambda` and `plotAssociation` can **NOT** be used. But the `plotIntegration` will help us to understand what was done. This method allows to provide the colors to be used on the plots:
 
 ```{r integration_colors}
 colors <- c("green", "blue", "red")
@@ -254,9 +254,9 @@ The graphical representation of the results from a *multiple co-inertia analysis
 plotIntegration(cr_mcia, colors=colors)
 ```
 
-The first plot (first row, first column) is the samples space. It illustrates how the different data-sets are related in terms of intra-sample variability (each dataset has a different colour). The second plot (first row, second column) shows the feature space. The features of each set are drawn on the same components so the relation between each data-set can be seen (the features are coloured depending of the set were they belong).
+The first plot (first row, first column) is the samples space. It illustrates how the different data-sets are related in terms of intra-sample variability (each data-set has a different color). The second plot (first row, second column) shows the feature space. The features of each set are drawn on the same components so the relation between each data-set can be seen (the features are colored depending of the set were they belong).
 
-The third plot (second row, first column) shows the inertia of each component. The two first plots are drawn on the first and second component. Finally, the fourth plot shows the behaviour of the data-sets.
+The third plot (second row, first column) shows the inertia of each component. The two first plots are drawn on the first and second component. Finally, the fourth plot shows the behavior of the data-sets.
 
 
 A radar plots is obtained when `plotIntegration` is used on a `ResultSet` created though *multi canonical correlation analysis*.

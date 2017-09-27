@@ -281,8 +281,12 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #' @param ... Arguments passed to \code{limma}'s \code{lmFit}.
 #' @param baselevels (optional) If set, must be a labeled vector with the
 #' default base level for categorical exposures.
-#' @param sva (default \code{FALSE}) If set to \code{TRUE} surrogate
-#' variable analysis using \code{SmartSVA} is performed.
+#' @param sva (default \code{"none"}). This argument can take value
+#' \code{"none"} to do not apply SVA. Value \code{"fast"} will run SVA
+#' using \code{\link{isva}} and \code{\link{SmartSVA}}. Value \code{"slow"}
+#' will run SVA using \code{\link{sva}}.
+#' @param vfilter (default \code{NULL}). Only used when \code{sva = "slow"}.
+#' Numeric number of probes used in \link{sva}. Recomended ~10% of real probes.
 #' @param verbose (default \code{FALSE}) If set to \code{TRUE}, a series of
 #' messages descriving the process are shown.
 #' @param warnings (default \code{TRUE}) If set to \code{TRUE}, a series of
@@ -301,8 +305,8 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #' asr
 #' @export association
 setGeneric("association", function(object, formula, expset, omicset,
-        set = "exposures", method = "ls", ..., baselevels, sva = FALSE,
-        verbose = FALSE, warnings = TRUE)
+        set = "exposures", method = "ls", ..., baselevels, sva = "none",
+        vfilter = NULL, verbose = FALSE, warnings = TRUE)
     standardGeneric("association")
 )
 

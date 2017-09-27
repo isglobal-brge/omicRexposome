@@ -9,12 +9,12 @@
 Method to perform an association study between transcriptome and exposom}
 \usage{
 association(object, formula, expset, omicset, set = "exposures",
-  method = "ls", ..., baselevels, sva = FALSE, verbose = FALSE,
-  warnings = TRUE)
+  method = "ls", ..., baselevels, sva = "none", vfilter = NULL,
+  verbose = FALSE, warnings = TRUE)
 
 \S4method{association}{MultiDataSet}(object, formula, expset, omicset,
-  set = "exposures", method = "ls", ..., baselevels, sva = FALSE,
-  verbose = FALSE, warnings = TRUE)
+  set = "exposures", method = "ls", ..., baselevels, sva = "none",
+  vfilter = NULL, verbose = FALSE, warnings = TRUE)
 }
 \arguments{
 \item{object}{A \code{MultiDataSet} object containing at last one omic
@@ -41,8 +41,13 @@ phenotypes in \code{ExposomeSet} are tested.}
 \item{baselevels}{(optional) If set, must be a labeled vector with the
 default base level for categorical exposures.}
 
-\item{sva}{(default \code{FALSE}) If set to \code{TRUE} surrogate
-variable analysis using \code{SmartSVA} is performed.}
+\item{sva}{(default \code{"none"}). This argument can take value
+\code{"none"} to do not apply SVA. Value \code{"fast"} will run SVA
+using \code{\link{isva}} and \code{\link{SmartSVA}}. Value \code{"slow"}
+will run SVA using \code{\link{sva}}.}
+
+\item{vfilter}{(default \code{NULL}). Only used when \code{sva = "slow"}.
+Numeric number of probes used in \link{sva}. Recomended ~10% of real probes.}
 
 \item{verbose}{(default \code{FALSE}) If set to \code{TRUE}, a series of
 messages descriving the process are shown.}

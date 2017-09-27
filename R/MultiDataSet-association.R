@@ -4,8 +4,8 @@ setMethod(
     f = "association",
     signature = "MultiDataSet",
     definition = function(object, formula, expset, omicset, set = "exposures",
-            method = "ls", ..., baselevels, sva = FALSE, verbose = FALSE,
-            warnings = TRUE) {
+            method = "ls", ..., baselevels, sva = "none", vfilter = NULL,
+            verbose = FALSE, warnings = TRUE) {
         ## CHEKS
         ## --------------------------------------------------------------------
         if(missing(expset) | missing(omicset)) {
@@ -141,7 +141,7 @@ setMethod(
                 design.mm <- model.matrix(formula(design), data = exp.dt)
                 # If required, apply SVA
                 n.sv <- NA
-                if(sva) {
+                if(sva == "fast") {
                     ## Determine number of surrogate variables
                     Y.r <- t(stats::resid(stats::lm(t(omic) ~ exp.dt[ , ex])))
                     #,data=exp.dt)))
@@ -150,10 +150,28 @@ setMethod(
                     if (n.sv > 0) {
                         sv.obj <- SmartSVA::smartsva.cpp(omic,
                             design.mm, mod0 = NULL, n.sv = n.sv)
-                            # mod0=design.mm[ , -1, drop=FALSE]
+                        design.mm <- cbind(design.mm, sv.obj$sv)
+                    }
+                } else if(sva == "slow") {
+                    if (verbose | warnings){
+                        message("Computing SVA. This step can be very time consuming.")
+                        if(is.null(vfilter)) {
+                            message("Consider using argument 'vfilter'.")
+                        }
+                    }
+
+                    ## Determine number of surrogate variables
+                    n.sv <- sva::num.sv(Biobase::exprs(gexp),
+                                        design.mm, vfilter=vfilter)
+                    if (n.sv > 0){
+                        sv.obj <- sva::sva(Biobase::exprs(gexp), design.mm,
+                                          #design.mm[ , -1, drop=FALSE],
+                                          n.sv=n.sv, vfilter=vfilter)
                         design.mm <- cbind(design.mm, sv.obj$sv)
                     }
                 }
+                rm(sv.obj)
+                suppressMessages(gc())
 
                 # Fit the model
                 if (verbose){
