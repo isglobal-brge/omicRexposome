@@ -43,11 +43,11 @@ default base level for categorical exposures.}
 
 \item{sva}{(default \code{"none"}). This argument can take value
 \code{"none"} to do not apply SVA. Value \code{"fast"} will run SVA
-using \code{\link{isva}} and \code{\link{SmartSVA}}. Value \code{"slow"}
-will run SVA using \code{\link{sva}}.}
+using \code{isva} and \code{SmartSVA}. Value \code{"slow"}
+will run SVA using \code{sva}.}
 
 \item{vfilter}{(default \code{NULL}). Only used when \code{sva = "slow"}.
-Numeric number of probes used in \link{sva}. Recomended ~10% of real probes.}
+Numeric number of probes used in \link{sva}. Recomended ~10\% of real probes.}
 
 \item{verbose}{(default \code{FALSE}) If set to \code{TRUE}, a series of
 messages descriving the process are shown.}

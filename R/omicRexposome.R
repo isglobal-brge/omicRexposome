@@ -43,10 +43,11 @@
 #' @importFrom gridExtra grid.arrange
 #' @importFrom grDevices rainbow
 #' @importFrom methods as new
-#' @importFrom stats as.formula model.matrix qbeta qchisq qnorm
+#' @importFrom stats relevel
 #' @importFrom SmartSVA smartsva.cpp
 #' @importFrom isva EstDimRMT
 #' @importFrom stringr str_pad
 #' @importFrom SummarizedExperiment assay rowRanges rowData
+#' @importFrom sva num.sv sva
 #'
 NULL

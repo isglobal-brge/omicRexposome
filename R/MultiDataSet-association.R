@@ -74,7 +74,7 @@ setMethod(
             if(set == "exposures") {
                 select <- rexposome::exposureNames(object[[expset]])
             } else { ## set == "phenotypes"
-                select <- Biobase::phenotypeNames(object[[expset]])
+                select <- rexposome::phenotypeNames(object[[expset]])
             }
         }
 
@@ -95,7 +95,7 @@ setMethod(
             # check if relevel is necessary
             if(cL) {
                 if(ex %in% names(baselevels)) {
-                    exp.dt[ , ex] <- relevel(exp.dt[ , ex], baselevels[ex])
+                    exp.dt[ , ex] <- stats::relevel(exp.dt[ , ex], baselevels[ex])
                 }
             }
             # /
@@ -161,10 +161,10 @@ setMethod(
                     }
 
                     ## Determine number of surrogate variables
-                    n.sv <- sva::num.sv(Biobase::exprs(gexp),
+                    n.sv <- sva::num.sv(omic,
                                         design.mm, vfilter=vfilter)
                     if (n.sv > 0){
-                        sv.obj <- sva::sva(Biobase::exprs(gexp), design.mm,
+                        sv.obj <- sva::sva(omic, design.mm,
                                           #design.mm[ , -1, drop=FALSE],
                                           n.sv=n.sv, vfilter=vfilter)
                         design.mm <- cbind(design.mm, sv.obj$sv)
