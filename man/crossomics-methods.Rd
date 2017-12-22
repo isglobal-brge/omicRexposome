@@ -56,8 +56,8 @@ R package \code{sva}).
 \examples{
 library(MultiDataSet)
 library(rexposome)
-data(brge_prot, package = "BRGEdata")
-data(brge_expo, package = "BRGEdata")
+data(brge_prot, package = "brgedata")
+data(brge_expo, package = "brgedata")
 mds <- createMultiDataSet()
 mds <- add_eset(mds, brge_prot, dataset.type = "proteines")
 mds <- add_eset(mds, imputation(brge_expo),
