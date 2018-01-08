@@ -43,7 +43,7 @@ Suggests:
     knitr,
     rmarkdown,
     snpStats,
-    BRGEdata
+    brgedata
 biocViews:
     WorkflowStep, 
     MultipleComparison, 

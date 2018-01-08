@@ -294,8 +294,8 @@ setGeneric("add_cls", function(object, clsSet, ...)
 #' @return An object of class \code{\link{ResultSet}}.
 #' @examples
 #' library(MultiDataSet)
-#' data(brge_prot, package = "BRGEdata")
-#' data(brge_expo, package = "BRGEdata")
+#' data(brge_prot, package = "brgedata")
+#' data(brge_expo, package = "brgedata")
 #' mds <- createMultiDataSet()
 #' mds <- add_eset(mds, brge_prot, dataset.type = "proteines")
 #' mds <- add_eset(mds, brge_expo, dataset.type = "exposures", GRanges = NA)
@@ -346,8 +346,8 @@ setGeneric("association", function(object, formula, expset, omicset,
 #' @examples
 #' library(MultiDataSet)
 #' library(rexposome)
-#' data(brge_prot, package = "BRGEdata")
-#' data(brge_expo, package = "BRGEdata")
+#' data(brge_prot, package = "brgedata")
+#' data(brge_expo, package = "brgedata")
 #' mds <- createMultiDataSet()
 #' mds <- add_eset(mds, brge_prot, dataset.type = "proteines")
 #' mds <- add_eset(mds, imputation(brge_expo),

@@ -80,15 +80,15 @@ The following subsections illustrates the usage of `association` with different 
 First we get the exposome data from `BRGdata` package that we will use in the whole section.
 
 ```{r expos_data, cache=FALSE}
-data("brge_expo", package = "BRGEdata")
+data("brge_expo", package = "brgedata")
 class(brge_expo)
 ```
 
 
-The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the `BRGEdata` package.
+The aim of this analysis is to perform an association test between the gene expression levels and the exposures. So the first point is to obtain the transcriptome data from the `brgedata` package.
 
 ```{r gexp_data, cache=FALSE}
-data("brge_gexp", package = "BRGEdata")
+data("brge_gexp", package = "brgedata")
 ```
 
 The association studies between exposures and transcriptome are done in the same way that the ones with methylome. The method used is `association`, that takes as input an object of `MultiDataSet` class with both exposome and expression data.
@@ -151,10 +151,10 @@ gridExtra::grid.arrange(
 
 ### Exposome - Proteome Data Association
 
-The proteome data-set included in `BRGEdata` has 47 proteins for 90 samples.
+The proteome data-set included in `brgedata` has 47 proteins for 90 samples.
 
 ```{r prot_data, cache=FALSE}
-data("brge_prot", package="BRGEdata")
+data("brge_prot", package="brgedata")
 brge_prot
 ```
 
