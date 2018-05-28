@@ -22,6 +22,8 @@
 #' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, when
 #' \code{type="volcano"} the X-axis will show \code{2^logFC} instead of
 #' \code{logFC}.
+#' @param ... Arguments given to \code{plot} from \code{ReultSet} (from
+#' \code{MultiDataSet} package)
 #' @examples
 #' data("asr", package = "omicRexposome")
 #' plotAssociation(asr, type = "qq")
@@ -33,7 +35,7 @@
 #' this function.
 setGeneric("plotAssociation", function(object,  rid = 1, coef = 2, contrast = 1,
         type = c("manhattan", "qq", "volcano"), tPV = NULL, tFC = NULL,
-        show.effect=FALSE)
+        show.effect=FALSE, ...)
     standardGeneric("plotAssociation")
 )
 

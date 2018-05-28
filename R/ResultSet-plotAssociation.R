@@ -4,7 +4,7 @@ setMethod(
     f = "plotAssociation",
     signature = "ResultSet",
     definition = function(object, rid = 1, coef = 2, contrast = NULL, type,
-            tPV = NULL, tFC = NULL, show.effect = FALSE) {
+            tPV = NULL, tFC = NULL, show.effect = FALSE, ...) {
         if(type == "protein") {
             dta <- MultiDataSet::getAssociation(object, fNames = NULL,
                 rid = rid, coef = coef, contrast = contrast)
@@ -30,7 +30,7 @@ setMethod(
         } else {
             MultiDataSet::plot(object, rid = rid, coef = coef,
                 contrast = contrast, type = type, tPV = tPV, tFC = tFC,
-                show.effect = show.effect, fNames = NULL)
+                show.effect = show.effect, fNames = NULL, ...)
         }
     }
 )

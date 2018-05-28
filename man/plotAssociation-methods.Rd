@@ -9,11 +9,11 @@
 \usage{
 plotAssociation(object, rid = 1, coef = 2, contrast = 1,
   type = c("manhattan", "qq", "volcano"), tPV = NULL, tFC = NULL,
-  show.effect = FALSE)
+  show.effect = FALSE, ...)
 
 \S4method{plotAssociation}{ResultSet}(object, rid = 1, coef = 2,
   contrast = NULL, type = c("manhattan", "qq", "volcano"), tPV = NULL,
-  tFC = NULL, show.effect = FALSE)
+  tFC = NULL, show.effect = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \link{ResultSet} obtained from assoc_*
@@ -38,6 +38,9 @@ for protein association analysis.}
 \item{show.effect}{(default \code{FALSE}) If set to \code{TRUE}, when
 \code{type="volcano"} the X-axis will show \code{2^logFC} instead of
 \code{logFC}.}
+
+\item{...}{Arguments given to \code{plot} from \code{ReultSet} (from
+\code{MultiDataSet} package)}
 }
 \value{
 A ggplot2 object
