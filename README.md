@@ -14,7 +14,8 @@
 `omicRexposome` requires R version equal or newer than 3.3.0. The following script allows to install `rexposome` dependencies:
 
 ```r
-source( "http://bioconductor.org/biocLite.R" )
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
 
 packages = c('Biobase', 'methods', 'snpStats', 'limma', 'sva', 'ggplot2',
     'ggrepel', 'PMA', 'omicade4', 'ggplot2', 'qqman', 'gridExtra'
@@ -22,7 +23,7 @@ packages = c('Biobase', 'methods', 'snpStats', 'limma', 'sva', 'ggplot2',
 for( pkg in packages ) {
   if( !pkg %in% rownames( installed.packages() ) ) {
     message( "Installing ", pkg )
-    biocLite( pkg )
+    BiocManager::install( pkg )
   }
 }
 ```
