@@ -1,6 +1,6 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration analysis
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
@@ -44,7 +44,7 @@ Suggests:
     rmarkdown,
     snpStats,
     brgedata
-biocViews:
+biocViews: ImmunoOncology, 
     WorkflowStep, 
     MultipleComparison, 
     Visualization,
