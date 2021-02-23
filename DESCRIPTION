@@ -1,9 +1,9 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration analysis
-Version: 0.99.22
+Version: 1.13.0
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
-Maintainer: Carles Hernandez-Ferrer <carles.hernandez@isglobal.org>
+Maintainer: Xavier Escribà Montagut <xavier.escriba@isglobal.org>
 Description: omicRexposome systematizes the association evaluation between 
     exposures and omic data, taking advantage of MultiDataSet for coordinated 
     data management, rexposome for exposome data definition and limma for 
@@ -45,7 +45,7 @@ Suggests:
     snpStats,
     brgedata,
     testthat
-biocViews:
+biocViews: ImmunoOncology, 
     WorkflowStep, 
     MultipleComparison, 
     Visualization,
