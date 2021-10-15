@@ -170,7 +170,6 @@ setMethod(
                         design.mm <- cbind(design.mm, sv.obj$sv)
                     }
                 }
-                rm(sv.obj)
                 suppressMessages(gc())
 
                 # Fit the model
@@ -185,7 +184,8 @@ setMethod(
                     sva.num=n.sv,
                     error=NA,
                     design=design,
-                    result=fit
+                    result=fit,
+                    sva.var=ifelse(sva, sv.obj$sv, NULL)
                 )
             }
         })
