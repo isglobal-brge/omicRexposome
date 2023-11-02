@@ -42,6 +42,7 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
+    magick,
     snpStats,
     brgedata
 biocViews: ImmunoOncology, 
