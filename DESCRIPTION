@@ -1,6 +1,6 @@
 Package: omicRexposome
 Title: Exposome and omic data associatin and integration analysis
-Version: 1.24.2
+Version: 1.24.3
 Authors@R: c(person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", c("aut", "cre")),
     person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Maintainer: Xavier Escribà Montagut <xavier.escriba@isglobal.org>
